@@ -65,11 +65,13 @@ namespace AfrroStock
 
             services.AddAutoMapper(typeof(Startup));
             services.AddTransient<IModelManager<Category>, ModelManager<Category>>();
+            services.AddTransient<IModelManager<Collection>, ModelManager<Collection>>();
             services.AddTransient<IModelManager<Image>, ModelManager<Image>>();
             services.AddTransient<IModelManager<Tag>, ModelManager<Tag>>();
             services.AddTransient<IModelManager<ApplicationUser>, ModelManager<ApplicationUser>>();
             services.AddTransient<AuthRepository>();
             services.AddTransient<UserManager>();
+            services.AddTransient<ImageManager>();
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IEmailSender, EmailSender>();
         }

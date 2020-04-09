@@ -9,16 +9,18 @@ namespace AfrroStock.Models
     {
         public Image()
         {
-            DateAdded = new DateTime();
+            DateAdded = DateTime.Now;
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Pic { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
         public int CategoryId { get; set; }
+        public int Views { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime DateModified { get; set; }
         public ICollection<Tag> Tags { get; set; }

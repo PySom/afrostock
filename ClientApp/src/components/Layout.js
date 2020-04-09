@@ -9,7 +9,7 @@ export class Layout extends Component {
     return (
       <div>
         <NavMenu />
-        <Container>
+        <Container fluid className="m-0 p-0">
           {this.props.children}
         </Container>
       </div>

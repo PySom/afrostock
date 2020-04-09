@@ -1,0 +1,92 @@
+﻿.pt-1h{
+    padding-top: 100px;
+}
+
+.pb-1h {
+    padding-bottom: 100px;
+}
+
+.plr-15{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.mb-1h {
+    margin-bottom: 100px;
+}
+
+.header-bg {
+    background: #040405;
+}
+
+.hero__title {
+    display: block;
+    font-size: 36px;
+    line-height: 48px;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 15px;
+    
+}
+
+.pd-5 {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.app-flex{
+    display: flex;
+}
+
+.m0-auto{
+    margin: 0 auto;
+}
+
+.header-width{
+    display: flex;
+    flex: auto;
+    align-items: center;
+    justify-content: center;
+    width: 65%;
+}
+
+.enforce-mp {
+    margin-left: 15px;
+    margin-right: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.trend-pos{
+    display: flex;
+}
+.app-font-mid{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.mt-20{
+    margin-top: 20px;
+}
+
+.unstyled{
+    background: none;
+    border: none;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.unstyled:focus {
+    outline: none
+}
+
+.pull-right {
+    margin-left: auto;
+}
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .header-width {
+        width: 100%;
+    }
+}

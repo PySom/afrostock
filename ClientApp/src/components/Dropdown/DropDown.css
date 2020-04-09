@@ -1,0 +1,24 @@
+﻿.clickable-trend {
+    display: none;
+}
+
+.trend-new span {
+    padding-right: 10px;
+    font-weight: bold;
+}
+
+.trend-new:hover .clickable-trend{
+    display: block;
+}
+
+span{
+    font-size: 13px;
+}
+
+.clickable-trend button:hover{
+    background: #ccc;
+}
+
+.clickable-trend button {
+    width: 100%;
+}

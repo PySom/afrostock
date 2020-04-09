@@ -15,7 +15,6 @@ namespace AfrroStock.Repository.Generic
 {
     public class UserManager : ModelManager<ApplicationUser>
     {
-        private readonly ApplicationDbContext _ctx;
         private readonly IMapper _mapper;
         private readonly AuthRepository _auth;
 
@@ -25,7 +24,6 @@ namespace AfrroStock.Repository.Generic
         }
         public UserManager(ApplicationDbContext context, IMapper mapper, AuthRepository auth) : base(context)
         {
-            _ctx = context;
             _mapper = mapper;
             _auth = auth;
         }
@@ -33,7 +31,7 @@ namespace AfrroStock.Repository.Generic
         {
             if (model.Password == model.ConfirmPassword)
             {
-                bool hasAccount = await _ctx.Users.AnyAsync(u => u.Email.ToLower() == model.Email.ToLower());
+                bool hasAccount = await Item().AnyAsync(u => u.Email.ToLower() == model.Email.ToLower());
                 if (hasAccount) { return (null, "user already exists"); }
 
                 string passwordHash = Hash.GetHashedValue(model.Password);
@@ -57,7 +55,7 @@ namespace AfrroStock.Repository.Generic
         public async ValueTask<(string, string)> LoginUser(LoginViewModel model)
         {
             var loginPassword = model.Password;
-            var user = await _ctx.Users.Where(x => x.Email.ToLower() == model.Email.ToLower())
+            var user = await Item().Where(x => x.Email.ToLower() == model.Email.ToLower())
                                                 .FirstOrDefaultAsync();
             if (user == null) { return (null, "no such user in the database"); }
 
