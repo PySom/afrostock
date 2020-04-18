@@ -15,15 +15,17 @@ namespace AfrroStock.Controllers
     {
         private readonly IModelManager<Collection> _collection;
         private readonly IModelManager<Category> _category;
+        private readonly IModelManager<UserImage> _userImg;
         private readonly IModelManager<Tag> _tag;
         private readonly ImageManager _repo;
         private static readonly MachineLearning _ml;
         public ImagesController(ImageManager repo,
             IModelManager<Collection> collection,
             IModelManager<Category> category,
-            IModelManager<Tag> tag)
+            IModelManager<Tag> tag,
+            IModelManager<UserImage> userImg)
         {
-            (_repo, _collection, _category, _tag) = (repo, collection, category, tag);
+            (_repo, _collection, _category, _tag, _userImg) = (repo, collection, category, tag, userImg);
             
         }
 
@@ -38,6 +40,7 @@ namespace AfrroStock.Controllers
             ICollection<Image> options = await _repo
                                                 .Item()
                                                 .Include(c => c.Tags)
+                                                .Include(i => i.Author)
                                                 .ToListAsync();
             return Ok(options);
 
@@ -49,6 +52,7 @@ namespace AfrroStock.Controllers
             Image model = await _repo
                                 .Item()
                                 .Where(c => c.Id == id)
+                                .Include(i => i.Author)
                                 .Include(c => c.Category)
                                 .FirstOrDefaultAsync();
             
@@ -120,19 +124,26 @@ namespace AfrroStock.Controllers
         [HttpDelete("{id}")]
         public async ValueTask<IActionResult> Delete(int id)
         {
-            Image img = new Image { Id = id };
-            string message;
-            try
+            bool userHasThisImage = await _userImg.Item().AnyAsync(ui => ui.ImageId == id);
+            if (!userHasThisImage)
             {
-                (bool succeeded, string error) = await _repo.Delete(img);
-                message = error;
-                if (succeeded) return NoContent();
+                Image img = new Image { Id = id };
+                string message;
+                try
+                {
+                    (bool succeeded, string error) = await _repo.Delete(img);
+                    message = error;
+                    if (succeeded) return NoContent();
+                    return BadRequest(new { Message = message });
+
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    message = ex.Message + " " + ex.InnerException.Message;
+                }
+                return BadRequest(new { Message = message });
             }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                message = ex.Message;
-            }
-            return NotFound(new { Message = message });
+            return BadRequest(new { Message = "One or more users have this image. We cannot delete this. Please come up with a policy and notify developer" });
         }
 
         private async ValueTask<int> CheckCollection(string name)

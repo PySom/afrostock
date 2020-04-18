@@ -64,6 +64,26 @@ namespace AfrroStock.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("AfrroStock.Models.Author", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Detail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Authors");
+                });
+
             modelBuilder.Entity("AfrroStock.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -112,7 +132,10 @@ namespace AfrroStock.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ApplicationUserId")
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<int>("CategoryId")
@@ -138,7 +161,7 @@ namespace AfrroStock.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("CategoryId");
 
@@ -165,6 +188,43 @@ namespace AfrroStock.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("AfrroStock.Models.UserImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserImages");
+                });
+
+            modelBuilder.Entity("AfrroStock.Models.Author", b =>
+                {
+                    b.HasOne("AfrroStock.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AfrroStock.Models.Category", b =>
                 {
                     b.HasOne("AfrroStock.Models.Collection", "Collection")
@@ -176,9 +236,11 @@ namespace AfrroStock.Migrations
 
             modelBuilder.Entity("AfrroStock.Models.Image", b =>
                 {
-                    b.HasOne("AfrroStock.Models.ApplicationUser", null)
+                    b.HasOne("AfrroStock.Models.Author", "Author")
                         .WithMany("Images")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AfrroStock.Models.Category", "Category")
                         .WithMany("Images")
@@ -192,6 +254,19 @@ namespace AfrroStock.Migrations
                     b.HasOne("AfrroStock.Models.Image", "Image")
                         .WithMany("Tags")
                         .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AfrroStock.Models.UserImage", b =>
+                {
+                    b.HasOne("AfrroStock.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
+                    b.HasOne("AfrroStock.Models.ApplicationUser", "User")
+                        .WithMany("Images")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

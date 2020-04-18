@@ -22,6 +22,6 @@ namespace AfrroStock.Models
         public string Code { get; set; }
         public DateTime CodeIssued { get; set; }
         public DateTime CodeWillExpire { get; set; }
-        public ICollection<Image> Images { get; set; }
+        public ICollection<UserImage> Images { get; set; }
     }
 }

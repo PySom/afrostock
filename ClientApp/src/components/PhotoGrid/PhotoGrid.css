@@ -10,11 +10,27 @@
 }
 
     #photos img {
-        /* Just in case there are inline attributes */
         width: 100% !important;
         height: auto !important;
         margin-bottom: 10px;
     }
+   
+.author-text {
+    text-align: left;
+    display: none;
+    position: absolute;
+    bottom: 0;
+    padding: 15px;
+}
+
+    .author-text:hover{
+        opacity: 1;
+    }
+
+#photos img:hover + .author-text {
+    display: block;
+    transition: opacity .25s;
+}
 
 @media (max-width: 1200px) {
     #photos {

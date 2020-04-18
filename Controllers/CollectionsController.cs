@@ -10,16 +10,13 @@ using AfrroStock.Repository.Generic;
 namespace AfrroStock.Controllers
 {
     [Route("api/[controller]")]
-    public class CollectionsController : ControllerBase
+    public class CollectionsController : GenericController<Collection>
     {
-        private readonly IModelManager<Collection> _repo;
-        public CollectionsController(IModelManager<Collection> repo)
-        {
-            _repo = repo;
-        }
+        public CollectionsController(IModelManager<Collection> repo): base(repo)
+        {}
 
         [HttpGet]
-        public async ValueTask<IActionResult> Get()
+        public override async ValueTask<IActionResult> Get()
         {
             ICollection<Collection> options = await _repo
                                                 .Item()
@@ -31,7 +28,7 @@ namespace AfrroStock.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async ValueTask<IActionResult> Get(int id)
+        public override async ValueTask<IActionResult> Get(int id)
         {
             Collection model = await _repo
                                 .Item()
@@ -45,49 +42,5 @@ namespace AfrroStock.Controllers
             }
             return NotFound();
         }
-
-        [HttpPost]
-        public async ValueTask<IActionResult> Post([FromBody] Collection model)
-        {
-            if (ModelState.IsValid)
-            {
-                (bool succeeded, Collection collection, string error) = await _repo.Add(model);
-                if (succeeded) return Ok(collection);
-                return BadRequest(new { Message = error });
-            }
-            return BadRequest(new { Errors = ModelState.Values.SelectMany(e => e.Errors).ToList() });
-        }
-
-
-        [HttpPut]
-        public async ValueTask<IActionResult> Put([FromBody] Collection model)
-        {
-            if (ModelState.IsValid)
-            {
-                (bool succeeded, Collection collection, string error) = await _repo.Update(model);
-                if (succeeded) return Ok(collection);
-                return BadRequest(new { Message = error });
-            }
-            return BadRequest(new { Errors = ModelState.Values.SelectMany(e => e.Errors).ToList() });
-        }
-
-        [HttpDelete("{id}")]
-        public async ValueTask<IActionResult> Delete(int id)
-        {
-            Collection collection = new Collection { Id = id };
-            string message;
-            try
-            {
-                (bool succeeded, string error) = await _repo.Delete(collection);
-                message = error;
-                if (succeeded) return NoContent();
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                message = ex.Message;
-            }
-            return NotFound(new { Message = message });
-        }
-
     }
 }

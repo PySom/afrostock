@@ -5,9 +5,9 @@ using AfrroStock.Repository.Generic;
 namespace AfrroStock.Controllers
 {
     [Route("api/[controller]")]
-    public class TagsController : GenericController<Tag>
+    public class UserImagesController : GenericController<UserImage>
     {
-        public TagsController(IModelManager<Tag> repo): base(repo)
+        public UserImagesController(IModelManager<UserImage> repo): base(repo)
         {}
     }
 }

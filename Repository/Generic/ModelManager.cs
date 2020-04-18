@@ -129,15 +129,15 @@ namespace AfrroStock.Repository.Generic
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                errorMessage = ex.Message;
+                errorMessage = ex.Message + " " + ex.InnerException.Message;
             }
             catch (DbUpdateException ex)
             {
-                errorMessage = ex.Message;
+                errorMessage = ex.Message + " " + ex.InnerException.Message;
             }
             catch (Exception ex)
             {
-                errorMessage = ex.Message;
+                errorMessage = ex.Message + " " + ex.InnerException.Message;
             }
             return (false, errorMessage);
         }

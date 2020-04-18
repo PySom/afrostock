@@ -22,7 +22,7 @@ namespace AfrroStock.Services
             var collection = collections[rand.Next(1, collections.Length)];
             var category = categories[rand.Next(1, categories.Length)];
             var tagIndex = rand.Next(1, tags.Length);
-            List<string> selectedTags = new List<string>();
+            HashSet<string> selectedTags = new HashSet<string>();
             for(int index = 0; index < tagIndex; index++)
             {
                 var randIdx = rand.Next(1, tags.Length);

@@ -20,7 +20,12 @@ namespace AfrroStock.Models
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
         public int CategoryId { get; set; }
+
+        [ForeignKey("AuthorId")]
+        public Author Author { get; set; }
+        public int AuthorId { get; set; }
         public int Views { get; set; }
+        public double Amount { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime DateModified { get; set; }
         public ICollection<Tag> Tags { get; set; }
