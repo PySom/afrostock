@@ -31,7 +31,7 @@ export class NavMenu extends Component {
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white" light>
                     <Container fluid>
                         <NavbarBrand tag={Link} to="/">AfroStock</NavbarBrand>
-                        <SearchArea className={`variable-search-width ${searchVisibility ? "d-none" : "" }`} />
+                        <SearchArea searchClass=" header-width nav-search" className={`variable-search-width ${searchVisibility ? "d-none" : "" }`} />
                         <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
                             <ul className="navbar-nav flex-grow">

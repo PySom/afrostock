@@ -2,6 +2,7 @@
 import './ResultArea.css';
 import RecentSearch from './RecentSearch';
 import TrendingArea from './TrendingArea';
+import { Link } from 'react-router-dom';
 
 const recent = [
 	{
@@ -30,14 +31,20 @@ const trending = [
 	}
 ]
 
-export default function ResultArea({ className, style, results, onMouseOver, onMouseOut, onClick }) {
+
+
+export default function ResultArea({ style, results, term, onMouseOver, onMouseOut, onClick }) {
+	console.log({ results })
 	return (
 		<div className="w-100 a-p t-0" style={style} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
 			{
-				results && results.length &&
+				(results && results.length > 0) &&
 				results.map((data) => (
 					<div key={data.id}>
-						<button onClick={() => onClick(data.value)} className="unstyled">{data.value}</button>
+						<Link to={`/contents/${data.id}`} className="search-bar__suggestions">
+							<span>{data.name.substring(0, term.length)}</span>
+							<span style={{ color: "#a6aaad" }}>{data.name.toLowerCase().substring(data.name.indexOf(term.toLowerCase()) + term.length + 1)}</span>
+						</Link>
 					</div>
 				))
             }

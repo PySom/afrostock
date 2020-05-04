@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AfrroStock.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,13 +17,17 @@ namespace AfrroStock.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Pic { get; set; }
+        public ContentType ContentType { get; set; }
+        public Orientation Orientation { get; set; }
+        public string Content { get; set; }
+        public string ContentLow { get; set; }
+
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
         public int CategoryId { get; set; }
 
         [ForeignKey("AuthorId")]
-        public Author Author { get; set; }
+        public ApplicationUser Author { get; set; }
         public int AuthorId { get; set; }
         public int Views { get; set; }
         public double Amount { get; set; }

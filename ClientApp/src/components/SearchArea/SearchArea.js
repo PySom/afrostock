@@ -3,10 +3,12 @@ import SearchBar from '../SearchBar/SearchBar';
 import ResultArea from '../SearchBar/ResultArea/ResultArea';
 import VizSensor from 'react-visibility-sensor';
 import { connect } from 'react-redux';
+import api from '../../sideEffects/apis/api';
 
-export function SearchArea({ className, setVisibleState, type }) {
+export function SearchArea({ className, setVisibleState, searchClass, type }) {
     const [show, setShow] = useState(false);
     const [areaInView, setAreaInView] = useState(false);
+    const [contents, setContents] = useState([]);
     const [searchValue, setSearchValue] = useState("");
 
 
@@ -19,6 +21,14 @@ export function SearchArea({ className, setVisibleState, type }) {
     useEffect(() => {
         if (searchValue && searchValue.length >= 3) {
             //api logic
+            api.getAll(`images/search?term=${searchValue}`)
+                .then(response => {
+                    console.log({ response })
+                    setContents(response)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
 
     }, [searchValue])
@@ -38,9 +48,9 @@ export function SearchArea({ className, setVisibleState, type }) {
     return (
         <VizSensor onChange={(visible) => visualStateManager(visible)}>
             <div className={`${className ? className : ""}`}>
-                <SearchBar searchValue={searchValue} setShow={setShow} show={show} onChange={handleChange} areaInView={areaInView} />
-                <div className="m0-auto header-width r-p" onClick={() => setShow(true)}>
-                    <ResultArea style={{ display: show ? "block" : "none" }}
+                <SearchBar className={searchClass} searchValue={searchValue} setShow={setShow} show={show} onChange={handleChange} areaInView={areaInView} />
+                <div className={`m0-auto ${searchClass ? searchClass : ""} r-p`} onClick={() => setShow(true)}>
+                    <ResultArea term={searchValue} results={contents} style={{ display: show ? "block" : "none" }}
                         onMouseOver={() => setAreaInView(true)} onMouseOut={handleMouseOut} />
                 </div>
             </div>

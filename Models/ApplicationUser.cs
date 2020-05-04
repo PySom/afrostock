@@ -14,10 +14,15 @@ namespace AfrroStock.Models
         public string SurName { get; set; }
         public string FirstName { get; set; }
         public string PhoneNumber { get; set; }
+        public string Details { get; set; }
+        public string TwitterHandle { get; set; }
+        public string InstagramHandle { get; set; }
+        public string FacebookHandle { get; set; }
+        public string WebsiteUrl { get; set; }
         public string Email { get; set; }
         public Sex Sex { get; set; }
         public string Pic { get; set; }
-        public bool IsAdmin { get; set; }
+        public string Role { get; set; }
         public string PasswordHash { get; set; }
         public string Code { get; set; }
         public DateTime CodeIssued { get; set; }

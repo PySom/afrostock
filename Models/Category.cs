@@ -11,9 +11,6 @@ namespace AfrroStock.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        [ForeignKey("CollectionId")]
-        public Collection Collection { get; set; }
-        public int CollectionId { get; set; }
         public ICollection<Image> Images { get; set; }
     }
 }

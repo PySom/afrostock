@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.IO;
 
@@ -71,6 +74,5 @@ namespace AfrroStock.Services
                 System.IO.File.Delete(oldPath);
             }
         }
-
     }
 }

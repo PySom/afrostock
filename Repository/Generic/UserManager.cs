@@ -1,4 +1,5 @@
 ﻿using AfrroStock.Data;
+using AfrroStock.Enums;
 using AfrroStock.Models;
 using AfrroStock.Models.ViewModels;
 using AfrroStock.Repository.Extension;
@@ -37,7 +38,6 @@ namespace AfrroStock.Repository.Generic
                 string passwordHash = Hash.GetHashedValue(model.Password);
                 ApplicationUser user = model.Convert<RegisterViewModel, ApplicationUser>(_mapper);
                 user.PasswordHash = passwordHash;
-                user.IsAdmin = CheckAdmin(model.Email);
                 try
                 {
                     await Add(user);
@@ -64,16 +64,9 @@ namespace AfrroStock.Repository.Generic
             {
                 return (null, "password do not match");
             }
-            return (_auth.GetToken(model.Email, user.IsAdmin), null);
+            return (_auth.GetToken(model.Email, user.Role), null);
         }
-        private static bool CheckAdmin(string email)
-        {
-            var adminEmails = Startup.Configuration.GetSection("AdminEmails")
-                                                                    .AsEnumerable()
-                                                                    .Where(e => !string.IsNullOrEmpty(e.Value))
-                                                                    .Select(e => e.Value);
-            return adminEmails.Contains(email, StringComparer.OrdinalIgnoreCase);
-        }
+        
 
     }
 }

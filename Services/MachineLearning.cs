@@ -7,7 +7,6 @@ namespace AfrroStock.Services
 {
     public class MachineLearning
     {
-        private readonly string[] collections = { "Food", "Nature", "Fashion", "People", "Mockup", "Plants" };
         private readonly string[] categories = { "War", "Concert", "Film", "Dancing", "Baby", "Nurses" };
         private readonly string[] tags = { "yellow", "red", "playful", "water", "nature", "design", "powerpoint", "child"  };
         private static readonly Random rand = new Random();
@@ -17,9 +16,8 @@ namespace AfrroStock.Services
 
         }
 
-        public (string collection, string category, string[] tags) Pipeline()
+        public (string category, string[] tags) Pipeline()
         {
-            var collection = collections[rand.Next(1, collections.Length)];
             var category = categories[rand.Next(1, categories.Length)];
             var tagIndex = rand.Next(1, tags.Length);
             HashSet<string> selectedTags = new HashSet<string>();
@@ -28,7 +26,7 @@ namespace AfrroStock.Services
                 var randIdx = rand.Next(1, tags.Length);
                 selectedTags.Add(tags[randIdx]);
             }
-            return (collection, category, selectedTags.ToArray());
+            return (category, selectedTags.ToArray());
 
         }
         

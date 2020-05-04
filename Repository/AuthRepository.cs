@@ -11,7 +11,7 @@ namespace AfrroStock.Repository
 {
     public class AuthRepository
     {
-        public string GetToken(string email, bool isAdmin)
+        public string GetToken(string email, string role)
         {
             //get key
             string key = Startup.Configuration[AppConstant.Secret];
@@ -20,24 +20,18 @@ namespace AfrroStock.Repository
             //get signin credentials
             SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             //get claims
-            List<Claim> claims = new List<Claim>();
-
-            if (isAdmin)
+            List<Claim> claims = new List<Claim>
             {
-                claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
-                
-            }
-            else
-            {
-                claims.Add(new Claim(ClaimTypes.Role, "User"));
-            }
-            claims.Add(new Claim(ClaimTypes.Email, email));
+                new Claim(ClaimTypes.Role, role),
+                new Claim(ClaimTypes.Email, email)
+            };
 
             //create web token
             JwtSecurityToken token = new JwtSecurityToken(
                 issuer: Startup.Configuration[AppConstant.Issuer],
                 audience: Startup.Configuration[AppConstant.Audience],
                 signingCredentials: signingCredentials,
+                expires: DateTime.UtcNow.AddMonths(1),
                 claims: claims
                 );
             //return a writable token

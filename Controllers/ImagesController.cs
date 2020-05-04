@@ -7,26 +7,26 @@ using System.Threading.Tasks;
 using AfrroStock.Models;
 using AfrroStock.Repository.Generic;
 using AfrroStock.Services;
+using Microsoft.AspNetCore.Authorization;
+using AfrroStock.Enums;
 
 namespace AfrroStock.Controllers
 {
     [Route("api/[controller]")]
     public class ImagesController : ControllerBase
     {
-        private readonly IModelManager<Collection> _collection;
         private readonly IModelManager<Category> _category;
         private readonly IModelManager<UserImage> _userImg;
         private readonly IModelManager<Tag> _tag;
         private readonly ImageManager _repo;
         private static readonly MachineLearning _ml;
         public ImagesController(ImageManager repo,
-            IModelManager<Collection> collection,
             IModelManager<Category> category,
             IModelManager<Tag> tag,
             IModelManager<UserImage> userImg)
         {
-            (_repo, _collection, _category, _tag, _userImg) = (repo, collection, category, tag, userImg);
-            
+            (_repo, _category, _tag, _userImg) = (repo, category, tag, userImg);
+
         }
 
         static ImagesController()
@@ -55,7 +55,7 @@ namespace AfrroStock.Controllers
                                 .Include(i => i.Author)
                                 .Include(c => c.Category)
                                 .FirstOrDefaultAsync();
-            
+
             if (model != null)
             {
                 if (increaseView)
@@ -67,12 +67,70 @@ namespace AfrroStock.Controllers
             return NotFound();
         }
 
+        [HttpGet("videos")]
+        public async ValueTask<IActionResult> GetVideos()
+        {
+            var model = await _repo
+                                .Item()
+                                .Where(c => c.ContentType == ContentType.Video)
+                                .Include(i => i.Author)
+                                .Include(c => c.Category)
+                                .ToListAsync();
+
+            return Ok(model);
+        }
+
+        [HttpGet("search")]
+        public async ValueTask<IActionResult> Get(string term)
+        {
+            //search term if image(s) is there
+            var results = await _repo
+                                    .Item()
+                                    .Where(i => i.Name.ToLower().StartsWith(term.ToLower()) 
+                                                    || i.Name.ToLower().Contains($" {term.ToLower()}"))
+                                    .Select(i => new { i.Name, i.Id })
+                                    .ToListAsync();
+            return Ok(results);
+            //if(results.Count > 0)
+            //{
+            //    return Ok(results);
+            //}
+            //else
+            //{
+            //    //check category
+            //    var catResults = await _category
+            //                                .Item()
+            //                                .Where(c => c.Name.ToLower().StartsWith(term.ToLower()) || c.Name.ToLower().Contains($" {term.ToLower()}"))
+            //                                .Include(c => c.Images)
+            //                                .FirstOrDefaultAsync();
+            //    if (catResults == null)
+            //    {
+            //        //check tags
+            //        var tags = await _tag
+            //                            .Item()
+            //                            .Where(c => c.Name.ToLower().StartsWith(term.ToLower()) || c.Name.ToLower().Contains($" {term.ToLower()}"))
+            //                            .Include(c => c.Image)
+            //                            .ToListAsync();
+            //        if (tags.Count > 0)
+            //        {
+            //            return Ok(tags.Select(t => new { t.Image.Id, t.Image.Name }).ToList());
+            //        }
+            //        else return Ok(new string[0]);
+
+            //    }
+            //    return Ok(catResults.Images.Select(i => new { i.Name, i.Id }).ToList());
+            //}
+
+
+        }
+
+        [Authorize(Roles = "Author,Both,Super" )]
         [HttpPost]
         public async ValueTask<IActionResult> Post([FromBody] Image model)
         {
             if (ModelState.IsValid)
             {
-                (string collection, string category, string[] tags) = _ml.Pipeline();
+                (string category, string[] tags) = _ml.Pipeline();
                 Image addedModel = null;
                 //get or set collection
                 var categoryId = await CheckCategory(category);
@@ -80,30 +138,19 @@ namespace AfrroStock.Controllers
                 {
                     model.CategoryId = categoryId;
                     addedModel = model;
-                }
-                else
-                {
-                    var collectionId = await CheckCollection(collection);
-                    if (collectionId != 0)
+                    if (addedModel != null)
                     {
-                        categoryId = await CheckCategory(category, collectionId);
-                        model.CategoryId = categoryId;
-                        addedModel = model;
+                        (bool succeeded, Image img, string error) = await _repo.Add(addedModel);
+                        if (succeeded)
+                        {
+                            var imageTags = tags.Select(tag => new Tag { Name = tag, ImageId = img.Id });
+                            var _ = await _tag.Add(imageTags);
+                            return Ok(img);
+                        }
+                        return BadRequest(new { Message = error });
                     }
                 }
-                if(addedModel != null)
-                {
-                    (bool succeeded, Image img, string error) = await _repo.Add(addedModel);
-                    if (succeeded)
-                    {
-                        var imageTags = tags.Select(tag => new Tag { Name = tag, ImageId = img.Id });
-                        var _ = await _tag.Add(imageTags);
-                        return Ok(img);
-                    }
-                    return BadRequest(new { Message = error });
-                }
-                
-                
+                return BadRequest(new { Message = "we could not create the category for this image" });
             }
             return BadRequest(new { Errors = ModelState.Values.SelectMany(e => e.Errors).ToList() });
         }
@@ -146,39 +193,20 @@ namespace AfrroStock.Controllers
             return BadRequest(new { Message = "One or more users have this image. We cannot delete this. Please come up with a policy and notify developer" });
         }
 
-        private async ValueTask<int> CheckCollection(string name)
-        {
-            int id = 0;
-            var collection = await _collection.Item().Where(c => c.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
-            if(collection != null)
-            {
-                id = collection.Id;
-            }
-            else
-            {
-                (bool succeeded, Collection model, string error) = await _collection.Add(new Collection { Name = name });
-                if (succeeded) id = model.Id;
-            }
-            return id;
-        }
 
-        private async ValueTask<int> CheckCategory(string name, int collectionId = 0)
+        private async ValueTask<int> CheckCategory(string name)
         {
             int id = 0;
-            if (collectionId != 0)
+            var category = await _category.Item().Where(c => c.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
+            if (category != null)
             {
-                (bool succeeded, Category model, string error) = await _category.Add(new Category { Name = name, CollectionId = collectionId });
-                if (succeeded) id = model.Id;
+                id = category.Id;
             }
             else
             {
-                var category = await _category.Item().Where(c => c.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
-                if (category != null)
-                {
-                    id = category.Id;
-                }
+                (bool succeeded, Category cat, string error) = await _category.Add(new Category{ Name = name });
+                if (succeeded) id = cat.Id;
             }
-            
             return id;
         }
 

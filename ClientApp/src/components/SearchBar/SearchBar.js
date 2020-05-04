@@ -13,7 +13,7 @@ export default function SearchBar({ className, searchValue, setShow, show, onCha
         }
 	}, [areaInView, show, setInputFocus])
 	return (
-		<div className={`searchbox header-width ${className ? className : ""}`}>
+		<div className={`searchbox ${className ? className : ""}`}>
 			<input type="text" autoComplete="off" value={searchValue}
 				ref={inputRef}
 				onChange={({ target: { value } }) => onChange(value)}

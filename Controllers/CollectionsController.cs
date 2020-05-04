@@ -1,11 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using AfrroStock.Models;
 using AfrroStock.Repository.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AfrroStock.Controllers
 {
@@ -15,32 +12,11 @@ namespace AfrroStock.Controllers
         public CollectionsController(IModelManager<Collection> repo): base(repo)
         {}
 
-        [HttpGet]
-        public override async ValueTask<IActionResult> Get()
+        [HttpPost]
+        [Authorize(Roles = "Both,Collector,Super")]
+        public override ValueTask<IActionResult> Post([FromBody] Collection model)
         {
-            ICollection<Collection> options = await _repo
-                                                .Item()
-                                                .Include(c => c.Categories)
-                                                    .ThenInclude(i => i.Images)
-                                                .ToListAsync();
-            return Ok(options);
-
-        }
-
-        [HttpGet("{id:int}")]
-        public override async ValueTask<IActionResult> Get(int id)
-        {
-            Collection model = await _repo
-                                .Item()
-                                .Where(c => c.Id == id)
-                                .Include(c => c.Categories)
-                                      .ThenInclude(i => i.Images)
-                                .FirstOrDefaultAsync();
-            if (model != null)
-            {
-                return Ok(model);
-            }
-            return NotFound();
+            return base.Post(model);
         }
     }
 }

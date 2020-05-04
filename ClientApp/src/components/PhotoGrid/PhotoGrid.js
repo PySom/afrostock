@@ -1,25 +1,18 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState } from 'react';
 import "./PhotoGrid.css";
-import getImages from '../../helper/imageHelper';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import ModalCustomHeader from '../Modal/ModalCustomHeader';
 import ModalCustomBody from '../Modal/ModalCustomBody';
 
-export default function PhotoGrid(props) {
+export default function PhotoGrid({ contents }) {
     const [show, setShow] = useState(false);
     const [image, setImage] = useState(null);
-    const [images, setImages] = useState([]);
-    const [pageChanged] = useState(false)
+    console.log({contents})
 
     const handleClose = () => {
         setShow(false)
     }
 
-    useEffect(() => {
-        const images = getImages(25);
-        setImages(images);
-
-    }, [pageChanged])
 
     const handleShow = (e, index, src) => {
         e.preventDefault();
@@ -28,49 +21,82 @@ export default function PhotoGrid(props) {
     }
 
     const adjustImage = (newIndex) => {
-        console.log(newIndex)
-        const lastIndex = images.length - 1;
-        if (newIndex < 0) {
-            newIndex = lastIndex;
+        if (contents.length) {
+            const lastIndex = contents.length - 1;
+            if (newIndex < 0) {
+                newIndex = lastIndex;
+            }
+            else if (newIndex > contents.length) {
+                newIndex = 0;
+            }
+            setImage({ src: contents[newIndex], index: newIndex })
         }
-        else if (newIndex > images.length) {
-            newIndex = 0;
+        
+    }
+
+    function appropriateClass(orientation){
+        switch (orientation) {
+            case 0:
+                return ""
+            case 1:
+                return "portrait"
+            case 2:
+                return "landscape"
+            case 3:
+                return "big"
+            default:
+                return ""
         }
-        setImage({ src: images[newIndex], index: newIndex })
     }
 
     return (
         <section id="photos">
-            {images.map((src, index) => (
-                <button key={index} onClick={(e) => handleShow(e, index, src)} className="unstyled mb-2">
-                    <figure className="r-p">
-                        <img src={src} alt="awesome cats" title="description of this image"/>
-                        <h5 className="author-text f-12">Chisom Nwisu</h5>
-                    </figure>
+            {contents.map((content, index) => (
+                <button key={content.id} onClick={(e) => handleShow(e, index, content)} className={`unstyled mb-2 ${appropriateClass(content.orientation)}`}>
+                    {
+                        content.contentType === 0 &&
+                        <figure className="r-p">
+                            <img src={content.content} alt={content.name} title={content.description || content.name} />
+                            <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
+                        </figure>
+                    }
                     
+                    {
+                        content.contentType === 1 &&
+                        <div className="r-p" >
+                            <video controls src={content.content}>
+                            </video>
+                            <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
+                        </div>
+                        
+                    }
                     
                 </button>
             ))}
 
-            <Modal isOpen={show} toggle={handleClose} className="photo-grid-modal">
-                <ModalHeader toggle={handleClose}>
-                    <ModalCustomHeader views={10} authorName="Chisom Nwisu" />
-                </ModalHeader>
-                <ModalBody>
-                    <ModalCustomBody src={image && image.src} />
-                </ModalBody>
-                <ModalFooter>
-                    <div className="app-flex flex-ceter">
-                        <button onClick={() => adjustImage(image.index - 1)} className="move-left unstyled">
-                            &lt;
+            {
+                image &&
+                <Modal isOpen={show} toggle={handleClose} className="photo-grid-modal">
+                    <ModalHeader toggle={handleClose}>
+                        <ModalCustomHeader views={image.src.views} authorName="Chisom Nwisu" />
+                    </ModalHeader>
+                    <ModalBody>
+                        <ModalCustomBody tags={image.src.tags} name={image.name} description={image.src.description} contentType={image.src.contentType} src={image.src.content} />
+                    </ModalBody>
+                    <ModalFooter>
+                        <div className="app-flex flex-ceter">
+                            <button onClick={() => adjustImage(image.index - 1)} className="move-left unstyled">
+                                &lt;
                         </button>
-                        <button onClick={() => adjustImage(image.index + 1)} className="move-left unstyled">
-                            &gt;
+                            <button onClick={() => adjustImage(image.index + 1)} className="move-left unstyled">
+                                &gt;
                         </button>
-                    </div>
-                    <Button color="secondary" onClick={handleClose}>Cancel</Button>
-                </ModalFooter>
-            </Modal>
+                        </div>
+                        <Button color="secondary" onClick={handleClose}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
+            }
+            
         </section>
         )
 }
