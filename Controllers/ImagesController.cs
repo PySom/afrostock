@@ -80,6 +80,17 @@ namespace AfrroStock.Controllers
             return Ok(model);
         }
 
+        [HttpGet("videos/searchfor/")]
+        public async ValueTask<IActionResult> GetRelatedVideos(string term)
+        {
+            var results = await _repo
+                                    .Item()
+                                    .Where(i => i.Name.ToLower().StartsWith(term.ToLower())
+                                                    || i.Name.ToLower().Contains($" {term.ToLower()}"))
+                                    .ToListAsync();
+            return Ok(results);
+        }
+
         [HttpGet("search")]
         public async ValueTask<IActionResult> Get(string term)
         {
@@ -91,35 +102,7 @@ namespace AfrroStock.Controllers
                                     .Select(i => new { i.Name, i.Id })
                                     .ToListAsync();
             return Ok(results);
-            //if(results.Count > 0)
-            //{
-            //    return Ok(results);
-            //}
-            //else
-            //{
-            //    //check category
-            //    var catResults = await _category
-            //                                .Item()
-            //                                .Where(c => c.Name.ToLower().StartsWith(term.ToLower()) || c.Name.ToLower().Contains($" {term.ToLower()}"))
-            //                                .Include(c => c.Images)
-            //                                .FirstOrDefaultAsync();
-            //    if (catResults == null)
-            //    {
-            //        //check tags
-            //        var tags = await _tag
-            //                            .Item()
-            //                            .Where(c => c.Name.ToLower().StartsWith(term.ToLower()) || c.Name.ToLower().Contains($" {term.ToLower()}"))
-            //                            .Include(c => c.Image)
-            //                            .ToListAsync();
-            //        if (tags.Count > 0)
-            //        {
-            //            return Ok(tags.Select(t => new { t.Image.Id, t.Image.Name }).ToList());
-            //        }
-            //        else return Ok(new string[0]);
-
-            //    }
-            //    return Ok(catResults.Images.Select(i => new { i.Name, i.Id }).ToList());
-            //}
+            
 
 
         }

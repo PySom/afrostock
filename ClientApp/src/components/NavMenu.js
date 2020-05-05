@@ -30,19 +30,19 @@ export class NavMenu extends Component {
             <header className={`sticky-header ${searchVisibility ? "" : "head-w-search"}`}>
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white" light>
                     <Container fluid>
-                        <NavbarBrand tag={Link} to="/">AfroStock</NavbarBrand>
+                        <NavbarBrand to="/">AfroStock</NavbarBrand>
                         <SearchArea searchClass=" header-width nav-search" className={`variable-search-width ${searchVisibility ? "d-none" : "" }`} />
                         <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
                             <ul className="navbar-nav flex-grow">
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
+                                    <NavLink className="text-dark" to="/">Home</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/aboutUs">About Us</NavLink>
+                                    <NavLink className="text-dark" to="/aboutUs">About Us</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/contact">Contact</NavLink>
+                                    <NavLink className="text-dark" to="/contact">Contact</NavLink>
                                 </NavItem>
                             </ul>
                         </Collapse>

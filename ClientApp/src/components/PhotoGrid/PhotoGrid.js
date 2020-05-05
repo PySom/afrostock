@@ -51,28 +51,31 @@ export default function PhotoGrid({ contents }) {
 
     return (
         <section id="photos">
-            {contents.map((content, index) => (
-                <button key={content.id} onClick={(e) => handleShow(e, index, content)} className={`unstyled mb-2 ${appropriateClass(content.orientation)}`}>
-                    {
-                        content.contentType === 0 &&
-                        <figure className="r-p">
-                            <img src={content.content} alt={content.name} title={content.description || content.name} />
-                            <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
-                        </figure>
-                    }
-                    
-                    {
-                        content.contentType === 1 &&
-                        <div className="r-p" >
-                            <video controls src={content.content}>
-                            </video>
-                            <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
-                        </div>
-                        
-                    }
-                    
-                </button>
-            ))}
+            {contents
+                && 
+                contents.map((content, index) => (
+                    <button key={content.id} onClick={(e) => handleShow(e, index, content)} className={`unstyled mb-2 ${appropriateClass(content.orientation)}`}>
+                        {
+                            content.contentType === 0 &&
+                            <figure className="r-p">
+                                <img src={content.content} alt={content.name} title={content.description || content.name} />
+                                <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
+                            </figure>
+                        }
+
+                        {
+                            content.contentType === 1 &&
+                            <div className="r-p" >
+                                <video controls src={content.content}>
+                                </video>
+                                <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
+                            </div>
+
+                        }
+
+                    </button>
+                ))
+            }
 
             {
                 image &&

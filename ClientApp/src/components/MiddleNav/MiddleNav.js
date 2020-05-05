@@ -9,7 +9,7 @@ export default function MiddleNav(props) {
                 <ul className="p-0">
                     <li><NavLink to='/' exact activeClassName="active-mid-nav">Home</NavLink></li>
                     <li><NavLink to='/discover' exact activeClassName="active-mid-nav">Discover</NavLink></li>
-                    <li><NavLink to='/discover' exact activeClassName="active-mid-nav">Video</NavLink></li>
+                    <li><NavLink to='/videos' exact activeClassName="active-mid-nav">Video</NavLink></li>
                 </ul>
             </nav>
         </div>
