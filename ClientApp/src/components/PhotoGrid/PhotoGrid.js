@@ -84,7 +84,8 @@ export default function PhotoGrid({ contents }) {
                         <ModalCustomHeader views={image.src.views} authorName="Chisom Nwisu" />
                     </ModalHeader>
                     <ModalBody>
-                        <ModalCustomBody tags={image.src.tags} name={image.name} description={image.src.description} contentType={image.src.contentType} src={image.src.content} />
+                        <ModalCustomBody tags={image.src.tags} name={image.name} description={image.src.description}
+                            contentType={image.src.contentType} src={image.src.content} />
                     </ModalBody>
                     <ModalFooter>
                         <div className="app-flex flex-ceter">

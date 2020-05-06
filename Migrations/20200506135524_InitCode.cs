@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AfrroStock.Migrations
 {
-    public partial class InitMigrations : Migration
+    public partial class InitCode : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,7 +22,7 @@ namespace AfrroStock.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Collections",
+                name: "CollectionTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -32,7 +32,7 @@ namespace AfrroStock.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Collections", x => x.Id);
+                    table.PrimaryKey("PK_CollectionTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,6 +64,27 @@ namespace AfrroStock.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Collections",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    CollectionTypeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Collections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Collections_CollectionTypes_CollectionTypeId",
+                        column: x => x.CollectionTypeId,
+                        principalTable: "CollectionTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Images",
                 columns: table => new
                 {
@@ -72,6 +93,7 @@ namespace AfrroStock.Migrations
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     ContentType = table.Column<byte>(nullable: false),
+                    Orientation = table.Column<byte>(nullable: false),
                     Content = table.Column<string>(nullable: true),
                     ContentLow = table.Column<string>(nullable: true),
                     CategoryId = table.Column<int>(nullable: false),
@@ -180,6 +202,11 @@ namespace AfrroStock.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Collections_CollectionTypeId",
+                table: "Collections",
+                column: "CollectionTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Collects_CollectionId",
                 table: "Collects",
                 column: "CollectionId");
@@ -236,6 +263,9 @@ namespace AfrroStock.Migrations
 
             migrationBuilder.DropTable(
                 name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "CollectionTypes");
 
             migrationBuilder.DropTable(
                 name: "Users");

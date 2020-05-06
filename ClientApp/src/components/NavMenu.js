@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import { SearchArea } from './SearchArea/SearchArea';
 import { connect } from 'react-redux';
@@ -30,19 +29,19 @@ export class NavMenu extends Component {
             <header className={`sticky-header ${searchVisibility ? "" : "head-w-search"}`}>
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white" light>
                     <Container fluid>
-                        <NavbarBrand to="/">AfroStock</NavbarBrand>
+                        <NavbarBrand href="/">AfroStock</NavbarBrand>
                         <SearchArea searchClass=" header-width nav-search" className={`variable-search-width ${searchVisibility ? "d-none" : "" }`} />
                         <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
                             <ul className="navbar-nav flex-grow">
                                 <NavItem>
-                                    <NavLink className="text-dark" to="/">Home</NavLink>
+                                    <NavLink href="/" className="text-dark" to="/">Home</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink className="text-dark" to="/aboutUs">About Us</NavLink>
+                                    <NavLink href="/aboutUs" className="text-dark">About Us</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink className="text-dark" to="/contact">Contact</NavLink>
+                                    <NavLink href="/contact" className="text-dark">Contact</NavLink>
                                 </NavItem>
                             </ul>
                         </Collapse>

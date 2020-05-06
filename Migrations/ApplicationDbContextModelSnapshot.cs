@@ -131,6 +131,9 @@ namespace AfrroStock.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CollectionTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -139,7 +142,27 @@ namespace AfrroStock.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CollectionTypeId");
+
                     b.ToTable("Collections");
+                });
+
+            modelBuilder.Entity("AfrroStock.Models.CollectionType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CollectionTypes");
                 });
 
             modelBuilder.Entity("AfrroStock.Models.Image", b =>
@@ -259,6 +282,15 @@ namespace AfrroStock.Migrations
                     b.HasOne("AfrroStock.Models.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId");
+                });
+
+            modelBuilder.Entity("AfrroStock.Models.Collection", b =>
+                {
+                    b.HasOne("AfrroStock.Models.CollectionType", "CollectionType")
+                        .WithMany("Collections")
+                        .HasForeignKey("CollectionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AfrroStock.Models.Image", b =>

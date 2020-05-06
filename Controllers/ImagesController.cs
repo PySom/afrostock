@@ -87,6 +87,8 @@ namespace AfrroStock.Controllers
                                     .Item()
                                     .Where(i => i.Name.ToLower().StartsWith(term.ToLower())
                                                     || i.Name.ToLower().Contains($" {term.ToLower()}"))
+                                    .Include(i => i.Author)
+                                    .Include(c => c.Category)
                                     .ToListAsync();
             return Ok(results);
         }

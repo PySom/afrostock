@@ -31,11 +31,11 @@ export default function App(props) {
                         </MainBody>
                     )
                 } />
-            <Route exact path='/videos/:id'
-                render={({ match: { params: { id } } }) =>
+            <Route exact path='/contents/:id'
+                render={({ match }) =>
                     (
                         <MainBody>
-                            <VideoPage contents={id} />
+                            <VideoPage match={match} />
                         </MainBody>
                     )
                 } />
