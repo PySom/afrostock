@@ -47,7 +47,7 @@ namespace AfrroStock.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async ValueTask<IActionResult> Get(int id, bool increaseView = false)
+        public async ValueTask<IActionResult> Get(int id)
         {
             Image model = await _repo
                                 .Item()
@@ -58,13 +58,24 @@ namespace AfrroStock.Controllers
 
             if (model != null)
             {
-                if (increaseView)
-                {
-                    var _ = _repo.IncreaseView(model);
-                }
                 return Ok(model);
             }
             return NotFound();
+        }
+
+        [HttpPut("increaseView/{id:int}")]
+        public async ValueTask<IActionResult> IncreaseView(int id)
+        {
+            var model = _repo
+                            .Item()
+                            .Where(c => c.Id == id)
+                            .FirstOrDefault();
+            if (model != null)
+            {
+                var _ = await _repo.IncreaseView(model);
+            }
+
+            return NoContent();
         }
 
         [HttpGet("videos")]
@@ -83,12 +94,13 @@ namespace AfrroStock.Controllers
         [HttpGet("videos/searchfor/")]
         public async ValueTask<IActionResult> GetRelatedVideos(string term)
         {
-            var results = await _repo
+            var results = await _tag
                                     .Item()
-                                    .Where(i => i.Name.ToLower().StartsWith(term.ToLower())
-                                                    || i.Name.ToLower().Contains($" {term.ToLower()}"))
-                                    .Include(i => i.Author)
-                                    .Include(c => c.Category)
+                                    .Where(t => t.Name.ToLower().StartsWith(term.ToLower())
+                                                    || t.Name.ToLower().Contains($" {term.ToLower()}"))
+                                    .Include(t => t.Image)
+                                        .ThenInclude(i => i.Author)
+                                    .Select(t => t.Image)
                                     .ToListAsync();
             return Ok(results);
         }
@@ -97,7 +109,7 @@ namespace AfrroStock.Controllers
         public async ValueTask<IActionResult> Get(string term)
         {
             //search term if image(s) is there
-            var results = await _repo
+            var results = await _tag
                                     .Item()
                                     .Where(i => i.Name.ToLower().StartsWith(term.ToLower()) 
                                                     || i.Name.ToLower().Contains($" {term.ToLower()}"))

@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import "./Modal.css";
 
-export default function ModalCustomHeader({ authorName, views }) {
+export default function ModalCustomHeader({ authorName, views, onClick }) {
 
     return (
         <div className="app-flex">
@@ -14,7 +14,7 @@ export default function ModalCustomHeader({ authorName, views }) {
                     </button>
                 </div>
                 <div>
-                    <button>Download</button>
+                    <button type="button" onClick={onClick}>Download</button>
                 </div>
                 
             </div>

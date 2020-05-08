@@ -13,10 +13,19 @@ const getItemWithId = (url) =>
         .catch(err => { throw new Error(err.response.data) })
 
 
-const updateWithId = (url, newObject) => 
-    axios.put(baseUrl + url, newObject)
-        .then(response => response.data)
-        .catch(err => { throw new Error(err.response.data) })
+const updateWithId = (url, newObject) => {
+    if (newObject) {
+        return axios.put(baseUrl + url, newObject)
+            .then(response => response.data)
+            .catch(err => { throw new Error(err.response.data) })
+    }
+    return axios.put(baseUrl + url)
+                .then(response => response.data)
+                .catch(err => { throw new Error(err.response.data) })
+}
+    
+
+
 
 
 const create = (url, newObject) =>

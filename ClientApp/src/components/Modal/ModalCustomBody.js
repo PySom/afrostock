@@ -9,7 +9,7 @@ export default function ModalCustomBody({ src, contentType, name, description, t
                 {
                     contentType === 0 &&
                     <figure className="r-p">
-                        <img src={src} alt={name} title={description || name} />
+                        <img src={src} alt={name} title={description || name} className="img-fluid" />
                     </figure>
                 }
 

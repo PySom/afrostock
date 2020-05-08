@@ -3,9 +3,12 @@ import "./PhotoGrid.css";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import ModalCustomHeader from '../Modal/ModalCustomHeader';
 import ModalCustomBody from '../Modal/ModalCustomBody';
+import RavePay from '../RavePay/RavePay';
+import api from '../../sideEffects/apis/api';
 
 export default function PhotoGrid({ contents }) {
     const [show, setShow] = useState(false);
+    const [showRaveButton, setShowRaveButton] = useState(false);
     const [image, setImage] = useState(null);
     console.log({contents})
 
@@ -16,6 +19,9 @@ export default function PhotoGrid({ contents }) {
 
     const handleShow = (e, index, src) => {
         e.preventDefault();
+        api.updateWithId("images/increaseview/" + src.id)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
         setImage({src, index});
         setShow(true);
     }
@@ -49,6 +55,8 @@ export default function PhotoGrid({ contents }) {
         }
     }
 
+    console.log({ showRaveButton })
+
     return (
         <section id="photos">
             {contents
@@ -81,11 +89,13 @@ export default function PhotoGrid({ contents }) {
                 image &&
                 <Modal isOpen={show} toggle={handleClose} className="photo-grid-modal">
                     <ModalHeader toggle={handleClose}>
-                        <ModalCustomHeader views={image.src.views} authorName="Chisom Nwisu" />
+                        <ModalCustomHeader views={image.src.views} onClick={() => setShowRaveButton(!showRaveButton)}
+                            authorName={image.src.author.surName + " " + image.src.author.firstName } />
                     </ModalHeader>
                     <ModalBody>
-                        <ModalCustomBody tags={image.src.tags} name={image.name} description={image.src.description}
-                            contentType={image.src.contentType} src={image.src.content} />
+                        <ModalCustomBody tags={image.src.tags} name={image.name}
+                            description={image.src.description} contentType={image.src.contentType}
+                            src={image.src.content} />
                     </ModalBody>
                     <ModalFooter>
                         <div className="app-flex flex-ceter">
@@ -96,6 +106,10 @@ export default function PhotoGrid({ contents }) {
                                 &gt;
                         </button>
                         </div>
+                        {
+                            showRaveButton &&
+                            <RavePay customer_email="gmangeorge@ymail.com" customer_phone="08038714611" amount={image.src.amount} />
+                        }
                         <Button color="secondary" onClick={handleClose}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
