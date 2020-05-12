@@ -1,9 +1,17 @@
 ﻿import React from 'react';
 import Rave from 'react-flutterwave-rave';
 
-export default function RavePay({ customer_email, customer_phone, amount, }) {
+export default function RavePay({ customer_email, customer_phone, amount, src }) {
     const callback = (response) => {
         console.log(response)
+        const fileName = src.split('\\')
+        const tag = document.createElement('a');
+        tag.href = src;
+        tag.download = fileName[1];
+        document.body.appendChild(tag);
+        tag.click();
+        document.body.removeChild(tag);
+        
     }
     const onclose = () => {
         console.log("user closed")

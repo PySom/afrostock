@@ -12,7 +12,9 @@ export default function ResultArea({ style, results, term, onMouseOver, onMouseO
 	const onClick = (search) => {
 		history.push("/contents/" + search);
     }
-	console.log({ results })
+	const clearRecent = () => {
+		ls.removeItemFromLS("recent")
+    }
 	return (
 		<div className="w-100 a-p t-0" style={style} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
 			{
@@ -35,7 +37,11 @@ export default function ResultArea({ style, results, term, onMouseOver, onMouseO
 				recentSearch &&
 				(
 					<div className="mt-4 mb-4">
-						<h5 className="f-12 mb-3">Recent Searches</h5>
+						<h5 className="f-12 mb-3">
+							Recent Searches 
+							<button onClick={clearRecent} className="unstyled">
+							<span className="clear-search">x</span>
+						</button></h5>
 						{recentSearch.map((search, index) => (<RecentSearch key={index} name={search} onClick={() => onClick(search)} />))}
 					</div>
 				)

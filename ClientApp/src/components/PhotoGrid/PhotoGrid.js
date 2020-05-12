@@ -108,7 +108,7 @@ export default function PhotoGrid({ contents }) {
                         </div>
                         {
                             showRaveButton &&
-                            <RavePay customer_email="gmangeorge@ymail.com" customer_phone="08038714611" amount={image.src.amount} />
+                            <RavePay customer_email="gmangeorge@ymail.com" customer_phone="08038714611" amount={image.src.amount} src={image.src.content} />
                         }
                         <Button color="secondary" onClick={handleClose}>Cancel</Button>
                     </ModalFooter>

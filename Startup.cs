@@ -33,7 +33,7 @@ namespace AfrroStock
         {
             services.AddDbContextPool<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
             });
             
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

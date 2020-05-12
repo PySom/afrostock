@@ -4,13 +4,21 @@ import ResultArea from '../SearchBar/ResultArea/ResultArea';
 import VizSensor from 'react-visibility-sensor';
 import { connect } from 'react-redux';
 import api from '../../sideEffects/apis/api';
+import { useHistory } from 'react-router-dom';
 
 export function SearchArea({ className, setVisibleState, searchClass, type }) {
+    const history = useHistory();
     const [show, setShow] = useState(false);
-    const [areaInView, setAreaInView] = useState(false);
+    const [areaInView, setAreaInView] = useState(true);
     const [contents, setContents] = useState([]);
     const [searchValue, setSearchValue] = useState("");
 
+
+    const onEnterPressed = () => {
+        if (searchValue && searchValue.length > 2) {
+            history.push(`/contents/${searchValue}`)
+        }
+    }
 
     const handleChange = (value) => {
         console.log(value)
@@ -48,7 +56,7 @@ export function SearchArea({ className, setVisibleState, searchClass, type }) {
     return (
         <VizSensor onChange={(visible) => visualStateManager(visible)}>
             <div className={`${className ? className : ""}`}>
-                <SearchBar className={searchClass} searchValue={searchValue} setShow={setShow} show={show} onChange={handleChange} areaInView={areaInView} />
+                <SearchBar onKeyPress={onEnterPressed} className={searchClass} searchValue={searchValue} setShow={setShow} show={show} onChange={handleChange} areaInView={areaInView} />
                 <div className={`m0-auto ${searchClass ? searchClass : ""} r-p`} onClick={() => setShow(true)}>
                     <ResultArea term={searchValue} results={contents} style={{ display: show ? "block" : "none" }}
                         onMouseOver={() => setAreaInView(true)} onMouseOut={handleMouseOut} />

@@ -9,6 +9,7 @@ using AfrroStock.Repository.Generic;
 using AfrroStock.Services;
 using Microsoft.AspNetCore.Authorization;
 using AfrroStock.Enums;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace AfrroStock.Controllers
 {
@@ -113,6 +114,8 @@ namespace AfrroStock.Controllers
                                     .Item()
                                     .Where(i => i.Name.ToLower().StartsWith(term.ToLower()) 
                                                     || i.Name.ToLower().Contains($" {term.ToLower()}"))
+
+                                    .Distinct()
                                     .Select(i => new { i.Name, i.Id })
                                     .ToListAsync();
             return Ok(results);
