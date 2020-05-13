@@ -11,7 +11,7 @@ export default function Home(props) {
 
     useEffect(() => {
         if (pageLoaded) {
-            api.getAll("images")
+            api.getAll("images", "images")
                 .then(response => {
                     setContents(response)
                     setPageLoaded(false)

@@ -21,13 +21,13 @@ const getItemInLs = (name) => {
     if (localStorage) {
         const localItem = localStorage.getItem(name);
         if (localItem) {
-            const { item } = JSON.parse(localItem);
+            const { item, expiry } = JSON.parse(localItem);
             //check if item has expired
-            //const checkExpiry = new Date(expiry) - new Date();
-            //if (checkExpiry > 0) {
-            //    //console.log(item)
-            //    return item
-            //}
+            const checkExpiry = new Date(expiry) - new Date();
+            if (checkExpiry > 0) {
+                //console.log(item)
+                return item
+            }
             return item
         }
     }
@@ -38,7 +38,7 @@ const checkItemInLs = (name) => {
     //get intended item from local storage
     const item = getItemInLs(name);
     return new Promise((resolve, reject) => {
-        item ? resolve(item) : reject(item)
+        item ? resolve(item.item) : reject(item)
     })
 }
 

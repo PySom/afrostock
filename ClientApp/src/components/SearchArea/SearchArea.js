@@ -29,7 +29,7 @@ export function SearchArea({ className, setVisibleState, searchClass, type }) {
     useEffect(() => {
         if (searchValue && searchValue.length >= 3) {
             //api logic
-            api.getAll(`images/search?term=${searchValue}`)
+            api.getAll(`images/search?term=${searchValue}`, "searchterm")
                 .then(response => {
                     console.log({ response })
                     setContents(response)

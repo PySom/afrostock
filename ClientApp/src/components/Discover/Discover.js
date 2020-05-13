@@ -9,7 +9,7 @@ export default function Discover(props) {
     const [contents, setContents] = useState([]);
     useEffect(() => {
         if (pageLoaded) {
-            api.getAll("collectiontypes")
+            api.getAll("collectiontypes", "collectiontypes")
                 .then(response => {
                     setContents(response)
                     setPageLoaded(false)
