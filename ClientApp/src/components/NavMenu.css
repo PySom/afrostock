@@ -14,8 +14,8 @@ html {
 }
 
 .sticky-header {
-    position: sticky;
-    background: white;
-    top: 0;
-    z-index: 200;
+  position: sticky;
+  background: transparent;
+  top: 0;
+  z-index: 200;
 }
