@@ -7,8 +7,8 @@ export default function Register(props) {
     const location = useLocation();
     const history = useHistory();
     const url = location && location.search ? location.search.substring(location.search.indexOf('=') + 1) : "";
-    const { main: email } = useForm("email");
-    const { main: password } = useForm("password");
+    const { main: email } = useForm("email", "");
+    const { main: password } = useForm("password", "");
     const submitForm = () => {
         const data = { email: email.value, password: password.value }
         auth.register(data)
