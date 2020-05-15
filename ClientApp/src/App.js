@@ -11,6 +11,9 @@ import './custom.css'
 import MainBody from './components/MainBody/MainBody';
 import VideoPage from './components/VideoPage/VideoPage';
 import api from './sideEffects/apis/api';
+import Guard from './Guard';
+import Register from './components/Register/Register';
+import Login from './components/Login/Login';
 
 export default function App(props) {
     
@@ -34,13 +37,18 @@ export default function App(props) {
             <Route exact path='/contents/:id'
                 render={({ match }) =>
                     (
-                        <MainBody>
-                            <VideoPage match={match} />
-                        </MainBody>
+                        <Guard type="modal" route={`/contents/${match.params.id}`}>
+                            <MainBody>
+                                <VideoPage match={match} />
+                            </MainBody>
+                        </Guard>
+                        
                     )
                 } />
             <Route exact path='/aboutUs' component={AboutUs} />
-            <Route exact path='/contact' component={Contact} />
+            <Route exact path='/contact' component={Contact} /
+            ><Route exact path='/register' component={Register} />
+            <Route exact path='/login' component={Login} />
         </Layout>
     );
 }
