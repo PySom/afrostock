@@ -1,0 +1,51 @@
+﻿$worksans-medium: "work sans medium";
+
+.middle-nav ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.middle-nav ul li {
+  list-style-type: none;
+  font-size: 16px;
+  padding: 10px;
+  font-family: $worksans-medium;
+}
+
+.middle-nav ul li a {
+  color: black;
+  padding: 14px;
+  position: relative;
+}
+
+.middle-nav ul li a:hover {
+  text-decoration: none;
+  color: #0064f9;
+}
+
+.border-b {
+  border-bottom: 0.75px solid #ebebeb;
+  margin-top: 4.5em;
+}
+
+.middle-nav ul li a.active-mid-nav {
+  color: #0064f9;
+}
+
+.active-mid-nav::after {
+  opacity: 1;
+  height: 0.22rem;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  -webkit-transition: 0.2s opacity ease;
+  transition: 0.2s opacity ease;
+  background: #0064f9;
+}

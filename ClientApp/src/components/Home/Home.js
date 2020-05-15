@@ -26,13 +26,7 @@ export default function Home(props) {
 
   return (
     <>
-      <div className="homeWrapper">
-        <img
-          className="img-fluid hero"
-          src="https://images.pexels.com/photos/2867904/pexels-photo-2867904.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=250.0&w=1000"
-          alt="beautiful bird background for header section"
-        />
-      </div>
+      <div className="homeWrapper"></div>
       <div className="discover">
         <div className="header-bg pt-1h pb-1h plr-15">
           <Header />

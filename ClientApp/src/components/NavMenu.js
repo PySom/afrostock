@@ -8,7 +8,7 @@ import {
   NavItem,
   NavLink,
 } from "reactstrap";
-import "./NavMenu.css";
+import "./_NavMenu.scss";
 import { SearchArea } from "./SearchArea/SearchArea";
 import { connect } from "react-redux";
 
@@ -42,7 +42,9 @@ export class NavMenu extends Component {
           light
         >
           <Container fluid>
-            <NavbarBrand href="/">AfroStock</NavbarBrand>
+            <NavbarBrand href="/">
+              <img src="images/logo.png" alt="logo" />
+            </NavbarBrand>
             <SearchArea
               searchClass=" header-width nav-search"
               className={`variable-search-width ${
@@ -69,6 +71,11 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink href="/contact" className="text-dark">
                     Contact
+                  </NavLink>
+                </NavItem>
+                <NavItem className="register">
+                  <NavLink href="/register" className="text-dark">
+                    Join
                   </NavLink>
                 </NavItem>
               </ul>
