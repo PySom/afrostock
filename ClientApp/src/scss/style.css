@@ -1,1 +1,34 @@
-/* No CSS *//*# sourceMappingURL=style.css.map */
+@font-face {
+  font-family: "Helvetica Bold";
+  src: url("../fonts/Helvetica-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Helvetica Regular";
+  src: url("../fonts/Helvetica.ttf");
+}
+
+@font-face {
+  font-family: "open sans regular";
+  src: url("../fonts/OpenSans-Regular.ttf");
+}
+
+@font-face {
+  font-family: "work sans bold";
+  src: url("../fonts/Work Sans Bold 700.ttf");
+}
+
+@font-face {
+  font-family: "work sans medium";
+  src: url("../fonts/Work Sans Medium 500.ttf");
+}
+
+@font-face {
+  font-family: "open sans light";
+  src: url("../fonts/OpenSans-Light.ttf");
+}
+
+body {
+  font-family: "Helvetica Regular";
+}
+/*# sourceMappingURL=style.css.map */

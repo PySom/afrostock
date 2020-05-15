@@ -6,6 +6,9 @@ import Home from "./components/Home/Home";
 import Discover from "./components/Discover/Discover";
 import Contact from "./components/Contact";
 import AboutUs from "./components/AboutUs";
+import Guard from "./Guard";
+import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
 
 import "./custom.css";
 import "./scss/style.css";
@@ -44,6 +47,8 @@ export default function App(props) {
           </MainBody>
         )}
       />
+      <Route exact path="/login" render={() => <Login />} />
+      <Route exact path="/register" component={Register} />
       <Route exact path="/aboutUs" component={AboutUs} />
       <Route exact path="/contact" component={Contact} />
     </Layout>
