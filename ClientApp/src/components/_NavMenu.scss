@@ -1,0 +1,44 @@
+﻿$helvetica-bold: "Helvetica Bold";
+a.navbar-brand {
+  white-space: normal;
+  word-break: break-all;
+}
+
+.navbar-brand img {
+  width: 14%;
+}
+
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.sticky-header {
+  position: sticky;
+  background: transparent;
+  top: 0;
+  z-index: 200;
+}
+
+.navbar-nav {
+  .nav-item {
+    padding: 2px 10px;
+    a {
+      color: #fff !important;
+    }
+  }
+  .register {
+    background-color: black;
+    border-radius: 4px;
+    padding: 2px 20px;
+
+    a {
+      color: white !important;
+      font-family: $helvetica-bold;
+    }
+  }
+}

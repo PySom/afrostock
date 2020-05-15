@@ -17,40 +17,43 @@ import Guard from "./Guard";
 export default function App(props) {
   return (
     <Layout>
-          <Route exact path="/" component={Home} />
-          <Route
-            exact path="/discover"
-            render={() => (
-              <MainBody>
-                <Discover />
-              </MainBody>
-            )}
-          />
-          <Route exact path="/videos"
-              render={() => (
-                  <Guard type="route" route="videos">
-                      <MainBody>
-                          <VideoPage />
-                      </MainBody>
-                  </Guard>
-              
-            )}
-          />
-          <Route exact path="/contents/:id"
-              render={({ match }) => (
-                  <Guard type="modal" route={`/contents/${match.params.id}`}>
-                      <MainBody>
-                          <VideoPage match={match} />
-                          </MainBody>
-                  </Guard>
-            )}
-          />
-          <Route exact path="/aboutUs" component={AboutUs} />
-          <Route exact path="/contact" component={Contact} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-      </Layout>
-      
+      <Route exact path="/" component={Home} />
+      <Route
+        exact
+        path="/discover"
+        render={() => (
+          <MainBody>
+            <Discover />
+          </MainBody>
+        )}
+      />
+      <Route
+        exact
+        path="/videos"
+        render={() => (
+          <Guard type="route" route="videos">
+            <MainBody>
+              <VideoPage />
+            </MainBody>
+          </Guard>
+        )}
+      />
+      <Route
+        exact
+        path="/contents/:id"
+        render={({ match }) => (
+          <Guard type="modal" route={`/contents/${match.params.id}`}>
+            <MainBody>
+              <VideoPage match={match} />
+            </MainBody>
+          </Guard>
+        )}
+      />
+      <Route exact path="/aboutUs" component={AboutUs} />
+      <Route exact path="/contact" component={Contact} />
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/register" component={Register} />
+    </Layout>
   );
 }
 

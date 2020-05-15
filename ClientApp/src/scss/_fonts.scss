@@ -15,12 +15,12 @@
 
 @font-face {
   font-family: "work sans bold";
-  src: url("../fonts/Work Sans Bold 700.ttf");
+  src: url("../fonts/Work\ Sans\ Bold\ 700.ttf");
 }
 
 @font-face {
   font-family: "work sans medium";
-  src: url("../fonts/Work Sans Medium 500.ttf");
+  src: url("../fonts/Work\ Sans\ Medium\ 500.ttf");
 }
 
 @font-face {
@@ -28,7 +28,6 @@
   src: url("../fonts/OpenSans-Light.ttf");
 }
 
-body {
-  font-family: "Helvetica Regular";
-}
-/*# sourceMappingURL=style.css.map */
+$helvetica-regular: "Helvetica Regular";
+$helvetica-bold: "Helvetica Bold";
+$open-sans-regular: "open sans regular";

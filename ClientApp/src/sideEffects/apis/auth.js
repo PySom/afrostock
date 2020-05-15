@@ -1,43 +1,51 @@
-﻿import axios from 'axios';
+﻿import axios from "axios";
 
-const baseUrl = '/api/account/';
+const baseUrl = "/api/account/";
 
-const createHeaderToken = (token) => ({"authorization": `bearer ${token}`});
+const createHeaderToken = (token) => ({ authorization: `bearer ${token}` });
 
 const persistUserInLS = (user) => {
-    if (localStorage) {
-        localStorage.setItem('user', JSON.stringify(user))
-    }
-}
+  if (localStorage) {
+    localStorage.setItem("user", JSON.stringify(user));
+  }
+};
 
 const removeUserFromLS = () => {
-    if (localStorage) {
-        localStorage.removeItem('user')
-    }
-}
+  if (localStorage) {
+    localStorage.removeItem("user");
+  }
+};
 
 const login = (loginCredentials) =>
-    axios.post(baseUrl + 'login')
-        .then(response => {
-            persistUserInLS(response.data)
-            return response.data
-        })
-        .catch(err => { throw new Error(err.response.data.message) })
+  axios
+    .post(baseUrl + "login", loginCredentials)
+    .then((response) => {
+      console.log(response);
+      persistUserInLS(response.data);
+      console.log(response.data);
+      return response.data;
+    })
+    .catch((err) => {
+      throw new Error(err.response.data.message);
+    });
 
 const register = (registerCredentials) =>
-    axios.post(baseUrl + 'register', { name: "Chisom Nwisu" })
-        .then(response => {
-            persistUserInLS(response.data)
-            return response.data
-        })
-        .catch(err => { throw new Error(err.response.data.message) })
+  axios
+    .post(baseUrl + "register", { name: "Chisom Nwisu" })
+    .then((response) => {
+      persistUserInLS(response.data);
+      return response.data;
+    })
+    .catch((err) => {
+      throw new Error(err.response.data.message);
+    });
 
 export const logout = () => {
-    removeUserFromLS()
-}
+  removeUserFromLS();
+};
 
 export default {
-    createHeaderToken,
-    login,
-    register
-}
+  createHeaderToken,
+  login,
+  register,
+};
