@@ -30,7 +30,7 @@ export default function Home(props) {
         <img
           className="img-fluid hero"
           src="https://images.pexels.com/photos/2867904/pexels-photo-2867904.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=250.0&w=1000"
-          alt="background-image"
+          alt="beautiful bird background for header section"
         />
       </div>
       <div className="discover">
