@@ -31,7 +31,7 @@ const getAll = (url, name) => {
         .catch(e => {
             return axios.get(baseUrl + url)
                 .then(response => {
-                    ls.persistItemInLS(name, response.data, 1)
+                    if (name) ls.persistItemInLS(name, response.data, 1);
                     return response.data
                 })
                 .catch(err => { throw new Error(err.response.data) })
@@ -47,7 +47,7 @@ const getItemWithId = (url, name) => {
         .catch(e => {
             return axios.get(baseUrl + url)
                 .then(response => {
-                    ls.persistItemInLS(name, response.data, 1)
+                    if (name) ls.persistItemInLS(name, response.data, 1);
                     return response.data
                 })
                 .catch(err => { throw new Error(err.response.data) })

@@ -6,7 +6,7 @@ import ls from '../../sideEffects/local/ourLocalStorage';
 export default function VideoPage({ match }) {
     const [pageLoaded, setPageLoaded] = useState(true);
     const [contents, setContents] = useState([]);
-    console.log({ contents })
+    console.log({ contents }, "I came here again")
     useEffect(() => {
         if (pageLoaded) {
             console.log({match})

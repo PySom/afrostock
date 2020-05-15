@@ -1,0 +1,22 @@
+@font-face {
+  font-family: "Helvetica regular";
+  src: url("../fonts/Helvetica.ttf");
+}
+
+@font-face {
+  font-family: "Helvetica Bold";
+  src: url("../fonts/Helvetica-Bold.ttf");
+}
+
+/**font variables*/
+body {
+  font-family: "Helvetica regular";
+}
+
+.homeWrapper img.hero {
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+  top: 0px;
+}
+/*# sourceMappingURL=style.css.map */
