@@ -104,7 +104,7 @@ export default function Login(props) {
             </div>
           </form>
           {props.type !== "modal" && (
-            <Link to={`/register${url && "returnurl=" + url}`}>Register</Link>
+            <Link to={`/register${url && "?returnurl=" + url}`}>Register</Link>
           )}
         </div>
       </div>

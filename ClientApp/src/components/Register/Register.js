@@ -23,9 +23,11 @@ export default function Register(props) {
       email: email.value,
       firstName: firstName.value,
       surName: surName.value,
-      phone: phone.value,
+      phoneNumber: phone.value,
       password: password.value,
-      confirm: confirm.value,
+      confirmPassword: confirm.value,
+      sex: "Male",
+      role: "Super"
     };
     auth
       .register(data)
@@ -119,7 +121,7 @@ export default function Register(props) {
             </div>
           </form>
           {props.type !== "modal" && (
-            <Link to={`/login${url && "returnurl=" + url}`}>Login</Link>
+            <Link to={`/login${url && "?returnurl=" + url}`}>Login</Link>
           )}
         </div>
       </div>
