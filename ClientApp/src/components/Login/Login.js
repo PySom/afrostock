@@ -31,20 +31,73 @@ export default function Login(props) {
 
   return (
     <div>
-      <form onSubmit={submitForm}>
-        <div>
-          <input {...email} placeholder="email" />
+      <div className="auth-images">
+        <div className="auth-images-wrap">
+          <div className="wrap-img">
+            <div className="img_column">
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack1.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack8.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack4.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack3.jpg" alt="img" />
+              </div>
+            </div>
+            <div className="img_column">
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack6.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack4.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack2.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack5.jpg" alt="img" />
+              </div>
+            </div>
+            <div className="img_column">
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack9.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack1.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack7.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack6.jpg" alt="img" />
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          <input {...password} placeholder="password" />
+      </div>
+
+      <div className="register-wrapper">
+        <div className="form-wrapper">
+          <form onSubmit={submitForm}>
+            <div>
+              <input {...email} placeholder="email" />
+            </div>
+            <div>
+              <input {...password} placeholder="password" />
+            </div>
+            <div>
+              <button type="submit">Login</button>
+            </div>
+          </form>
+          {props.type !== "modal" && (
+            <Link to={`/register${url && "returnurl=" + url}`}>Register</Link>
+          )}
         </div>
-        <div>
-          <button type="submit">Login</button>
-        </div>
-      </form>
-      {props.type !== "modal" && (
-        <Link to={`/register${url && "returnurl=" + url}`}>Register</Link>
-      )}
+      </div>
     </div>
   );
 }
