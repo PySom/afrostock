@@ -23,4 +23,21 @@ namespace AfrroStock.Models
         public Image Image { get; set; }
         public int? ImageId { get; set; }
     }
+
+    namespace ViewModels
+    {
+        public class CollectVM
+        {
+            public int Id { get; set; }
+            public int CollectionId { get; set; }
+            public int CollectorId { get; set; }
+            public int? ImageId { get; set; }
+        }
+    }
+
+    namespace DTOs
+    {
+        public class CollectDTO : Collect
+        {}
+    }
 }

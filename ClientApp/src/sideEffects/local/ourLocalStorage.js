@@ -34,6 +34,17 @@ const getItemInLs = (name) => {
     return null;
 }
 
+const getUserInLs = () => {
+    if (localStorage) {
+        const localItem = localStorage.getItem("user");
+        if (localItem) {
+            return JSON.parse(localItem);
+        }
+    }
+    return null;
+}
+
+
 const checkItemInLs = (name) => {
     //get intended item from local storage
     const item = getItemInLs(name);
@@ -46,5 +57,6 @@ export default {
     persistItemInLS,
     removeItemFromLS,
     getItemInLs,
-    checkItemInLs
+    checkItemInLs,
+    getUserInLs
 }

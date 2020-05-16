@@ -35,4 +35,25 @@ namespace AfrroStock.Models
         public DateTime DateModified { get; set; }
         public ICollection<Tag> Tags { get; set; }
     }
+
+    namespace ViewModels
+    {
+        public class ImageVM
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public ContentType ContentType { get; set; }
+            public Orientation Orientation { get; set; }
+            public string Content { get; set; }
+            public int AuthorId { get; set; }
+            public double Amount { get; set; }
+        }
+    }
+
+    namespace DTOs
+    {
+        public class ImageDTO : Image
+        {}
+    }
 }

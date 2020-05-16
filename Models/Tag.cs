@@ -32,4 +32,25 @@ namespace AfrroStock.Models
             return obj.ToString().GetHashCode();
         }
     }
+
+    namespace ViewModels
+    {
+        public class TagVM
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public int ImageId { get; set; }
+        }
+    }
+
+    namespace DTOs
+    {
+        public class TagDTO
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public int ImageId { get; set; }
+            public Image Image { get; set; }
+        }
+    }
 }

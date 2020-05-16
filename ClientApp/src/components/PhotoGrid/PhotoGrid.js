@@ -5,6 +5,7 @@ import ModalCustomHeader from '../Modal/ModalCustomHeader';
 import ModalCustomBody from '../Modal/ModalCustomBody';
 import RavePay from '../RavePay/RavePay';
 import api from '../../sideEffects/apis/api';
+import Guard from '../../Guard';
 
 export default function PhotoGrid({ contents }) {
     const [show, setShow] = useState(false);
@@ -108,7 +109,10 @@ export default function PhotoGrid({ contents }) {
                         </div>
                         {
                             showRaveButton &&
-                            <RavePay customer_email="gmangeorge@ymail.com" customer_phone="08038714611" amount={image.src.amount} src={image.src.content} />
+                            <Guard type="modal" closeWhenDone={true}>
+                                <RavePay customer_email="gmangeorge@ymail.com" customer_phone="08038714611" amount={image.src.amount} src={image.src.content} />
+                            </Guard>
+                            
                         }
                         <Button color="secondary" onClick={handleClose}>Cancel</Button>
                     </ModalFooter>

@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AfrroStock.Models;
 using AfrroStock.Repository.Generic;
+using AfrroStock.Models.DTOs;
+using AfrroStock.Models.ViewModels;
+using AutoMapper;
 
 namespace AfrroStock.Controllers
 {
     [Route("api/[controller]")]
-    public class TagsController : GenericController<Tag>
+    public class TagsController : GenericController<Tag, TagVM, TagDTO>
     {
-        public TagsController(IModelManager<Tag> repo): base(repo)
+        public TagsController(IModelManager<Tag> repo, IMapper mapper): base(repo, mapper)
         {}
     }
 }

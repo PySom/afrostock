@@ -92,7 +92,6 @@ export const setVisibleState = (data) => ({ type: actionTypes.visible, data });
 export const visibleReducer = (state = true, action) => {
   switch (action.type) {
     case actionTypes.visible:
-      console.log("new data is ", action.data);
       return action.data;
     default:
       return state;

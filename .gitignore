@@ -9,6 +9,8 @@
 *.user
 *.userosscache
 *.sln.docstates
+.DS_Store
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -434,5 +436,7 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 Migrations/
+mono_crash.42f6ec1fa.0.json
 appsettings.Development.json
 appsettings.Production.json
+wwwroot/

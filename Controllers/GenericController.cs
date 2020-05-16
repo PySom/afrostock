@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AfrroStock.Models;
 using AfrroStock.Repository.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,12 +13,17 @@ using Microsoft.EntityFrameworkCore;
 namespace AfrroStock.Controllers
 {
     [Route("api/[controller]")]
-    public class GenericController<T> : ControllerBase where T : class, IModel, new()
+    public class GenericController<T, TV, TD> : ControllerBase 
+        where T : class, IModel, new()
+        where TV : class, new()
+        where TD : class, new()
     {
         protected readonly IModelManager<T> _repo;
-        public GenericController(IModelManager<T> repo)
+        protected readonly IMapper _mapper;
+        public GenericController(IModelManager<T> repo, IMapper mapper)
         {
             _repo = repo;
+            _mapper = mapper;
         }
 
 
@@ -27,7 +33,7 @@ namespace AfrroStock.Controllers
             ICollection<T> options = await _repo
                                             .Item()
                                             .ToListAsync();
-            return Ok(options);
+            return Ok(_mapper.Map<ICollection<T>, ICollection<TD>>(options));
 
         }
 
@@ -41,19 +47,19 @@ namespace AfrroStock.Controllers
                                 .FirstOrDefaultAsync();
             if (model != null)
             {
-                return Ok(model);
+                return Ok(_mapper.Map<T, TD>(model));
             }
             return NotFound();
         }
 
 
         [HttpPost]
-        public virtual async ValueTask<IActionResult> Post([FromBody] T model)
+        public virtual async ValueTask<IActionResult> Post([FromBody] TV model)
         {
             if (ModelState.IsValid)
             {
-                (bool succeeded, T t, string error) = await _repo.Add(model);
-                if (succeeded) return Ok(t);
+                (bool succeeded, T t, string error) = await _repo.Add(_mapper.Map<TV, T>(model));
+                if (succeeded) return Ok(_mapper.Map<T, TD>(t));
                 return BadRequest(new { Message = error });
             }
             return BadRequest(new { Errors = ModelState.Values.SelectMany(e => e.Errors).ToList() });
@@ -61,12 +67,12 @@ namespace AfrroStock.Controllers
 
 
         [HttpPut]
-        public virtual async ValueTask<IActionResult> Put([FromBody] T model)
+        public virtual async ValueTask<IActionResult> Put([FromBody] TV model)
         {
             if (ModelState.IsValid)
             {
-                (bool succeeded, T t, string error) = await _repo.Update(model);
-                if (succeeded) return Ok(t);
+                (bool succeeded, T t, string error) = await _repo.Update(_mapper.Map<TV, T>(model));
+                if (succeeded) return Ok(_mapper.Map<T, TD>(t));
                 return BadRequest(new { Message = error });
             }
             return BadRequest(new { Errors = ModelState.Values.SelectMany(e => e.Errors).ToList() });

@@ -17,4 +17,25 @@ namespace AfrroStock.Models
         public int SubId { get; set; }
         public DateTime StartedOn { get; set; }
     }
+
+    namespace ViewModels
+    {
+        public class UserSubscriptionVM
+        {
+            public int Id { get; set; }
+            public int UserId { get; set; }
+            public int SubId { get; set; }
+        }
+    }
+
+    namespace DTOs
+    {
+        public class UserSubscriptionDTO
+        {
+            public int Id { get; set; }
+            public int UserId { get; set; }
+            public int SubId { get; set; }
+            public DateTime StartedOn { get; set; }
+        }
+    }
 }

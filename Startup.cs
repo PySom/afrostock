@@ -76,8 +76,10 @@ namespace AfrroStock
             services.AddTransient<IModelManager<CollectionType>, ModelManager<CollectionType>>();
             services.AddTransient<IModelManager<Collect>, ModelManager<Collect>>();
             services.AddTransient<IModelManager<Image>, ModelManager<Image>>();
+            services.AddTransient<IModelManager<Subscription>, ModelManager<Subscription>>();
             services.AddTransient<IModelManager<Tag>, ModelManager<Tag>>();
             services.AddTransient<IModelManager<UserImage>, ModelManager<UserImage>>();
+            services.AddTransient<IModelManager<UserSubscription>, ModelManager<UserSubscription>>();
             services.AddTransient<AuthRepository>();
             services.AddTransient<UserManager>();
             services.AddTransient<ImageManager>();

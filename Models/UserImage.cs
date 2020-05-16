@@ -23,7 +23,35 @@ namespace AfrroStock.Models
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
         public int UserId { get; set; }
+        [ForeignKey("UserSubId")]
+        public UserSubscription UserSub { get; set; }
+        public int? UserSubId { get; set; }
         public double Amount { get; set; }
         public DateTime DateAdded { get; set; }
     }
+    namespace ViewModels
+    {
+        public class UserImageVM
+        {
+            public int Id { get; set; }
+            public int ImageId { get; set; }
+            public int UserId { get; set; }
+            public int? UserSubId { get; set; }
+            public double Amount { get; set; }
+        }
+    }
+
+    namespace DTOs
+    {
+        public class UserImageDTO
+        {
+            public int Id { get; set; }
+            public int ImageId { get; set; }
+            public int UserId { get; set; }
+            public int? UserSubId { get; set; }
+            public double Amount { get; set; }
+            public DateTime DateAdded { get; set; }
+        }
+    }
+
 }

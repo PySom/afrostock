@@ -11,7 +11,7 @@ namespace AfrroStock.Models.ViewModels
         public string Email { get; set; }
         public string Pic { get; set; }
         public Sex Sex { get; set; }
-        public bool IsAdmin { get; set; }
+        public string Role { get; set; }
         public string Token { get; set; }
     }
 

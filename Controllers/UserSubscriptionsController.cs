@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AfrroStock.Models;
 using AfrroStock.Repository.Generic;
+using AfrroStock.Models.ViewModels;
+using AfrroStock.Models.DTOs;
+using AutoMapper;
 
 namespace AfrroStock.Controllers
 {
     [Route("api/[controller]")]
-    public class UserCSubscriptionsController : GenericController<UserSubscription>
+    public class UserCSubscriptionsController : GenericController<UserSubscription, UserSubscriptionVM, UserSubscriptionDTO>
     {
-        public UserCSubscriptionsController(IModelManager<UserSubscription> repo): base(repo)
+        public UserCSubscriptionsController(IModelManager<UserSubscription> repo, IMapper mapper): base(repo, mapper)
         {}
     }
 }

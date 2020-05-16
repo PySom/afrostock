@@ -6,13 +6,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using AfrroStock.Models;
 using AfrroStock.Repository.Generic;
+using AfrroStock.Models.ViewModels;
+using AfrroStock.Models.DTOs;
 
 namespace AfrroStock.Controllers
 {
     [Route("api/[controller]")]
-    public class CategoriesController : GenericController<Category>
+    public class CategoriesController : GenericController<Category, CategoryVM, CategoryDTO>
     {
-        public CategoriesController(IModelManager<Category> repo): base(repo)
+        public CategoriesController(IModelManager<Category> repo, IMapper mapper): base(repo, mapper)
         {}
 
         [HttpGet]
@@ -23,7 +25,7 @@ namespace AfrroStock.Controllers
                                                 .Include(c => c.Images)
                                                     .ThenInclude(i => i.Tags)
                                                 .ToListAsync();
-            return Ok(categories);
+            return Ok(_mapper.Map<ICollection<Category>, ICollection<CategoryDTO>>(categories));
 
         }
 
@@ -38,7 +40,7 @@ namespace AfrroStock.Controllers
                                 .FirstOrDefaultAsync();
             if (model != null)
             {
-                return Ok(model);
+                return Ok(_mapper.Map<Category, CategoryDTO>(model));
             }
             return NotFound();
         }

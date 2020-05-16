@@ -10,6 +10,8 @@ using AfrroStock.Services;
 using Microsoft.AspNetCore.Authorization;
 using AfrroStock.Enums;
 using Microsoft.EntityFrameworkCore.Internal;
+using AfrroStock.Models.DTOs;
+using AfrroStock.Models.ViewModels;
 
 namespace AfrroStock.Controllers
 {
@@ -20,13 +22,15 @@ namespace AfrroStock.Controllers
         private readonly IModelManager<UserImage> _userImg;
         private readonly IModelManager<Tag> _tag;
         private readonly ImageManager _repo;
+        private readonly IMapper _mapper;
         private static readonly MachineLearning _ml;
         public ImagesController(ImageManager repo,
             IModelManager<Category> category,
             IModelManager<Tag> tag,
-            IModelManager<UserImage> userImg)
+            IModelManager<UserImage> userImg,
+            IMapper mapper)
         {
-            (_repo, _category, _tag, _userImg) = (repo, category, tag, userImg);
+            (_repo, _category, _tag, _userImg, _mapper) = (repo, category, tag, userImg, mapper);
 
         }
 
@@ -43,7 +47,7 @@ namespace AfrroStock.Controllers
                                                 .Include(c => c.Tags)
                                                 .Include(i => i.Author)
                                                 .ToListAsync();
-            return Ok(options);
+            return Ok(_mapper.Map<ICollection<Image>, ICollection<ImageDTO>>(options));
 
         }
 
@@ -59,7 +63,7 @@ namespace AfrroStock.Controllers
 
             if (model != null)
             {
-                return Ok(model);
+                return Ok(_mapper.Map<Image, ImageDTO>(model));
             }
             return NotFound();
         }
@@ -89,7 +93,7 @@ namespace AfrroStock.Controllers
                                 .Include(c => c.Category)
                                 .ToListAsync();
 
-            return Ok(model);
+            return Ok(_mapper.Map<ICollection<Image>, ICollection<ImageDTO>>(model));
         }
 
         [HttpGet("videos/searchfor/")]
@@ -103,7 +107,7 @@ namespace AfrroStock.Controllers
                                         .ThenInclude(i => i.Author)
                                     .Select(t => t.Image)
                                     .ToListAsync();
-            return Ok(results);
+            return Ok(_mapper.Map<ICollection<Image>, ICollection<ImageDTO>>(results));
         }
 
         [HttpGet("search")]
@@ -126,10 +130,11 @@ namespace AfrroStock.Controllers
 
         [Authorize(Roles = "Author,Both,Super" )]
         [HttpPost]
-        public async ValueTask<IActionResult> Post([FromBody] Image model)
+        public async ValueTask<IActionResult> Post([FromBody] ImageVM modelVm)
         {
             if (ModelState.IsValid)
             {
+                var model = _mapper.Map<ImageVM, Image>(modelVm);
                 (string category, string[] tags) = _ml.Pipeline();
                 Image addedModel = null;
                 //get or set collection
@@ -157,11 +162,11 @@ namespace AfrroStock.Controllers
 
 
         [HttpPut]
-        public async ValueTask<IActionResult> Put([FromBody] Image model)
+        public async ValueTask<IActionResult> Put([FromBody] ImageVM model)
         {
             if (ModelState.IsValid)
             {
-                (bool succeeded, Image img, string error) = await _repo.Update(model);
+                (bool succeeded, Image img, string error) = await _repo.Update(_mapper.Map<ImageVM, Image>(model));
                 if (succeeded) return Ok(img);
                 return BadRequest(new { Message = error });
             }

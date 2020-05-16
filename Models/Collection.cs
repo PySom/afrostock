@@ -16,4 +16,21 @@ namespace AfrroStock.Models
         public int CollectionTypeId { get; set; }
         public ICollection<Collect> Collectibles { get; set; }
     }
+
+    namespace ViewModels
+    {
+        public class CollectionVM
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public int CollectionTypeId { get; set; }
+        }
+    }
+
+    namespace DTOs
+    {
+        public class CollectionDTO : Collection
+        { }
+    }
 }
