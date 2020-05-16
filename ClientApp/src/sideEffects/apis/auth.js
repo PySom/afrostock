@@ -31,8 +31,9 @@ const login = (loginCredentials) =>
 
 const register = (registerCredentials) =>
   axios
-    .post(baseUrl + "register", { name: "Chisom Nwisu" })
+    .post(baseUrl + "register", registerCredentials)
     .then((response) => {
+      console.log("register works");
       persistUserInLS(response.data);
       return response.data;
     })
