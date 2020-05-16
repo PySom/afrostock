@@ -4,49 +4,102 @@ import { useForm } from "../../customHooks/useForm";
 import { useLocation, useHistory, Link } from "react-router-dom";
 
 export default function Login(props) {
-    const location = useLocation();
-    console.log({ location }, props.route);
-    const history = useHistory();
-    const url =
+  const location = useLocation();
+  console.log({ location }, props.route);
+  const history = useHistory();
+  const url =
     location && location.search
       ? location.search.substring(location.search.indexOf("=") + 1)
-            : "";
-    console.log({url})
-    
-    const { main: email } = useForm("email", "");
-    const { main: password } = useForm("password", "");
-    const submitForm = (e) => {
-        e.preventDefault();
-        const data = { email: email.value, password: password.value };
-        auth
-          .login(data)
-            .then((res) => {
-                if (typeof props.callback === "function") props.callback()
+      : "";
+  console.log({ url });
 
-                if (props.route) {
+  const { main: email } = useForm("email", "");
+  const { main: password } = useForm("password", "");
+  const submitForm = (e) => {
+    e.preventDefault();
+    const data = { email: email.value, password: password.value };
+    auth
+      .login(data)
+      .then((res) => {
+        if (typeof props.callback === "function") props.callback();
 
-                    history.push(props.route);
-                } else {
-                    if (typeof props.closeMe === "function") props.closeMe()
-                    else if (url) history.push("/" + url);
-                    else history.push("/");
-                }
-                })
-                .catch((err) => {
-                alert(err.message);
-                });
-      };
+        if (props.route) {
+          history.push(props.route);
+        } else {
+          if (typeof props.closeMe === "function") props.closeMe();
+          else if (url) history.push("/" + url);
+          else history.push("/");
+        }
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
 
-      return (
-        <div>
+  return (
+    <div>
+      <div className="auth-images">
+        <div className="auth-images-wrap">
+          <div className="wrap-img">
+            <div className="img_column">
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack1.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack8.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack4.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack3.jpg" alt="img" />
+              </div>
+            </div>
+            <div className="img_column">
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack6.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack4.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack2.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack5.jpg" alt="img" />
+              </div>
+            </div>
+            <div className="img_column">
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack9.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack1.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack7.jpg" alt="img" />
+              </div>
+              <div className="single_img">
+                <img className="img-fluid" src="images/stack6.jpg" alt="img" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="register-wrapper">
+        <div className="form-wrapper">
+          <div className="heading">
+            <h3>Welcome Back to AfroStock</h3>
+          </div>
           <form onSubmit={submitForm}>
-            <div>
+            <div className="full">
               <input {...email} placeholder="email" />
             </div>
-            <div>
+            <div className="full">
               <input {...password} placeholder="password" />
             </div>
-            <div>
+            <div className="submit_">
               <button type="submit">Login</button>
             </div>
           </form>
@@ -54,5 +107,7 @@ export default function Login(props) {
             <Link to={`/register${url && "returnurl=" + url}`}>Register</Link>
           )}
         </div>
-      );
+      </div>
+    </div>
+  );
 }
