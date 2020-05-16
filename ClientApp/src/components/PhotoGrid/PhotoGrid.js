@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import "./PhotoGrid.css";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import ModalCustomHeader from '../Modal/ModalCustomHeader';
@@ -16,7 +16,6 @@ export default function PhotoGrid({ contents }) {
     const handleClose = () => {
         setShow(false)
     }
-
 
     const handleShow = (e, index, src) => {
         e.preventDefault();
@@ -90,7 +89,7 @@ export default function PhotoGrid({ contents }) {
                 image &&
                 <Modal isOpen={show} toggle={handleClose} className="photo-grid-modal">
                     <ModalHeader toggle={handleClose}>
-                        <ModalCustomHeader views={image.src.views} onClick={() => setShowRaveButton(!showRaveButton)}
+                        <ModalCustomHeader views={image.src.views} onClick={() => setShowRaveButton(true)}
                             authorName={image.src.author.surName + " " + image.src.author.firstName } />
                     </ModalHeader>
                     <ModalBody>
@@ -109,7 +108,7 @@ export default function PhotoGrid({ contents }) {
                         </div>
                         {
                             showRaveButton &&
-                            <Guard type="modal" closeWhenDone={true}>
+                            <Guard type="modal" closeWhenDone={true} toggle={() => setShowRaveButton(false)}>
                                 <RavePay customer_email="gmangeorge@ymail.com" customer_phone="08038714611" amount={image.src.amount} src={image.src.content} />
                             </Guard>
                             

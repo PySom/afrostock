@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AfrroStock.Models
 {
@@ -20,12 +17,9 @@ namespace AfrroStock.Models
         public Image Image { get; set; }
         public int? ImageId { get; set; }
 
-        [ForeignKey("UserId")]
-        public ApplicationUser User { get; set; }
-        public int UserId { get; set; }
         [ForeignKey("UserSubId")]
         public UserSubscription UserSub { get; set; }
-        public int? UserSubId { get; set; }
+        public int UserSubId { get; set; }
         public double Amount { get; set; }
         public DateTime DateAdded { get; set; }
     }
@@ -35,7 +29,6 @@ namespace AfrroStock.Models
         {
             public int Id { get; set; }
             public int ImageId { get; set; }
-            public int UserId { get; set; }
             public int? UserSubId { get; set; }
             public double Amount { get; set; }
         }
@@ -47,8 +40,7 @@ namespace AfrroStock.Models
         {
             public int Id { get; set; }
             public int ImageId { get; set; }
-            public int UserId { get; set; }
-            public int? UserSubId { get; set; }
+            public int UserSubId { get; set; }
             public double Amount { get; set; }
             public DateTime DateAdded { get; set; }
         }

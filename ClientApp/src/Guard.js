@@ -5,30 +5,35 @@ import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import Login from "./components/Login/Login";
 import UnAthorized from "./components/UnAthorized/UnAuthorized";
 
-export default function Guard({ type, route, children, callback, closeWhenDone, admin }) {
+export default function Guard({ type, route, children, callback, closeWhenDone, admin, toggle }) {
   //get user from store
     const [show, setShow] = useState(true);
     const user = ls.getUserInLs();
-    console.log(({user}))
-  return !user ? (
+    console.log(({ user }))
+
+    const handleToggle = () => {
+        if (typeof toggle === "function") toggle()
+        setShow(false)
+    }
+    return !user ? (
     <>
-      {type === "route" && <Redirect to={`/login?returnurl=${route}`} />}
-      {type === "modal" && (
+        {type === "route" && <Redirect to={`/login?returnurl=${route}`} />}
+        {type === "modal" && (
         <Modal isOpen={show}>
-          <ModalHeader toggle={() => setShow(false)}></ModalHeader>
-          <ModalBody>
-                      <Login type="modal" route={route} callback={callback} closeMe={closeWhenDone && (() => setShow(false))} />
-          </ModalBody>
+            <ModalHeader toggle={handleToggle}></ModalHeader>
+            <ModalBody>
+                        <Login type="modal" route={route} callback={callback} closeMe={closeWhenDone && (() => setShow(false))} />
+            </ModalBody>
         </Modal>
-      )}
+        )}
     </>
-  ) : admin ? (
+    ) : admin ? (
     user.role === "Super" ? (
-      <>{children}</>
+        <>{children}</>
     ) : (
-      <UnAthorized />
+        <UnAthorized />
     )
-  ) : (
+    ) : (
     <>{children}</>
-  );
+    );
 }

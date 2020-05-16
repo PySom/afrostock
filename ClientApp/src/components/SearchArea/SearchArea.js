@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 export function SearchArea({ className, setVisibleState, searchClass, type }) {
   const history = useHistory();
   const [show, setShow] = useState(false);
-  const [areaInView, setAreaInView] = useState(true);
+  const [areaInView, setAreaInView] = useState(false);
   const [contents, setContents] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 
@@ -46,7 +46,6 @@ export function SearchArea({ className, setVisibleState, searchClass, type }) {
 
   const visualStateManager = (state) => {
     if (type === "head") {
-      console.log("this new state", state);
       setVisibleState(state);
     }
   };
