@@ -10,7 +10,7 @@ export default function GuardElement({ whois, children }) {
         }
         else return who === role
     }
-    return (user && checkIfAllowed(whois, user.role) && (
+    return (user && checkIfAllowed(whois, user.role)) && (
         <>
             {children}
         </>

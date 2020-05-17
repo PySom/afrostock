@@ -20,7 +20,8 @@ namespace AfrroStock.Controllers
             {
                 if(_img.Create(model.File, out string path))
                 {
-                    return Ok(new { Name = path });
+                    var lowRes = _img.ManipulateImage(model.File);
+                    return Ok(new { Content = path, ContentLow = lowRes });
                 }
                 return BadRequest(new { Message = "We could not add this resource. Please try again" });
             }

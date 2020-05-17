@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using ImageMagick;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Jpeg;
-using SixLabors.ImageSharp.Processing;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace AfrroStock.Services
@@ -25,11 +24,8 @@ namespace AfrroStock.Services
                 var fileName = Path.GetFileName(file.FileName);
                 path = Path.Combine(default_Path, fileName);
                 var absolutePath = Path.Combine(_env.WebRootPath, path);
-
-                using (FileStream stream = new FileStream(absolutePath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
+                using FileStream stream = new FileStream(absolutePath, FileMode.Create);
+                file.CopyTo(stream);
                 return true;
             }
             return false;
@@ -52,10 +48,8 @@ namespace AfrroStock.Services
                 path = Path.Combine(default_Path, fileName);
                 var absolutePath = Path.Combine(_env.WebRootPath, path);
 
-                using (FileStream stream = new FileStream(absolutePath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
+                using FileStream stream = new FileStream(absolutePath, FileMode.Create);
+                file.CopyTo(stream);
                 return true;
 
             }
@@ -73,6 +67,34 @@ namespace AfrroStock.Services
             {
                 System.IO.File.Delete(oldPath);
             }
+        }
+
+        public string ManipulateImage(IFormFile file)
+        {
+            string path = null;
+            try
+            {
+                using var image = new MagickImage(file.OpenReadStream());
+                image.Resize(image.Width / 2, image.Height / 2);
+                image.Quality = 70;
+
+                var logoPath = Path.Combine(default_Path, "afro_logo.png");
+                var logoFullPath = Path.Combine(_env.WebRootPath, logoPath);
+                using var watermark = new MagickImage(logoFullPath);
+                // Optionally make the watermark more transparent
+                watermark.Evaluate(Channels.Alpha, EvaluateOperator.Divide, 4);
+                // Or draw the watermark at the center
+                image.Composite(watermark, Gravity.Center, CompositeOperator.Over);
+                var fileName = Path.GetFileName(file.FileName);
+                path = Path.Combine(default_Path, $"low_{fileName}");
+                var absolutePath = Path.Combine(_env.WebRootPath, path);
+                image.Write(absolutePath);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return path;
         }
     }
 }
