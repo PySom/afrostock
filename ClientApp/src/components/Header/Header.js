@@ -9,7 +9,8 @@ export default function Header() {
         <img
           className="img-fluid"
           src="https://images.pexels.com/photos/4239534/pexels-photo-4239534.jpeg"
-        ></img>
+          alt="beautiful leaves as header background"
+        />
       </div>
       <div className="m0-auto header-width header-search">
         <h1 className="hero__title text-white">
