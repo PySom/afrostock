@@ -46,6 +46,7 @@ namespace AfrroStock.Models
             public ContentType ContentType { get; set; }
             public Orientation Orientation { get; set; }
             public string Content { get; set; }
+            public string ContentLow { get; set; }
             public int AuthorId { get; set; }
             public double Amount { get; set; }
         }

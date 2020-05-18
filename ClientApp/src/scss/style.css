@@ -24,6 +24,11 @@
 }
 
 @font-face {
+  font-family: "open sans semibold";
+  src: url("../fonts/OpenSans-Semibold.ttf");
+}
+
+@font-face {
   font-family: "open sans light";
   src: url("../fonts/OpenSans-Light.ttf");
 }
