@@ -28,7 +28,7 @@ export default function Login(props) {
         } else {
           if (typeof props.closeMe === "function") props.closeMe();
           else if (url) history.push("/" + url);
-          else history.push("/");
+          else history.push("/dashboard");
         }
       })
       .catch((err) => {

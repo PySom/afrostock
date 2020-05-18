@@ -1,0 +1,127 @@
+$worksans-medium: "work sans medium";
+
+.dashboard-wrapper {
+  .show-loggedIn {
+    background-color: #935120;
+    padding: 1em 0;
+    h6 {
+      color: white;
+      font-family: $worksans-medium;
+    }
+  }
+
+  .profile-summary {
+    padding-top: 5em;
+    width: 50%;
+    margin: 0 auto;
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+
+    .avartar {
+      img {
+        border-radius: 50%;
+      }
+    }
+    .user_names {
+      .col-md-8 {
+        text-align: left;
+        margin-top: -15px;
+        font-family: "Helvetica Bold";
+        span {
+          font-size: 2.4rem;
+        }
+      }
+      button {
+        width: 100%;
+        padding: 0.5em 1.5em;
+        background-color: #935120;
+        color: white;
+        border-radius: 4px;
+        border: none;
+        outline: none;
+        font-size: 15px;
+        font-family: $worksans-medium;
+        img {
+          width: 23%;
+          padding: 0 5px;
+        }
+        &:hover {
+          border: none;
+          outline: none;
+        }
+      }
+    }
+    .profile-extras {
+      margin-top: 1em;
+      text-align: left;
+      .col--3 {
+        width: 31%;
+        display: inline-block;
+        text-align: left;
+        @media screen and (max-width: 768px) {
+          width: 29%;
+        }
+        img {
+          width: 10%;
+          display: inline-block;
+        }
+        span {
+          display: inline-block;
+          font-size: 14px;
+          font-family: "open sans light";
+          padding: 0 1em;
+        }
+      }
+    }
+    .bio-summary {
+      margin-top: 1em;
+      text-align: left;
+      span {
+        font-family: "open sans light";
+        font-size: 16px;
+      }
+    }
+  }
+  .image-upload {
+    width: 50%;
+    padding-top: 3em;
+    margin: 0px auto;
+    .cloud-upload {
+      img {
+        width: 10%;
+        padding: 1em 0;
+      }
+    }
+    .upload-captions {
+      h4 {
+        font-family: "open sans semibold";
+        padding: 0.5em 0;
+      }
+
+      h5 {
+        font-family: $worksans-medium;
+        margin: 0px auto;
+        padding-bottom: 1em;
+        font-size: 14px;
+        max-width: 500px;
+      }
+    }
+    .upload-link {
+      button {
+        background-color: #935120;
+        padding: 0.5em 1em;
+        font-family: "open sans light";
+        color: white;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+
+        &:hover {
+          border: none;
+          outline: none;
+        }
+      }
+    }
+  }
+}

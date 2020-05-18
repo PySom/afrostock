@@ -13,6 +13,8 @@ import VideoPage from "./components/VideoPage/VideoPage";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import Guard from "./Guard";
+import Dashboard from "./components/Dashboard/Dashboard";
+import Upload from "./components/Dashboard/Upload";
 
 export default function App(props) {
   return (
@@ -35,6 +37,25 @@ export default function App(props) {
             <MainBody>
               <VideoPage />
             </MainBody>
+          </Guard>
+        )}
+      />
+      <Route
+        exact
+        path="/dashboard"
+        render={() => (
+          <Guard type="route" route="dashboard">
+            <Dashboard />
+          </Guard>
+        )}
+      />
+
+      <Route
+        exact
+        path="/upload"
+        render={() => (
+          <Guard type="route" route="upload">
+            <Upload />
           </Guard>
         )}
       />

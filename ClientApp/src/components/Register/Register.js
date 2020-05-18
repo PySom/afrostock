@@ -27,12 +27,12 @@ export default function Register(props) {
       password: password.value,
       confirmPassword: confirm.value,
       sex: "Male",
-      role: "Super"
+      role: "Super",
     };
     auth
       .register(data)
       .then((res) => {
-        history.push((url && "/" + url) || "/");
+        history.push((url && "/" + url) || "/dashboard");
       })
       .catch((err) => {
         alert(err.message);
