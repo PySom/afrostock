@@ -18,13 +18,8 @@ namespace AfrroStock.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public ContentType ContentType { get; set; }
-        public Orientation Orientation { get; set; }
         public string Content { get; set; }
         public string ContentLow { get; set; }
-
-        [ForeignKey("CategoryId")]
-        public Category Category { get; set; }
-        public int CategoryId { get; set; }
 
         [ForeignKey("AuthorId")]
         public ApplicationUser Author { get; set; }
@@ -44,10 +39,10 @@ namespace AfrroStock.Models
             public string Name { get; set; }
             public string Description { get; set; }
             public ContentType ContentType { get; set; }
-            public Orientation Orientation { get; set; }
             public string Content { get; set; }
             public int AuthorId { get; set; }
             public double Amount { get; set; }
+            public string[] SuggestedTags { get; set; }
         }
     }
 

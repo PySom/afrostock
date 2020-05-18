@@ -16,7 +16,7 @@ namespace AfrroStock.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Category> Categories { get; set; }
+        //public DbSet<Category> Categories { get; set; }
         public DbSet<Collection> Collections { get; set; }
         public DbSet<CollectionType> CollectionTypes { get; set; }
         public DbSet<Collect> Collects { get; set; }

@@ -71,7 +71,7 @@ namespace AfrroStock
 
             services.AddAutoMapper(typeof(Startup));
             services.AddTransient<IModelManager<ApplicationUser>, ModelManager<ApplicationUser>>();
-            services.AddTransient<IModelManager<Category>, ModelManager<Category>>();
+            //services.AddTransient<IModelManager<Category>, ModelManager<Category>>();
             services.AddTransient<IModelManager<Collection>, ModelManager<Collection>>();
             services.AddTransient<IModelManager<CollectionType>, ModelManager<CollectionType>>();
             services.AddTransient<IModelManager<Collect>, ModelManager<Collect>>();

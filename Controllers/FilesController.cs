@@ -9,10 +9,18 @@ namespace AfrroStock.Controllers
     public class FilesController : ControllerBase
     {
         private readonly IImageService _img;
+
+        private static readonly MachineLearning _ml;
         public FilesController(IImageService image)
         {
             _img = image;
         }
+
+        static FilesController()
+        {
+            _ml = new MachineLearning();
+        }
+
         [HttpPost("upload")]
         public IActionResult Post([FromForm]FileViewModel model)
         {
@@ -20,8 +28,11 @@ namespace AfrroStock.Controllers
             {
                 if(_img.Create(model.File, out string path))
                 {
+                    var name = model.File.FileName.Split('.')[0];
+                    var contentType = model.File.ContentType.Split('/')[0];
                     var lowRes = _img.ManipulateImage(model.File);
-                    return Ok(new { Content = path, ContentLow = lowRes });
+                    (string _, string[] tags) = _ml.Pipeline();
+                    return Ok(new { Content = path, ContentLow = lowRes, ContentType = contentType, SuggestedTags = tags, Name = name });
                 }
                 return BadRequest(new { Message = "We could not add this resource. Please try again" });
             }

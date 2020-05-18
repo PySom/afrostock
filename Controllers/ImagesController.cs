@@ -18,26 +18,20 @@ namespace AfrroStock.Controllers
     [Route("api/[controller]")]
     public class ImagesController : ControllerBase
     {
-        private readonly IModelManager<Category> _category;
         private readonly IModelManager<UserImage> _userImg;
         private readonly IModelManager<Tag> _tag;
         private readonly ImageManager _repo;
         private readonly IMapper _mapper;
-        private static readonly MachineLearning _ml;
         public ImagesController(ImageManager repo,
-            IModelManager<Category> category,
             IModelManager<Tag> tag,
             IModelManager<UserImage> userImg,
             IMapper mapper)
         {
-            (_repo, _category, _tag, _userImg, _mapper) = (repo, category, tag, userImg, mapper);
+            (_repo, _tag, _userImg, _mapper) = (repo, tag, userImg, mapper);
 
         }
 
-        static ImagesController()
-        {
-            _ml = new MachineLearning();
-        }
+
 
         [HttpGet]
         public async ValueTask<IActionResult> Get()
@@ -58,7 +52,6 @@ namespace AfrroStock.Controllers
                                 .Item()
                                 .Where(c => c.Id == id)
                                 .Include(i => i.Author)
-                                .Include(c => c.Category)
                                 .FirstOrDefaultAsync();
 
             if (model != null)
@@ -90,7 +83,6 @@ namespace AfrroStock.Controllers
                                 .Item()
                                 .Where(c => c.ContentType == ContentType.Video)
                                 .Include(i => i.Author)
-                                .Include(c => c.Category)
                                 .ToListAsync();
 
             return Ok(_mapper.Map<ICollection<Image>, ICollection<ImageDTO>>(model));
@@ -135,27 +127,17 @@ namespace AfrroStock.Controllers
             if (ModelState.IsValid)
             {
                 var model = _mapper.Map<ImageVM, Image>(modelVm);
-                (string category, string[] tags) = _ml.Pipeline();
-                Image addedModel = null;
-                //get or set collection
-                var categoryId = await CheckCategory(category);
-                if (categoryId != 0)
+                (bool succeeded, Image img, string error) = await _repo.Add(model);
+                if (succeeded)
                 {
-                    model.CategoryId = categoryId;
-                    addedModel = model;
-                    if (addedModel != null)
+                    if (modelVm.SuggestedTags != null && modelVm.SuggestedTags.Length > 0)
                     {
-                        (bool succeeded, Image img, string error) = await _repo.Add(addedModel);
-                        if (succeeded)
-                        {
-                            var imageTags = tags.Select(tag => new Tag { Name = tag, ImageId = img.Id });
-                            var _ = await _tag.Add(imageTags);
-                            return Ok(img);
-                        }
-                        return BadRequest(new { Message = error });
+                        var imageTags = modelVm.SuggestedTags.Select(tag => new Tag { Name = tag, ImageId = img.Id });
+                        var _ = await _tag.Add(imageTags);
                     }
+                    return Ok(img);
                 }
-                return BadRequest(new { Message = "we could not create the category for this image" });
+                return BadRequest(new { Message = error });
             }
             return BadRequest(new { Errors = ModelState.Values.SelectMany(e => e.Errors).ToList() });
         }
@@ -199,21 +181,21 @@ namespace AfrroStock.Controllers
         }
 
 
-        private async ValueTask<int> CheckCategory(string name)
-        {
-            int id = 0;
-            var category = await _category.Item().Where(c => c.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
-            if (category != null)
-            {
-                id = category.Id;
-            }
-            else
-            {
-                (bool succeeded, Category cat, string error) = await _category.Add(new Category{ Name = name });
-                if (succeeded) id = cat.Id;
-            }
-            return id;
-        }
+        //private async ValueTask<int> CheckCategory(string name)
+        //{
+        //    int id = 0;
+        //    var category = await _category.Item().Where(c => c.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
+        //    if (category != null)
+        //    {
+        //        id = category.Id;
+        //    }
+        //    else
+        //    {
+        //        (bool succeeded, Category cat, string error) = await _category.Add(new Category{ Name = name });
+        //        if (succeeded) id = cat.Id;
+        //    }
+        //    return id;
+        //}
 
     }
 }
