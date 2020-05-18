@@ -40,6 +40,7 @@ namespace AfrroStock.Models
             public string Description { get; set; }
             public ContentType ContentType { get; set; }
             public string Content { get; set; }
+            public string ContentLow { get; set; }
             public int AuthorId { get; set; }
             public double Amount { get; set; }
             public string[] SuggestedTags { get; set; }
