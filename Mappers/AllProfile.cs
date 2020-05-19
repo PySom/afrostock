@@ -47,6 +47,10 @@ namespace AfrroStock.Mappers
                 .ReverseMap();
             CreateMap<UserSubscription, UserSubscriptionDTO>()
                 .ReverseMap();
+            CreateMap<ImageTag, ImageTagVM>()
+                .ReverseMap();
+            CreateMap<ImageTag, ImageTagDTO>()
+                .ReverseMap();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿import axios from "axios";
 import ls from "../local/ourLocalStorage";
-const user = JSON.parse(localStorage.getItem("user"));
+const user = ls.getUserInLs();
 axios.defaults.headers.common = {
   Authorization: `Bearer ${(user && user.token) || ""}`,
 };

@@ -28,7 +28,7 @@ namespace AfrroStock.Models
         public double Amount { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime DateModified { get; set; }
-        public ICollection<Tag> Tags { get; set; }
+        public ICollection<ImageTag> ImageTags { get; set; }
     }
 
     namespace ViewModels

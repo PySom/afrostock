@@ -12,10 +12,7 @@ namespace AfrroStock.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
-
-        [ForeignKey("ImageId")]
-        public Image Image { get; set; }
-        public int ImageId { get; set; }
+        public ICollection<ImageTag> ImageTags { get; set; }
 
         public override string ToString()
         {
@@ -39,7 +36,6 @@ namespace AfrroStock.Models
         {
             public int Id { get; set; }
             public string Name { get; set; }
-            public int ImageId { get; set; }
         }
     }
 
@@ -49,8 +45,6 @@ namespace AfrroStock.Models
         {
             public int Id { get; set; }
             public string Name { get; set; }
-            public int ImageId { get; set; }
-            public Image Image { get; set; }
         }
     }
 }

@@ -39,20 +39,7 @@ export default function PhotoGrid({ contents }) {
     }
   };
 
-  function appropriateClass(orientation) {
-    switch (orientation) {
-      case 0:
-        return "";
-      case 1:
-        return "portrait";
-      case 2:
-        return "landscape";
-      case 3:
-        return "big";
-      default:
-        return "";
-    }
-  }
+  
 
   console.log({ showRaveButton });
 
@@ -63,7 +50,7 @@ export default function PhotoGrid({ contents }) {
           <button
             key={content.id}
             onClick={(e) => handleShow(e, index, content)}
-            className={`unstyled mb-2 ${appropriateClass(content.orientation)}`}
+            className="unstyled mb-2"
           >
             {content.contentType === 0 && (
               <div className="r-p">

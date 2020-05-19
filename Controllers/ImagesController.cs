@@ -12,12 +12,14 @@ using AfrroStock.Enums;
 using Microsoft.EntityFrameworkCore.Internal;
 using AfrroStock.Models.DTOs;
 using AfrroStock.Models.ViewModels;
+using System;
 
 namespace AfrroStock.Controllers
 {
     [Route("api/[controller]")]
     public class ImagesController : ControllerBase
     {
+        private readonly IModelManager<ImageTag> _imgTag;
         private readonly IModelManager<UserImage> _userImg;
         private readonly IModelManager<Tag> _tag;
         private readonly ImageManager _repo;
@@ -25,9 +27,10 @@ namespace AfrroStock.Controllers
         public ImagesController(ImageManager repo,
             IModelManager<Tag> tag,
             IModelManager<UserImage> userImg,
+            IModelManager<ImageTag> imgTag,
             IMapper mapper)
         {
-            (_repo, _tag, _userImg, _mapper) = (repo, tag, userImg, mapper);
+            (_repo, _tag, _userImg, _imgTag, _mapper) = (repo, tag, userImg, imgTag, mapper);
 
         }
 
@@ -38,7 +41,6 @@ namespace AfrroStock.Controllers
         {
             ICollection<Image> options = await _repo
                                                 .Item()
-                                                .Include(c => c.Tags)
                                                 .Include(i => i.Author)
                                                 .ToListAsync();
             return Ok(_mapper.Map<ICollection<Image>, ICollection<ImageDTO>>(options));
@@ -72,7 +74,7 @@ namespace AfrroStock.Controllers
             {
                 var _ = await _repo.IncreaseView(model);
             }
-
+            
             return NoContent();
         }
 
@@ -95,11 +97,17 @@ namespace AfrroStock.Controllers
                                     .Item()
                                     .Where(t => t.Name.ToLower().StartsWith(term.ToLower())
                                                     || t.Name.ToLower().Contains($" {term.ToLower()}"))
-                                    .Include(t => t.Image)
-                                        .ThenInclude(i => i.Author)
-                                    .Select(t => t.Image)
+                                    .Include(t => t.ImageTags)
+                                        .ThenInclude(i => i.Image)
+                                            .ThenInclude(i => i.Author)
+                                    .Select(t => t.ImageTags.Select(it => it.Image))
                                     .ToListAsync();
-            return Ok(_mapper.Map<ICollection<Image>, ICollection<ImageDTO>>(results));
+            List<Image> images = new List<Image>();
+            foreach (var result in results)
+            {
+                images.AddRange(result);
+            }
+            return Ok(_mapper.Map<ICollection<Image>, ICollection<ImageDTO>>(images));
         }
 
         [HttpGet("search")]
@@ -110,14 +118,18 @@ namespace AfrroStock.Controllers
                                     .Item()
                                     .Where(i => i.Name.ToLower().StartsWith(term.ToLower()) 
                                                     || i.Name.ToLower().Contains($" {term.ToLower()}"))
-
-                                    .Distinct()
-                                    .Select(i => new { i.Name, i.Id })
+                                    .Include(t => t.ImageTags)
+                                        .ThenInclude(i => i.Image)
+                                            .ThenInclude(i => i.Author)
+                                    .Select(t => t.ImageTags.Select(it => new SearchDTO { Name = it.Image.Name, Id = it.Image.Id }))
                                     .ToListAsync();
-            return Ok(results);
-            
 
-
+            var images = new List<SearchDTO>();
+            foreach (var result in results)
+            {
+                images.AddRange(result);
+            }
+            return Ok(images);
         }
 
         [Authorize(Roles = "Author,Both,Super" )]
@@ -132,8 +144,17 @@ namespace AfrroStock.Controllers
                 {
                     if (modelVm.SuggestedTags != null && modelVm.SuggestedTags.Length > 0)
                     {
-                        var imageTags = modelVm.SuggestedTags.Select(tag => new Tag { Name = tag, ImageId = img.Id });
-                        var _ = await _tag.Add(imageTags);
+                        var stags = modelVm.SuggestedTags.Select(st => st.ToLower());
+                        var checkTags = _tag.Item().Where(t => stags.Contains(t.Name.ToLower())).Select(i => i).ToList();
+                        var noTags = modelVm.SuggestedTags.Where(st => !checkTags.Any(ct => ct.Name.ToLower() == st.ToLower()));
+                        var newTags = noTags.Select(tag => new Tag { Name = tag });
+                        if(newTags.Count() > 0)
+                        {
+                            var (tagSucceeded, tags, tagError) = await _tag.Add(newTags);
+                            if (tagSucceeded) checkTags.AddRange(tags);
+                        }
+                        var imageTags = checkTags.Select(ct => new ImageTag { ImageId = img.Id, TagId = ct.Id });
+                        var _ = await _imgTag.Add(imageTags);
                     }
                     return Ok(img);
                 }

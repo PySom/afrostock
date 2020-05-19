@@ -21,6 +21,7 @@ namespace AfrroStock.Data
         public DbSet<CollectionType> CollectionTypes { get; set; }
         public DbSet<Collect> Collects { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<ImageTag> ImageTags { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<UserImage> UserImages { get; set; }
