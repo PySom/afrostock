@@ -12,10 +12,12 @@ namespace AfrroStock.Services
 	public class EmailSender : IEmailSender
 	{
 		private readonly ILogger<EmailSender> _logger;
-		static readonly string email = "default";
-		static readonly string password = "default";
-		static readonly string smtp = "default";
-		static readonly int port = default;
+		static readonly string senderEmail = "cnwisu@infomall.ng";
+		static readonly string senderName = "Afro Stock Studios";
+		static readonly string password = "Philomena01";
+		static readonly string smtp = "infomall.ng";
+		static readonly int port = 25;
+
 		public EmailSender(ILogger<EmailSender> logger)
 		{
 			_logger = logger;
@@ -23,9 +25,9 @@ namespace AfrroStock.Services
 		public async Task SendEmailAsync(string email, string subject, string message)
 		{
 			var mimeMessage = new MimeMessage();
-			mimeMessage.From.Add(new MailboxAddress("Contact", email));
+			mimeMessage.From.Add(new MailboxAddress(senderName, senderEmail));
 			mimeMessage.Subject = !string.IsNullOrEmpty(subject) ? subject : "AfroStock";
-			mimeMessage.Cc.Add(new MailboxAddress(email));
+			mimeMessage.To.Add(new MailboxAddress(email));
             BodyBuilder builder = new BodyBuilder
             {
                 HtmlBody = message
@@ -35,7 +37,7 @@ namespace AfrroStock.Services
 			using var client = new SmtpClient();
 			client.Connect(smtp, port, SecureSocketOptions.None);
 			client.AuthenticationMechanisms.Remove("XOAUTH2");
-			client.Authenticate(email, password);
+			client.Authenticate(senderEmail, password);
 			await client.SendAsync(mimeMessage);
 			_logger.LogInformation("message sent successfully...");
 			await client.DisconnectAsync(true);
@@ -45,7 +47,7 @@ namespace AfrroStock.Services
 		public async Task SendEmailToAllAsync(IEnumerable<string> emails, string subject, string message)
 		{
 			var mimeMessage = new MimeMessage();
-			mimeMessage.From.Add(new MailboxAddress("Contact", email));
+			mimeMessage.From.Add(new MailboxAddress(senderName, senderEmail));
 			foreach (string email in emails)
 			{
 				mimeMessage.Bcc.Add(new MailboxAddress(email));
@@ -60,7 +62,7 @@ namespace AfrroStock.Services
 			using var client = new SmtpClient();
 			client.Connect(smtp, port, SecureSocketOptions.None);
 			client.AuthenticationMechanisms.Remove("XOAUTH2");
-			client.Authenticate(email, password);
+			client.Authenticate(senderEmail, password);
 			await client.SendAsync(mimeMessage);
 			_logger.LogInformation("message sent successfully...");
 			await client.DisconnectAsync(true);

@@ -25,7 +25,9 @@ namespace AfrroStock.Models
         public string Role { get; set; }
         public string PasswordHash { get; set; }
         public string Code { get; set; }
+        public bool IsVerified { get; set; }
         public DateTime CodeIssued { get; set; }
+        public DateTime VerifiedOn { get; set; }
         public DateTime CodeWillExpire { get; set; }
         public ICollection<UserImage> Images { get; set; }
         public ICollection<UserSubscription> Subscriptions { get; set; }

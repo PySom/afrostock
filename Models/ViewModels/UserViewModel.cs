@@ -12,6 +12,7 @@ namespace AfrroStock.Models.ViewModels
         public string Pic { get; set; }
         public Sex Sex { get; set; }
         public string Role { get; set; }
+        public bool IsVerified { get; set; }
         public string Token { get; set; }
     }
 
