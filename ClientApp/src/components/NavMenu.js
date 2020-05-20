@@ -9,6 +9,7 @@ import {
   NavLink,
 } from "reactstrap";
 import "./_NavMenu.scss";
+import history from "./history";
 import { SearchArea } from "./SearchArea/SearchArea";
 import { connect } from "react-redux";
 
@@ -35,7 +36,12 @@ export class NavMenu extends Component {
     console.log("nav visible", searchVisibility);
     return (
       <header
-        className={`sticky-header ${searchVisibility ? "" : "head-w-search"}`}
+        className={`sticky-header ${searchVisibility ? "" : "head-w-search"} ${
+          history.location.pathname == "/register" ||
+          history.location.pathname == "/login"
+            ? "d-none"
+            : ""
+        }`}
       >
         <Navbar
           className="navbar-expand-sm navbar-toggleable-sm ng-white"

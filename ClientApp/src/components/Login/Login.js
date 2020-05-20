@@ -38,6 +38,43 @@ export default function Login(props) {
 
   return (
     <div>
+      <div className="auth-overlay">
+        <div className="heading">
+          <div className="row">
+            <div className="logo-section">
+              <img src="images/logo.png" alt="logo" />
+            </div>
+            <div className="caption">
+              <span>New to AfroStock?</span>
+              {props.type !== "modal" && <Link to="/register">Register</Link>}
+            </div>
+          </div>
+        </div>
+        <div className="register-wrapper">
+          <div className="form-wrapper">
+            <div className="heading">
+              <h3>Welcome Back to AfroStock</h3>
+            </div>
+            <form onSubmit={submitForm}>
+              <div className="full">
+                <input {...email} placeholder="email" />
+              </div>
+              <div className="full">
+                <input {...password} placeholder="password" />
+              </div>
+              <div className="submit_">
+                <button type="submit">Login</button>
+              </div>
+            </form>
+            {props.type !== "modal" && (
+              <Link to={`/register${url && "?returnurl=" + url}`}>
+                Register
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+
       <div className="auth-images">
         <div className="auth-images-wrap">
           <div className="wrap-img">
@@ -84,28 +121,6 @@ export default function Login(props) {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="register-wrapper">
-        <div className="form-wrapper">
-          <div className="heading">
-            <h3>Welcome Back to AfroStock</h3>
-          </div>
-          <form onSubmit={submitForm}>
-            <div className="full">
-              <input {...email} placeholder="email" />
-            </div>
-            <div className="full">
-              <input {...password} placeholder="password" />
-            </div>
-            <div className="submit_">
-              <button type="submit">Login</button>
-            </div>
-          </form>
-          {props.type !== "modal" && (
-            <Link to={`/register${url && "?returnurl=" + url}`}>Register</Link>
-          )}
         </div>
       </div>
     </div>

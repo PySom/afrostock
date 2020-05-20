@@ -40,9 +40,60 @@ export default function Register(props) {
   };
 
   return (
-    <div>
+    <div style={{ overflowY: "hidden" }}>
+      <div className="auth-overlay">
+        <div className="heading">
+          <div className="row">
+            <div className="logo-section">
+              <img src="images/logo.png" alt="logo" />
+            </div>
+            <div className="caption">
+              <span>Already a member?</span>
+              {props.type !== "modal" && (
+                <Link to={`/login${url && "?returnurl=" + url}`}>Login</Link>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="register-wrapper">
+          <div className="form-wrapper">
+            <div className="heading">
+              <h2>Join AfroStock</h2>
+              <span>
+                Discover thousands of free photos you can use everywhere.
+              </span>
+            </div>
+            <form onSubmit={submitForm}>
+              <div className="surname-reg">
+                <input {...surName} placeholder="Enter Last name" />
+              </div>
+              <div className="firstname-reg">
+                <input {...firstName} placeholder="Enter first name" />
+              </div>
+              <div className="full">
+                <input {...email} placeholder="email" />
+              </div>
+              <div className="full">
+                <input {...phone} placeholder="Phone Number" />
+              </div>
+              <div className="full">
+                <input {...password} placeholder="password" />
+              </div>
+              <div className="full">
+                <input {...confirm} placeholder="confirm password" />
+              </div>
+              <div className="submit_">
+                <button type="submit">SIGN UP</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
       <div className="auth-images">
         <div className="auth-images-wrap">
+          <div className="wrap__img">
+            <img className="img-fluid" src="images/stack1.jpg" alt="img" />
+          </div>
           <div className="wrap-img">
             <div className="img_column">
               <div className="single_img">
@@ -87,42 +138,6 @@ export default function Register(props) {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="register-wrapper">
-        <div className="form-wrapper">
-          <div className="heading">
-            <h2>Join AfroStock</h2>
-            <span>
-              Discover thousands of free photos you can use everywhere.
-            </span>
-          </div>
-          <form onSubmit={submitForm}>
-            <div className="surname-reg">
-              <input {...surName} placeholder="Enter Last name" />
-            </div>
-            <div className="firstname-reg">
-              <input {...firstName} placeholder="Enter first name" />
-            </div>
-            <div className="full">
-              <input {...email} placeholder="email" />
-            </div>
-            <div className="full">
-              <input {...phone} placeholder="Phone Number" />
-            </div>
-            <div className="full">
-              <input {...password} placeholder="password" />
-            </div>
-            <div className="full">
-              <input {...confirm} placeholder="confirm password" />
-            </div>
-            <div className="submit_">
-              <button type="submit">SIGN UP</button>
-            </div>
-          </form>
-          {props.type !== "modal" && (
-            <Link to={`/login${url && "?returnurl=" + url}`}>Login</Link>
-          )}
         </div>
       </div>
     </div>
