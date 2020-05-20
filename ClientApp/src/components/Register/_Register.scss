@@ -1,23 +1,92 @@
 $helvetica-bold: "Helvetica Bold";
 $worksans-medium: "work sans medium";
 $opensans-light: "open sans light";
+
+.auth-overlay {
+  position: fixed; /* Sit on top of the page content */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: hsla(
+    26,
+    64%,
+    35%,
+    0.38
+  ); /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    background-color: transparent;
+  }
+
+  .heading {
+    margin-top: 2em;
+    .logo-section {
+      max-width: 200px;
+      position: relative;
+      left: 15px;
+
+      img {
+        width: 60%;
+        position: relative;
+        top: -15px;
+      }
+    }
+
+    .caption {
+      display: inline-block;
+      right: 15px;
+      position: absolute;
+      span {
+        font-size: 16px;
+        font-family: $opensans-light;
+        color: white;
+        display: inline-block;
+        padding: 0 1em;
+      }
+
+      a {
+        background-color: #935120;
+        padding: 14px 21px;
+        border-radius: 5px;
+        color: white;
+        font-family: $helvetica-bold;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
 .auth-images {
   height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  z-index: 1;
-
+  overflow-y: hidden;
   .auth-images-wrap {
-    padding-top: 1rem;
+    position: relative;
+
     max-width: 1200px;
     margin: auto;
 
+    .wrap__img {
+      display: none;
+
+      @media screen and (max-width: 769px) {
+        display: block;
+      }
+    }
     .wrap-img {
       display: flex;
       width: 100%;
       position: relative;
+      @media screen and (max-width: 768px) {
+        display: none;
+      }
 
       .img_column {
         display: block;
