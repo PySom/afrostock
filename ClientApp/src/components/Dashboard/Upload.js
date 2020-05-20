@@ -13,14 +13,16 @@ export default function Upload(props) {
     fileObj.append("file", newFile);
     const fileResponse = await file.addFile(fileObj);
     let imageData = {
-      name: "imageTest",
+      name: fileResponse.name,
       description: "Test the image ",
       contentType: 0,
-      orientation: 0,
       content: fileResponse.content,
+      contentLow: fileResponse.contentLow,
       authorId: 2,
       amount: 0,
+      suggestedTags: fileResponse.suggestedTags,
     };
+
     const imageResponseData = await api.create(
       "images",
       imageData,
@@ -31,10 +33,11 @@ export default function Upload(props) {
   };
 
   useEffect(() => {
+    console.log(fileUploadResponse);
     if (imageResponse) {
       alert("upload successful, go to homepage to see image");
     }
-  }, [imageResponse]);
+  });
   return (
     <div className="container-fluid dashboard-wrapper">
       <div className="upload-section text-center">
