@@ -244,7 +244,7 @@ namespace AfrroStock.Controllers
             StringBuilder message = new StringBuilder(100);
             message.Append($"Dear {firstName},<br/><br/>");
             message.Append($"Please verify your email.<br/>The code will expire in less than two (2) days.<br/>");
-            message.Append($"<a href='{Request.Scheme}://{Request.Host}/forgotpassword?code={code}'>Verify Email</a><br/><br/>");
+            message.Append($"<a href='{Request.Scheme}://{Request.Host}/verifyemail?code={code}'>Verify Email</a><br/><br/>");
             message.Append("Thank you.<br/><br/>Sincerely,<br/>Admin.");
             return message.ToString();
         }

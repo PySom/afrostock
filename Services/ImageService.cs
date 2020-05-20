@@ -96,5 +96,26 @@ namespace AfrroStock.Services
             }
             return path;
         }
+
+        //private string VideoManipulate(IFormFile file)
+        //{
+        //    var inputFile = new MediaFile { Filename = @"C:\Path\To_Video.flv" };
+        //    var outputFile = new MediaFile { Filename = @"C:\Path\To_Save_ExtractedVideo.flv" };
+
+        //    using (var engine = new Engine())
+        //    {
+        //        engine.GetMetadata(inputFile);
+
+        //        var options = new ConversionOptions();
+
+        //        // This example will create a 25 second video, starting from the 
+        //        // 30th second of the original video.
+        //        //// First parameter requests the starting frame to cut the media from.
+        //        //// Second parameter requests how long to cut the video.
+        //        options.CutMedia(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(25));
+
+        //        engine.Convert(inputFile, outputFile, options);
+        //    }
+        //}
     }
 }
