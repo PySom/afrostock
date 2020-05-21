@@ -20,6 +20,7 @@ namespace AfrroStock.Models
         public ContentType ContentType { get; set; }
         public string Content { get; set; }
         public string ContentLow { get; set; }
+        public string ContentLower { get; set; }
 
         [ForeignKey("AuthorId")]
         public ApplicationUser Author { get; set; }
@@ -41,6 +42,7 @@ namespace AfrroStock.Models
             public ContentType ContentType { get; set; }
             public string Content { get; set; }
             public string ContentLow { get; set; }
+            public string ContentLower { get; set; }
             public int AuthorId { get; set; }
             public double Amount { get; set; }
             public string[] SuggestedTags { get; set; }

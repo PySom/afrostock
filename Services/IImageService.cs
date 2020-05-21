@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace AfrroStock.Services
 {
@@ -8,6 +9,6 @@ namespace AfrroStock.Services
         bool Create(IFormFile file, out string path);
         void Delete(string ImageUrl);
         bool Edit(IFormFile file, string imageUrl, out string path);
-        string ManipulateImage(IFormFile file);
+        ValueTask<(string, string)> ManipulateContent(IFormFile file);
     }
 }

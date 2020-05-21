@@ -1,9 +1,16 @@
 ﻿using ImageMagick;
+using MediaToolkit;
+using MediaToolkit.Core;
+using MediaToolkit.Model;
+using MediaToolkit.Options;
+using MediaToolkit.Services;
+using MediaToolkit.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace AfrroStock.Services
 {
@@ -12,9 +19,11 @@ namespace AfrroStock.Services
     {
         private const string default_Path = "assets";
         private readonly IWebHostEnvironment _env;
-        public ImageService(IWebHostEnvironment env)
+        private readonly IMediaToolkitService _media;
+        public ImageService(IWebHostEnvironment env, IMediaToolkitService media)
         {
             _env = env;
+            _media = media;
         }
         public bool Create(IFormFile file, out string path)
         {
@@ -69,53 +78,82 @@ namespace AfrroStock.Services
             }
         }
 
-        public string ManipulateImage(IFormFile file)
+        public async ValueTask<(string, string)> ManipulateContent(IFormFile file)
+        {
+            string fileType = file.ContentType.Split('/')[0];
+            if (fileType == "image")
+            {
+                return ManipulateImage(file);
+            }
+
+            else if (fileType == "video")
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var path = Path.Combine(default_Path, fileName);
+                return await ManipulateVideo(path);
+            }
+            return (null, null);
+        }
+
+        private (string, string) ManipulateImage(IFormFile file)
         {
             string path = null;
+            string pathImgLower = null;
             try
             {
                 using var image = new MagickImage(file.OpenReadStream());
+                using var imageLower = new MagickImage(file.OpenReadStream());
                 image.Resize(image.Width / 2, image.Height / 2);
                 image.Quality = 70;
+                imageLower.Resize(image.Width / 2, image.Height / 2);
+                imageLower.Quality = 60;
 
                 var logoPath = Path.Combine(default_Path, "afro_logo.png");
                 var logoFullPath = Path.Combine(_env.WebRootPath, logoPath);
                 using var watermark = new MagickImage(logoFullPath);
                 // Optionally make the watermark more transparent
-                watermark.Evaluate(Channels.Alpha, EvaluateOperator.Divide, 4);
-                // Or draw the watermark at the center
+                watermark.Evaluate(Channels.Alpha, EvaluateOperator.Divide, 2);
+                // Draw the watermark at the center
                 image.Composite(watermark, Gravity.Center, CompositeOperator.Over);
                 var fileName = Path.GetFileName(file.FileName);
                 path = Path.Combine(default_Path, $"low_{fileName}");
+                pathImgLower = Path.Combine(default_Path, $"lower_{fileName}");
                 var absolutePath = Path.Combine(_env.WebRootPath, path);
+                var absolutePathLowerImg = Path.Combine(_env.WebRootPath, pathImgLower);
                 image.Write(absolutePath);
+                imageLower.Write(absolutePathLowerImg);
             }
             catch(Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
-            return path;
+            return (path, pathImgLower);
         }
 
-        //private string VideoManipulate(IFormFile file)
-        //{
-        //    var inputFile = new MediaFile { Filename = @"C:\Path\To_Video.flv" };
-        //    var outputFile = new MediaFile { Filename = @"C:\Path\To_Save_ExtractedVideo.flv" };
+        private async ValueTask<(string, string)> ManipulateVideo(string file)
+        {
+            string logoPath = null;
+            try
+            {
+                var absolutePathToFile = Path.Combine(_env.WebRootPath, file);
 
-        //    using (var engine = new Engine())
-        //    {
-        //        engine.GetMetadata(inputFile);
+                var fileName = file.Split('\\')[1];
+                var fileExt = fileName.Split('.');
+                logoPath = Path.Combine(default_Path, $"low_{fileExt[0]}.{fileExt[1]}");
+                var absolutePathNew = Path.Combine(_env.WebRootPath, logoPath);
+                var saveThumbnailTask = new FfTaskGetVideoPortion(
+                                                    absolutePathToFile,
+                                                    absolutePathNew,
+                                                    TimeSpan.FromSeconds(10)
+                                                    );
+                await _media.ExecuteAsync(saveThumbnailTask);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
-        //        var options = new ConversionOptions();
-
-        //        // This example will create a 25 second video, starting from the 
-        //        // 30th second of the original video.
-        //        //// First parameter requests the starting frame to cut the media from.
-        //        //// Second parameter requests how long to cut the video.
-        //        options.CutMedia(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(25));
-
-        //        engine.Convert(inputFile, outputFile, options);
-        //    }
-        //}
+            return (logoPath, null);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AfrroStock.Models.ViewModels;
 using AfrroStock.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace AfrroStock.Controllers
 {
@@ -22,19 +23,24 @@ namespace AfrroStock.Controllers
         }
 
         [HttpPost("upload")]
-        public IActionResult Post([FromForm]FileViewModel model)
+        public async Task<IActionResult> Post([FromForm]FileViewModel model)
         {
             if(ModelState.IsValid && model.File != null)
             {
-                if(_img.Create(model.File, out string path))
+                var contentType = model.File.ContentType.Split('/')[0];
+                if(contentType == "image" || contentType == "video")
                 {
-                    var name = model.File.FileName.Split('.')[0];
-                    var contentType = model.File.ContentType.Split('/')[0];
-                    var lowRes = _img.ManipulateImage(model.File);
-                    (string _, string[] tags) = _ml.Pipeline();
-                    return Ok(new { Content = path, ContentLow = lowRes, ContentType = contentType, SuggestedTags = tags, Name = name });
+                    if (_img.Create(model.File, out string path))
+                    {
+                        var name = model.File.FileName.Split('.')[0];
+
+                        var (lowRes, lowerRes) = await _img.ManipulateContent(model.File);
+                        (string _, string[] tags) = _ml.Pipeline();
+                        return Ok(new { Content = path, ContentLow = lowRes, ContentLower = lowerRes, ContentType = contentType, SuggestedTags = tags, Name = name });
+                    }
+                    return BadRequest(new { Message = "We could not add this resource. Please try again" });
                 }
-                return BadRequest(new { Message = "We could not add this resource. Please try again" });
+                return BadRequest(new { Message = "File has to be an image or a video" });
             }
             return BadRequest(new { Message = "Your data is bad" });
         }

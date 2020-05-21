@@ -22,23 +22,26 @@ export class NavMenu extends Component {
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
       collapsed: true,
+      searchVisible: false,
     };
   }
 
   toggleNavbar() {
     this.setState({
       collapsed: !this.state.collapsed,
+      searchVisible: !this.state.searchVisible
     });
   }
 
   render() {
-    const { searchVisibility } = this.props;
+      const { searchVisibility } = this.props;
+      console.log({ vis: this.state.searchVisible, searchVisibility })
     console.log("nav visible", searchVisibility);
     return (
       <header
         className={`sticky-header ${searchVisibility ? "" : "head-w-search"} ${
-          history.location.pathname == "/register" ||
-          history.location.pathname == "/login"
+          history.location.pathname === "/register" ||
+          history.location.pathname === "/login"
             ? "d-none"
             : ""
         }`}
@@ -54,7 +57,7 @@ export class NavMenu extends Component {
             <SearchArea
               searchClass=" header-width nav-search"
               className={`variable-search-width ${
-                searchVisibility ? "d-none" : ""
+                  (searchVisibility || (searchVisibility && !this.state.searchVisible)) ? "d-none" : ""
               }`}
             />
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
