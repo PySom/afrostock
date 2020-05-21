@@ -15,6 +15,7 @@ import Register from "./components/Register/Register";
 import Guard from "./Guard";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Upload from "./components/Dashboard/Upload";
+import EditProfile from "./components/Dashboard/EditProfile";
 
 export default function App(props) {
   return (
@@ -33,7 +34,7 @@ export default function App(props) {
         exact
         path="/videos"
         render={() => (
-          <Guard type="route" route="videos">
+          <Guard type="modal" route="videos">
             <MainBody>
               <VideoPage />
             </MainBody>
@@ -44,8 +45,18 @@ export default function App(props) {
         exact
         path="/dashboard"
         render={() => (
-          <Guard type="route" route="dashboard">
+          <Guard type="modal" route="dashboard">
             <Dashboard />
+          </Guard>
+        )}
+      />
+
+      <Route
+        exact
+        path="/editprofile"
+        render={() => (
+          <Guard type="modal" route="editprofile">
+            <EditProfile />
           </Guard>
         )}
       />
@@ -54,7 +65,7 @@ export default function App(props) {
         exact
         path="/upload"
         render={() => (
-          <Guard type="route" route="upload">
+          <Guard type="modal" route="upload">
             <Upload />
           </Guard>
         )}

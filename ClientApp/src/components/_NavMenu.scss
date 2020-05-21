@@ -3,10 +3,17 @@ a.navbar-brand {
   white-space: normal;
   word-break: break-all;
   max-width: 220px;
+
+  @media screen and (max-width: 600px) {
+    max-width: 60px;
+  }
 }
 
 .navbar-brand img {
   width: 60%;
+  @media screen and (max-width: 600px) {
+    width: 100%;
+  }
 }
 
 html {
@@ -40,6 +47,65 @@ html {
     a {
       color: white !important;
       font-family: $helvetica-bold;
+    }
+  }
+}
+
+.navbar {
+  @media screen and (max-width: 768px) {
+    padding: 1rem 1rem !important;
+
+    .container-fluid {
+      .collapse {
+        height: 100vh !important;
+      }
+    }
+  }
+  .collapsing {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    -webkit-transition: height 0.15s ease;
+    -o-transition: height 0.15s ease;
+    transition: height 0.15s ease;
+  }
+}
+
+.profile_button {
+  .dropdown-toggle {
+    background-color: transparent !important;
+    border: none;
+    outline: none;
+    &:focus {
+      border: none !important;
+      outline: none;
+      background-color: transparent;
+      box-shadow: none !important;
+    }
+  }
+  .dropdown-menu {
+    min-width: 280px;
+    color: #5e5e5e;
+    font-family: "work sans medium";
+    button {
+      &:hover {
+        background-color: #c5c5c587;
+      }
+    }
+  }
+  button.wrap__avatar {
+    max-width: 100px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+
+    &:focus {
+      border: none;
+      outline: none;
+    }
+    .nav__avatar {
+      width: 40%;
+      border-radius: 50%;
     }
   }
 }

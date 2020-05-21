@@ -1,9 +1,11 @@
 ﻿import React from "react";
 import auth from "../../sideEffects/apis/auth";
 import { useForm } from "../../customHooks/useForm";
+import { connect } from "react-redux";
 import { useLocation, useHistory, Link } from "react-router-dom";
+import { setLoggedInStatus } from "../Register/Register";
 
-export default function Login(props) {
+function Login(props) {
   const location = useLocation();
   console.log({ location }, props.route);
   const history = useHistory();
@@ -30,6 +32,7 @@ export default function Login(props) {
           else if (url) history.push("/" + url);
           else history.push("/dashboard");
         }
+        window.location.reload();
       })
       .catch((err) => {
         alert(err.message);
@@ -126,3 +129,5 @@ export default function Login(props) {
     </div>
   );
 }
+
+export default connect(null, { setLoggedInStatus })(Login);

@@ -32,11 +32,11 @@ export default function Home(props) {
           <Header />
         </div>
         <MainBody>
-          <div className="enforce-mp trend-pos mt-20">
+          <div className="container-fluid trend-pos mt-20">
             <p className="app-font-mid">Free Stock Photos</p>
             <DropDown />
           </div>
-          <div className="enforce-mp mt-20">
+          <div className="container-fluid mt-20">
             <PhotoGrid contents={contents} />
           </div>
         </MainBody>

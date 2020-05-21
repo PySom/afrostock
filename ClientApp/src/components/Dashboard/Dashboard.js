@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import auth from "../../sideEffects/apis/auth";
 import { useForm } from "../../customHooks/useForm";
+import { connect } from "react-redux";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import "./_Dashboard.scss";
 
-export default function Dashboard(props) {
+function Dashboard(props) {
   const [showLoggedin, setShowLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
 
@@ -19,15 +20,18 @@ export default function Dashboard(props) {
     console.log("user is", loggedInUser);
     setTimeout(() => {
       setShowLoggedIn(false);
-    }, 5000);
+    }, 50000);
   };
 
   const goToUploadPage = () => {
     history.push("/upload");
   };
 
+  const goToEditProfile = () => {
+    history.push("/editprofile");
+  };
   return (
-    <div className="container-fluid dashboard-wrapper">
+    <div className="dashboard-wrapper">
       <div
         className={`show-loggedIn text-center ${
           showLoggedin ? "d-block" : "d-none"
@@ -37,7 +41,7 @@ export default function Dashboard(props) {
       </div>
 
       {loggedInUser && (
-        <div>
+        <div className="container-fluid ">
           <div className="profile-summary text-center">
             <div className="bio-wrapper row">
               <div className="col-md-3">
@@ -57,7 +61,7 @@ export default function Dashboard(props) {
                       <span>{`${loggedInUser.firstName} ${loggedInUser.surName}`}</span>
                     </div>
                     <div className="col-md-4 ">
-                      <button>
+                      <button onClick={goToEditProfile}>
                         <img
                           className="img-fluid"
                           src="images/pencilEdit.png"
@@ -109,3 +113,10 @@ export default function Dashboard(props) {
     </div>
   );
 }
+
+const matchStateToProps = ({ loggedInStatus }) => {
+  return { loggedInStatus };
+};
+
+//connect layout to get search visibility
+export default connect(matchStateToProps)(Dashboard);
