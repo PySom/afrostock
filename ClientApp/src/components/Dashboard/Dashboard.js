@@ -27,6 +27,9 @@ function Dashboard(props) {
     history.push("/upload");
   };
 
+  const goToEditProfile = () => {
+    history.push("/editprofile");
+  };
   return (
     <div className="dashboard-wrapper">
       <div
@@ -58,7 +61,7 @@ function Dashboard(props) {
                       <span>{`${loggedInUser.firstName} ${loggedInUser.surName}`}</span>
                     </div>
                     <div className="col-md-4 ">
-                      <button>
+                      <button onClick={goToEditProfile}>
                         <img
                           className="img-fluid"
                           src="images/pencilEdit.png"

@@ -1,0 +1,65 @@
+.editprofile-wrapper {
+  .edit-section {
+    margin: 0 auto;
+    padding: 4rem 0;
+    .form-wrapper {
+      max-width: 560px;
+      border: 1px solid #e8e8e8;
+      margin: 0px auto;
+
+      .heading {
+        text-align: center;
+        padding: 2em 0;
+      }
+
+      form {
+        padding: 2em;
+
+        .picture-section {
+          padding: 0.8em 0;
+          img {
+            border-radius: 50%;
+            width: 65%;
+            float: left;
+          }
+          input {
+            display: inline-block;
+          }
+        }
+        .name-section {
+          padding: 0.8em 0;
+          width: 100%;
+          .first-name {
+            width: 50%;
+            padding-right: 2%;
+            display: inline-block;
+            input {
+              padding: 0.5rem;
+              width: 100%;
+            }
+          }
+          .last-name {
+            width: 50%;
+            padding-left: 2%;
+            display: inline-block;
+            input {
+              padding: 0.5rem;
+              width: 100%;
+            }
+          }
+        }
+        .full-section {
+          padding: 0.8em 0;
+          width: 100%;
+          input {
+            padding: 0.5rem;
+            width: 100%;
+          }
+          label {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}
