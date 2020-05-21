@@ -15,14 +15,14 @@ export default function Upload(props) {
     let imageData = {
       name: fileResponse.name,
       description: "Test the image ",
-      contentType: 0,
+      contentType: 1,
       content: fileResponse.content,
       contentLow: fileResponse.contentLow,
-      authorId: 2,
+      authorId: 1,
       amount: 0,
       suggestedTags: fileResponse.suggestedTags,
     };
-
+    console.log(imageData);
     const imageResponseData = await api.create(
       "images",
       imageData,

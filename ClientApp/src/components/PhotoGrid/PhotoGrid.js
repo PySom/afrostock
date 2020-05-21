@@ -39,8 +39,6 @@ export default function PhotoGrid({ contents }) {
     }
   };
 
-  
-
   console.log({ showRaveButton });
 
   return (
@@ -50,7 +48,7 @@ export default function PhotoGrid({ contents }) {
           <button
             key={content.id}
             onClick={(e) => handleShow(e, index, content)}
-            className="unstyled mb-2"
+            className="unstyled px-0 mb-2"
           >
             {content.contentType === 0 && (
               <div className="r-p">

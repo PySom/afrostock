@@ -18,18 +18,6 @@
   column-count: 3;
   column-gap: 5px;
 }
-@media screen and (max-width: 768px) {
-  #photos {
-    line-height: 0;
-
-    -webkit-column-count: 1;
-    -webkit-column-gap: 5px;
-    -moz-column-count: 1;
-    -moz-column-gap: 0px;
-    column-count: 1;
-    column-gap: 5px;
-  }
-}
 
 @media screen and (max-width: 1200px) {
   #photos {
@@ -44,6 +32,18 @@
   }
 }
 
+@media screen and (max-width: 768px) {
+  #photos {
+    line-height: 0;
+
+    -webkit-column-count: 1;
+    -webkit-column-gap: 5px;
+    -moz-column-count: 1;
+    -moz-column-gap: 0px;
+    column-count: 1;
+    column-gap: 5px;
+  }
+}
 #photos button {
   max-width: 100%;
   height: auto;

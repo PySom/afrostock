@@ -21,6 +21,10 @@ $worksans-medium: "work sans medium";
     .avartar {
       img {
         border-radius: 50%;
+
+        @media screen and (max-width: 600px) {
+          width: 50%;
+        }
       }
     }
     .user_names {
@@ -28,6 +32,11 @@ $worksans-medium: "work sans medium";
         text-align: left;
         margin-top: -15px;
         font-family: "Helvetica Bold";
+
+        @media screen and (max-width: 600px) {
+          text-align: center;
+          padding: 1em 0;
+        }
         span {
           font-size: 2.4rem;
         }
@@ -42,6 +51,7 @@ $worksans-medium: "work sans medium";
         outline: none;
         font-size: 15px;
         font-family: $worksans-medium;
+        max-width: 180px;
         img {
           width: 23%;
           padding: 0 5px;
@@ -77,6 +87,10 @@ $worksans-medium: "work sans medium";
     .bio-summary {
       margin-top: 1em;
       text-align: left;
+      @media screen and (max-width: 600px) {
+        text-align: center;
+        padding: 1em 0;
+      }
       span {
         font-family: "open sans light";
         font-size: 16px;
@@ -87,6 +101,10 @@ $worksans-medium: "work sans medium";
     width: 50%;
     padding-top: 3em;
     margin: 0px auto;
+
+    @media screen and (max-width: 600px) {
+      width: 100%;
+    }
     .cloud-upload {
       img {
         width: 10%;
