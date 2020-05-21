@@ -33,7 +33,7 @@ export default function App(props) {
         exact
         path="/videos"
         render={() => (
-          <Guard type="route" route="videos">
+          <Guard type="modal" route="videos">
             <MainBody>
               <VideoPage />
             </MainBody>
@@ -44,7 +44,7 @@ export default function App(props) {
         exact
         path="/dashboard"
         render={() => (
-          <Guard type="route" route="dashboard">
+          <Guard type="modal" route="dashboard">
             <Dashboard />
           </Guard>
         )}
@@ -54,7 +54,7 @@ export default function App(props) {
         exact
         path="/upload"
         render={() => (
-          <Guard type="route" route="upload">
+          <Guard type="modal" route="upload">
             <Upload />
           </Guard>
         )}

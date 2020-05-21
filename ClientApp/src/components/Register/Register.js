@@ -1,10 +1,11 @@
 ﻿import React from "react";
 import auth from "../../sideEffects/apis/auth";
 import { useForm } from "../../customHooks/useForm";
+import { connect } from "react-redux";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import "./_Register.scss";
 
-export default function Register(props) {
+function Register(props) {
   const location = useLocation();
   const history = useHistory();
   const url =
@@ -33,10 +34,15 @@ export default function Register(props) {
       .register(data)
       .then((res) => {
         history.push((url && "/" + url) || "/dashboard");
+        window.location.reload();
       })
       .catch((err) => {
         alert(err.message);
       });
+  };
+
+  const goToHome = () => {
+    history.push("/");
   };
 
   return (
@@ -45,7 +51,7 @@ export default function Register(props) {
         <div className="heading">
           <div className="row">
             <div className="logo-section">
-              <img src="images/logo.png" alt="logo" />
+              <img src="images/logo.png" alt="logo" onClick={goToHome} />
             </div>
             <div className="caption">
               <span>Already a member?</span>
@@ -143,3 +149,27 @@ export default function Register(props) {
     </div>
   );
 }
+
+//Below defines actions and reducers
+const actionTypes = {
+  loggedInStatus: "LOGIN_STATUS",
+};
+
+//actions
+export const setLoggedInStatus = (data) => ({
+  type: actionTypes.loggedInStatus,
+  data,
+});
+
+//reducers
+export const loggedInStatusReducer = (state = false, action) => {
+  switch (action.type) {
+    case actionTypes.loggedInStatus:
+      return action.data;
+    default:
+      return state;
+  }
+};
+
+//get action from store in a connected form
+export default connect(null, { setLoggedInStatus })(Register);

@@ -2,7 +2,7 @@
 import ls from "./sideEffects/local/ourLocalStorage";
 import { Redirect } from "react-router-dom";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
-import LoginModal from "./components/Login/Login";
+import LoginModal from "./components/Login/LoginModal";
 import UnAthorized from "./components/UnAthorized/UnAuthorized";
 
 export default function Guard({

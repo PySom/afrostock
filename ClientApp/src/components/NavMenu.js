@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import {
   Collapse,
   Container,
@@ -11,7 +11,54 @@ import {
 import "./_NavMenu.scss";
 import history from "./history";
 import { SearchArea } from "./SearchArea/SearchArea";
+import { setLoggedInStatus } from "./Register/Register";
 import { connect } from "react-redux";
+
+import {
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
+import { logout } from "../sideEffects/apis/auth";
+
+const ProfileDropDown = (props) => {
+  const [dropdownOpen, setOpen] = useState(false);
+
+  const toggle = () => setOpen(!dropdownOpen);
+  const triggerLogout = () => {
+    props.logout(false);
+    setLoggedInStatus(false);
+    history.push("/");
+    window.location.reload();
+  };
+
+  return (
+    <ButtonDropdown
+      isOpen={dropdownOpen}
+      toggle={toggle}
+      className="profile_button"
+    >
+      <DropdownToggle caret className="wrap__avatar">
+        <img
+          class="img-fluid nav__avatar"
+          src="images/avatar.png"
+          alt="profile avatar"
+        />
+      </DropdownToggle>
+      <DropdownMenu>
+        <NavLink href="/dashboard" className="text-dark px-0">
+          <DropdownItem>Your Profile</DropdownItem>
+        </NavLink>
+
+        <DropdownItem>Your Collection</DropdownItem>
+        <DropdownItem onClick={triggerLogout}>Logout</DropdownItem>
+        <DropdownItem divider />
+        <DropdownItem>FAQ</DropdownItem>
+      </DropdownMenu>
+    </ButtonDropdown>
+  );
+};
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -22,16 +69,31 @@ export class NavMenu extends Component {
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
       collapsed: true,
+      loggedIn: false,
+      showSearch: false,
     };
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem("user")) {
+      this.setState({ loggedIn: true });
+    }
+  }
+
+  logout(value) {
+    localStorage.removeItem("user");
+    this.setState({ loggedIn: value });
   }
 
   toggleNavbar() {
     this.setState({
       collapsed: !this.state.collapsed,
+      showSearch: !this.state.showSearch,
     });
   }
 
   render() {
+    //alert(this.props.loggedInStatus);
     const { searchVisibility } = this.props;
     console.log("nav visible", searchVisibility);
     return (
@@ -41,7 +103,7 @@ export class NavMenu extends Component {
           history.location.pathname == "/login"
             ? "d-none"
             : ""
-        }`}
+        } ${history.location.pathname == "/" ? "" : "color_nav"}`}
       >
         <Navbar
           className="navbar-expand-sm navbar-toggleable-sm ng-white"
@@ -54,14 +116,17 @@ export class NavMenu extends Component {
             <SearchArea
               searchClass=" header-width nav-search"
               className={`variable-search-width ${
-                searchVisibility ? "d-none" : ""
+                searchVisibility || (searchVisibility && !this.state.showSearch)
+                  ? "d-none"
+                  : ""
               }`}
             />
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse
-              className="d-sm-inline-flex flex-sm-row-reverse"
+              className="d-sm-inline-flex flex-sm-row-reverse "
               isOpen={!this.state.collapsed}
               navbar
+              // style={{ height: "100vh" }}
             >
               <ul className="navbar-nav flex-grow">
                 <NavItem>
@@ -74,14 +139,28 @@ export class NavMenu extends Component {
                     About Us
                   </NavLink>
                 </NavItem>
+
+                {this.state.loggedIn ? (
+                  <>
+                    <NavItem>
+                      <ProfileDropDown logout={logout} />
+                    </NavItem>
+                    <NavItem className="register">
+                      <NavLink href="/dashboard" className="text-dark">
+                        Upload
+                      </NavLink>
+                    </NavItem>
+                  </>
+                ) : (
+                  <NavItem className="register">
+                    <NavLink href="/register" className="text-dark">
+                      Join
+                    </NavLink>
+                  </NavItem>
+                )}
                 <NavItem>
                   <NavLink href="/contact" className="text-dark">
                     Contact
-                  </NavLink>
-                </NavItem>
-                <NavItem className="register">
-                  <NavLink href="/register" className="text-dark">
-                    Join
                   </NavLink>
                 </NavItem>
               </ul>
@@ -94,9 +173,11 @@ export class NavMenu extends Component {
 }
 
 //get props value
-const matchStateToProps = ({ searchVisibility }) => {
-  return { searchVisibility };
+const matchStateToProps = ({ searchVisibility, loggedInStatus }) => {
+  return { searchVisibility, loggedInStatus };
 };
 
 //connect layout to get search visibility
-export const ConnectedNavMenu = connect(matchStateToProps)(NavMenu);
+export const ConnectedNavMenu = connect(matchStateToProps, {
+  setLoggedInStatus,
+})(NavMenu);
