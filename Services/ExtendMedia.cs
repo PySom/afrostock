@@ -58,4 +58,58 @@ namespace MediaToolkit.Tasks
             return 0;
         }
     }
+
+
+    public class FfTaskGetOverlay : FfMpegTaskBase<int>
+    {
+        private readonly string _inputFilePath;
+        private readonly string _outputFilePath;
+        private readonly string _watermark;
+
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="inputFilePath">Full path to the input video file.</param>
+        /// <param name="outputFilePath">Full path to the output video file.</param>
+        /// <param name="seekSpan">The frame timespan.</param>
+        public FfTaskGetOverlay(string inputFilePath, string outputFilePath, string watermark)
+        {
+            this._inputFilePath = inputFilePath;
+            this._outputFilePath = outputFilePath;
+            this._watermark = watermark;
+        }
+        //ffmpeg -i input.mp4 -i logo.png -filter_complex "overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2" -codec:a copy output.mp4
+        /// <summary>
+        /// FfTaskBase.
+        /// </summary>
+        public override IList<string> CreateArguments()
+        {
+            var overlay = "overlay=x=(main_w-overlay_w)/2:y=(main_h-overlay_h)/2";
+            var arguments = new[]
+            {
+                "-nostdin",
+                "-y",
+                "-loglevel",
+                "info",
+                "-i",
+                $@"{this._inputFilePath}",
+                "-i",
+                $@"{this._watermark}",
+                "-filter_complex",
+                $"{overlay}",
+                $@"{this._outputFilePath}",
+            };
+
+            return arguments;
+        }
+
+        /// <summary>
+        /// FfTaskBase.
+        /// </summary>
+        public override async Task<int> ExecuteCommandAsync(IFfProcess ffProcess)
+        {
+            await ffProcess.Task;
+            return 0;
+        }
+    }
 }

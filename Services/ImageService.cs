@@ -105,7 +105,7 @@ namespace AfrroStock.Services
                 using var imageLower = new MagickImage(file.OpenReadStream());
                 image.Resize(image.Width / 2, image.Height / 2);
                 image.Quality = 70;
-                imageLower.Resize(image.Width / 2, image.Height / 2);
+                imageLower.Resize(imageLower.Width / 2, imageLower.Height / 2);
                 imageLower.Quality = 60;
 
                 var logoPath = Path.Combine(default_Path, "afro_logo.png");
@@ -132,28 +132,44 @@ namespace AfrroStock.Services
 
         private async ValueTask<(string, string)> ManipulateVideo(string file)
         {
-            string logoPath = null;
+            string pathLow = null;
+            string pathOverlay = null;
             try
             {
                 var absolutePathToFile = Path.Combine(_env.WebRootPath, file);
 
                 var fileName = file.Split('\\')[1];
                 var fileExt = fileName.Split('.');
-                logoPath = Path.Combine(default_Path, $"low_{fileExt[0]}.{fileExt[1]}");
-                var absolutePathNew = Path.Combine(_env.WebRootPath, logoPath);
-                var saveThumbnailTask = new FfTaskGetVideoPortion(
+
+                pathLow = Path.Combine(default_Path, $"low_{fileExt[0]}.{fileExt[1]}");
+                var absolutePathNew = Path.Combine(_env.WebRootPath, pathLow);
+
+                pathOverlay = Path.Combine(default_Path, $"low_overlay_{fileExt[0]}.{fileExt[1]}");
+                var absolutePathNewOverlay = Path.Combine(_env.WebRootPath, pathOverlay);
+
+                var getVideoPortionTask = new FfTaskGetVideoPortion(
                                                     absolutePathToFile,
                                                     absolutePathNew,
                                                     TimeSpan.FromSeconds(10)
                                                     );
-                await _media.ExecuteAsync(saveThumbnailTask);
+                
+                var logoPath = Path.Combine(default_Path, "afro_logo.png");
+                var logoFullPath = Path.Combine(_env.WebRootPath, logoPath);
+
+                var addWaterMarkTask = new FfTaskGetOverlay(
+                                                    absolutePathToFile,
+                                                    absolutePathNewOverlay,
+                                                    logoFullPath
+                                                    );
+                await _media.ExecuteAsync(getVideoPortionTask);
+                await _media.ExecuteAsync(addWaterMarkTask);
             }
             catch(Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            return (logoPath, null);
+            return (pathOverlay, pathLow);
         }
     }
 }
