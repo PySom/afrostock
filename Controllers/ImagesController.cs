@@ -245,21 +245,6 @@ namespace AfrroStock.Controllers
         }
 
 
-        //private async ValueTask<int> CheckCategory(string name)
-        //{
-        //    int id = 0;
-        //    var category = await _category.Item().Where(c => c.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
-        //    if (category != null)
-        //    {
-        //        id = category.Id;
-        //    }
-        //    else
-        //    {
-        //        (bool succeeded, Category cat, string error) = await _category.Add(new Category{ Name = name });
-        //        if (succeeded) id = cat.Id;
-        //    }
-        //    return id;
-        //}
 
     }
 }

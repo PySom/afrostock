@@ -112,4 +112,52 @@ namespace MediaToolkit.Tasks
             return 0;
         }
     }
+
+    public class FfTaskReduceVideo : FfMpegTaskBase<int>
+    {
+        private readonly string _inputFilePath;
+        private readonly string _outputFilePath;
+
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="inputFilePath">Full path to the input video file.</param>
+        /// <param name="outputFilePath">Full path to the output video file.</param>
+        public FfTaskReduceVideo(string inputFilePath, string outputFilePath)
+        {
+            this._inputFilePath = inputFilePath;
+            this._outputFilePath = outputFilePath;
+        }
+        //ffmpeg -i $infile -vf "scale=iw/2:ih/2" $outfile
+        /// <summary>
+        /// FfTaskBase.
+        /// </summary>
+        public override IList<string> CreateArguments()
+        {
+            var scale = "scale=iw/2:ih/2";
+            var arguments = new[]
+            {
+                "-nostdin",
+                "-y",
+                "-loglevel",
+                "info",
+                "-i",
+                $@"{this._inputFilePath}",
+                "-vf",
+                $"{scale}",
+                $@"{this._outputFilePath}"
+            };
+
+            return arguments;
+        }
+
+        /// <summary>
+        /// FfTaskBase.
+        /// </summary>
+        public override async Task<int> ExecuteCommandAsync(IFfProcess ffProcess)
+        {
+            await ffProcess.Task;
+            return 0;
+        }
+    }
 }

@@ -134,6 +134,7 @@ namespace AfrroStock.Services
         {
             string pathLow = null;
             string pathOverlay = null;
+            string pathOverlayTemp = null;
             try
             {
                 var absolutePathToFile = Path.Combine(_env.WebRootPath, file);
@@ -144,7 +145,10 @@ namespace AfrroStock.Services
                 pathLow = Path.Combine(default_Path, $"low_{fileExt[0]}.{fileExt[1]}");
                 var absolutePathNew = Path.Combine(_env.WebRootPath, pathLow);
 
-                pathOverlay = Path.Combine(default_Path, $"low_overlay_{fileExt[0]}.{fileExt[1]}");
+                pathOverlayTemp = Path.Combine(default_Path, $"low_overlay_{fileExt[0]}.{fileExt[1]}");
+                var absolutePathNewOverlayTemp = Path.Combine(_env.WebRootPath, pathOverlayTemp);
+
+                pathOverlay = Path.Combine(default_Path, $"lower_overlay_{fileExt[0]}.{fileExt[1]}");
                 var absolutePathNewOverlay = Path.Combine(_env.WebRootPath, pathOverlay);
 
                 var getVideoPortionTask = new FfTaskGetVideoPortion(
@@ -156,17 +160,30 @@ namespace AfrroStock.Services
                 var logoPath = Path.Combine(default_Path, "afro_logo.png");
                 var logoFullPath = Path.Combine(_env.WebRootPath, logoPath);
 
-                var addWaterMarkTask = new FfTaskGetOverlay(
+                var reduceQualityTask = new FfTaskReduceVideo(
                                                     absolutePathToFile,
+                                                    absolutePathNewOverlayTemp
+                                                    );
+
+                var addWaterMarkTask = new FfTaskGetOverlay(
+                                                    absolutePathNewOverlayTemp,
                                                     absolutePathNewOverlay,
                                                     logoFullPath
                                                     );
                 await _media.ExecuteAsync(getVideoPortionTask);
+                await _media.ExecuteAsync(reduceQualityTask);
                 await _media.ExecuteAsync(addWaterMarkTask);
+
+
             }
             catch(Exception ex)
             {
                 Debug.WriteLine(ex.Message);
+            }
+
+            finally
+            {
+                Delete(pathOverlayTemp);
             }
 
             return (pathOverlay, pathLow);
