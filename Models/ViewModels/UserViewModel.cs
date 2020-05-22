@@ -1,4 +1,5 @@
 ﻿using AfrroStock.Enums;
+using System.Collections.Generic;
 
 namespace AfrroStock.Models.ViewModels
 {
@@ -14,6 +15,10 @@ namespace AfrroStock.Models.ViewModels
         public string Role { get; set; }
         public bool IsVerified { get; set; }
         public string Token { get; set; }
+        public ICollection<UserImage> DowwnloadedImages { get; set; }
+        public ICollection<Image> UploadedImages { get; set; }
+        public ICollection<Collect> CollectedImages { get; set; }
+        public ICollection<UserSubscription> Subscriptions { get; set; }
     }
 
 }

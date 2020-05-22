@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AfrroStock.Models;
 using AfrroStock.Repository.Generic;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,10 +29,13 @@ namespace AfrroStock.Controllers
 
 
         [HttpGet]
-        public virtual async ValueTask<IActionResult> Get()
+        public virtual async ValueTask<IActionResult> GetAll(int page = 1)
         {
+            int itemsPerPage = 20;
             ICollection<T> options = await _repo
                                             .Item()
+                                            .Skip(page * itemsPerPage - itemsPerPage)
+                                            .Take(itemsPerPage)
                                             .ToListAsync();
             return Ok(_mapper.Map<ICollection<T>, ICollection<TD>>(options));
 
@@ -76,6 +80,26 @@ namespace AfrroStock.Controllers
                 return BadRequest(new { Message = error });
             }
             return BadRequest(new { Errors = ModelState.Values.SelectMany(e => e.Errors).ToList() });
+        }
+
+        [HttpPatch("{id:int}")]
+        public virtual async ValueTask<IActionResult> Put([FromBody]JsonPatchDocument<T> patchDoc, int id)
+        {
+            var model = await _repo.Item().FindAsync(id);
+            if (model != null)
+            {
+                patchDoc.ApplyTo(model, ModelState);
+                if (ModelState.IsValid)
+                {
+                    (bool succeeded, T t, string error) = await _repo.Update(model);
+                    if (succeeded) return Ok(_mapper.Map<T, TD>(t));
+                    return BadRequest(new { Message = error });
+                }
+                return BadRequest(new { Errors = ModelState.Values.SelectMany(e => e.Errors).ToList() });
+            }
+            return BadRequest(new { Message = "No such item" });
+
+
         }
 
         [HttpDelete("{id}")]

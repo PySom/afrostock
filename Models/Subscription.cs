@@ -18,7 +18,7 @@ namespace AfrroStock.Models
 
     namespace ViewModels
     {
-        public class SubscriptionVM
+        public class SubscriptionVM : IModel
         {
             public int Id { get; set; }
             public string Name { get; set; }

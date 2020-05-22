@@ -32,7 +32,7 @@ namespace AfrroStock.Models
 
     namespace ViewModels
     {
-        public class TagVM
+        public class TagVM : IModel
         {
             public int Id { get; set; }
             public string Name { get; set; }

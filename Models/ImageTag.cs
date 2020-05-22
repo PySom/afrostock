@@ -18,7 +18,7 @@ namespace AfrroStock.Models
     }
     namespace ViewModels
     {
-        public class ImageTagVM
+        public class ImageTagVM : IModel
         {
             public int Id { get; set; }
             public int? ImageId { get; set; }

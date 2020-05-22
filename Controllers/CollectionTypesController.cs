@@ -8,6 +8,7 @@ using AfrroStock.Models.ViewModels;
 using AfrroStock.Models.DTOs;
 using AutoMapper;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AfrroStock.Controllers
 {
@@ -18,8 +19,9 @@ namespace AfrroStock.Controllers
         {}
 
         [HttpGet]
-        public override async ValueTask<IActionResult> Get()
+        public override async ValueTask<IActionResult> GetAll(int page = 1)
         {
+            int itemsPerPage = 20;
             var model = await _repo.Item()
                                         .Include(c => c.Collections)
                                             .ThenInclude(co => co.Collectibles)
@@ -27,7 +29,10 @@ namespace AfrroStock.Controllers
                                         .Include(c => c.Collections)
                                             .ThenInclude(co => co.Collectibles)
                                                 .ThenInclude(cl => cl.Collector)
+                                        .Skip(page * itemsPerPage - itemsPerPage)
+                                        .Take(itemsPerPage)
                                          .ToListAsync();
+
             return Ok(_mapper.Map<ICollection<CollectionType>, ICollection<CollectionTypeDTO>>(model));
         }
 

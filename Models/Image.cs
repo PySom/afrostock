@@ -34,7 +34,7 @@ namespace AfrroStock.Models
 
     namespace ViewModels
     {
-        public class ImageVM
+        public class ImageVM : IModel
         {
             public int Id { get; set; }
             public string Name { get; set; }

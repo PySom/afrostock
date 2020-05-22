@@ -19,7 +19,7 @@ namespace AfrroStock.Models
 
     namespace ViewModels
     {
-        public class CollectionVM
+        public class CollectionVM : IModel
         {
             public int Id { get; set; }
             public string Name { get; set; }

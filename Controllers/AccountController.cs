@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text;
 using AfrroStock.Models.DTOs;
 using AfrroStock.Services;
+using Microsoft.AspNetCore.JsonPatch;
 //using StudyMATEUpload.Services;
 
 namespace AfrroStock.Controllers
@@ -25,17 +26,14 @@ namespace AfrroStock.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UserManager _acc;
-        private readonly IModelManager<ApplicationUser> _repo;
         private readonly IMapper _mapper;
         private readonly IEmailSender _email;
         
         public AccountController(UserManager account, 
-            IModelManager<ApplicationUser> repo,
             IEmailSender email,
             IMapper mapper)
         {
             _acc = account;
-            _repo = repo;
             _mapper = mapper;
            _email = email;
            
@@ -82,7 +80,7 @@ namespace AfrroStock.Controllers
             var userEmail = HttpContext.User.Claims
                                                 .Where(u => u.Type.Contains("emailaddress"))
                                                 .Select(u => u.Value).FirstOrDefault();
-            UserViewModel user = await _repo.Item()
+            UserViewModel user = await _acc.Item()
                                             .Where(u => u.Email.ToLower() == userEmail.ToLower())
                                             .Select(u => u.Convert<ApplicationUser, UserViewModel>(_mapper))
                                             .FirstOrDefaultAsync();
@@ -91,20 +89,39 @@ namespace AfrroStock.Controllers
 
         [Authorize]
         [HttpPut("user")]
-        public async ValueTask<IActionResult> Put([FromBody] UserViewModel model)
+        public async ValueTask<IActionResult> Put([FromBody] UserDTO model)
         {
             if (ModelState.IsValid)
             {
-                bool isUser = await _repo.Item().AnyAsync(u => model.Id == u.Id);
+                bool isUser = await _acc.Item().AnyAsync(u => model.Id == u.Id);
                 if (isUser)
                 {
-                    ApplicationUser userMappedFromModel = model.Convert<UserViewModel, ApplicationUser>(_mapper);
-                    (bool succeeded, ApplicationUser updatedUser, string error) = await _repo.Update(userMappedFromModel);
-                    if (succeeded) return Ok(updatedUser.Convert<ApplicationUser, UserViewModel>(_mapper));
+                    ApplicationUser userMappedFromModel = model.Convert<UserDTO, ApplicationUser>(_mapper);
+                    (bool succeeded, ApplicationUser updatedUser, string error) = await _acc.Update(userMappedFromModel);
+                    if (succeeded) return Ok(updatedUser.Convert<ApplicationUser, UserDTO>(_mapper));
                     return BadRequest(new { Message = error });
                 }
             }
             return BadRequest(new { Errors = ModelState.Values.SelectMany(e => e.Errors).ToList() });
+        }
+
+        [Authorize]
+        [HttpPatch("user/{id:int}")]
+        public async ValueTask<IActionResult> Put([FromBody]JsonPatchDocument<ApplicationUser> patchDoc, int id)
+        {
+            var model = await _acc.Item().FindAsync(id);
+            if (model != null)
+            {
+                patchDoc.ApplyTo(model, ModelState);
+                if (ModelState.IsValid)
+                {
+                    (bool succeeded, ApplicationUser updatedUser, string error) = await _acc.Update(model);
+                    if (succeeded) return Ok(_mapper.Map<ApplicationUser, UserViewModel>(updatedUser));
+                    return BadRequest(new { Message = error });
+                }
+                return BadRequest(new { Errors = ModelState.Values.SelectMany(e => e.Errors).ToList() });
+            }
+            return BadRequest(new { Message = "No such item" });
         }
 
         [Authorize]
@@ -126,7 +143,7 @@ namespace AfrroStock.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _repo.Item()
+                ApplicationUser user = await _acc.Item()
                                                     .Where(u => u.Email.ToLower() == email.ToLower())
                                                     .FirstOrDefaultAsync();
                 if (user != null)
@@ -135,7 +152,7 @@ namespace AfrroStock.Controllers
                     user.Code = code;
                     user.CodeIssued = DateTime.Now;
                     user.CodeWillExpire = DateTime.Now.AddDays(2);
-                    (bool succeeded, ApplicationUser _, string error) = await _repo.Update(user);
+                    (bool succeeded, ApplicationUser _, string error) = await _acc.Update(user);
                     if (succeeded)
                     {
                         string subject = validate ? "Validate Email" : "Change Password";
@@ -158,7 +175,7 @@ namespace AfrroStock.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _repo.Item().Where(u => u.Email.Equals(model.Email)).FirstOrDefaultAsync();
+                var user = await _acc.Item().Where(u => u.Email.Equals(model.Email)).FirstOrDefaultAsync();
                 if (user != null)
                 {
                     if (code == user.Code && user.CodeIssued <= user.CodeWillExpire)
@@ -180,7 +197,7 @@ namespace AfrroStock.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _repo.Item().Where(u => u.Code == code).FirstOrDefaultAsync();
+                var user = await _acc.Item().Where(u => u.Code == code).FirstOrDefaultAsync();
                 if (user != null)
                 {
                     if(user.CodeIssued <= user.CodeWillExpire)
@@ -202,7 +219,7 @@ namespace AfrroStock.Controllers
         [HttpGet]
         public async ValueTask<IActionResult> Get()
         {
-            ICollection<UserViewModel> users = await _repo.Item()
+            ICollection<UserViewModel> users = await _acc.Item()
                                                         .Select(u => u.Convert<ApplicationUser, UserViewModel>(_mapper))
                                                         .ToListAsync();
             return Ok(users);
@@ -212,7 +229,7 @@ namespace AfrroStock.Controllers
         [HttpGet("{id}")]
         public async ValueTask<IActionResult> Get(int id)
         {
-            UserViewModel user = await _repo.Item()
+            UserViewModel user = await _acc.Item()
                                           .Where(u => id == u.Id)
                                           .Select(u => u.Convert<ApplicationUser, UserViewModel>(_mapper))
                                           .FirstOrDefaultAsync();
@@ -224,7 +241,7 @@ namespace AfrroStock.Controllers
         public async ValueTask<IActionResult> Delete(int id)
         {
             var model = new ApplicationUser { Id = id };
-            (bool succeeded, string error) = await _repo.Delete(model);
+            (bool succeeded, string error) = await _acc.Delete(model);
             if (succeeded) return NoContent();
             return NotFound(new { Message = error });
         }

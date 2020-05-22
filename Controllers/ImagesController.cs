@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using AfrroStock.Models.DTOs;
 using AfrroStock.Models.ViewModels;
 using System;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace AfrroStock.Controllers
 {
@@ -37,11 +38,14 @@ namespace AfrroStock.Controllers
 
 
         [HttpGet]
-        public async ValueTask<IActionResult> Get()
+        public async ValueTask<IActionResult> GetAll(int page = 1)
         {
+            int itemsPerPage = 20;
             ICollection<Image> options = await _repo
                                                 .Item()
                                                 .Include(i => i.Author)
+                                                .Skip(page * itemsPerPage - itemsPerPage)
+                                                .Take(itemsPerPage)
                                                 .ToListAsync();
             return Ok(_mapper.Map<ICollection<Image>, ICollection<ImageDTO>>(options));
 
@@ -74,7 +78,7 @@ namespace AfrroStock.Controllers
             {
                 var _ = await _repo.IncreaseView(model);
             }
-            
+
             return NoContent();
         }
 
@@ -93,46 +97,55 @@ namespace AfrroStock.Controllers
         [HttpGet("videos/searchfor/")]
         public async ValueTask<IActionResult> GetRelatedVideos(string term)
         {
-            var results = await _tag
-                                    .Item()
-                                    .Where(t => t.Name.ToLower().StartsWith(term.ToLower())
-                                                    || t.Name.ToLower().Contains($" {term.ToLower()}"))
-                                    .Include(t => t.ImageTags)
+            var tags = await _tag
+                                .Item()
+                                .Where(i => i.Name.ToLower().StartsWith(term.ToLower())
+                                                || i.Name.ToLower().Contains($" {term.ToLower()}"))
+                                .Include(t => t.ImageTags)
                                         .ThenInclude(i => i.Image)
                                             .ThenInclude(i => i.Author)
-                                    .Select(t => t.ImageTags.Select(it => it.Image))
-                                    .ToListAsync();
-            List<Image> images = new List<Image>();
-            foreach (var result in results)
+                                 .Select(t => t.ImageTags.Select(it => it.Image))
+                                .ToListAsync();
+
+            var images = await _repo
+                                .Item()
+                                .Where(i => i.Name.ToLower().StartsWith(term.ToLower())
+                                                || i.Name.ToLower().Contains($" {term.ToLower()}"))
+                                .Include(i => i.Author)
+                                .ToListAsync();
+
+            List<Image> aggregateTagImages = new List<Image>();
+            foreach (var result in tags)
             {
-                images.AddRange(result);
+                aggregateTagImages.AddRange(result);
             }
-            return Ok(_mapper.Map<ICollection<Image>, ICollection<ImageDTO>>(images));
+            aggregateTagImages.AddRange(images);
+            return Ok(_mapper.Map<ICollection<Image>, ICollection<ImageDTO>>(aggregateTagImages));
         }
 
         [HttpGet("search")]
         public async ValueTask<IActionResult> Get(string term)
         {
             //search term if image(s) is there
-            var results = await _tag
-                                    .Item()
-                                    .Where(i => i.Name.ToLower().StartsWith(term.ToLower()) 
-                                                    || i.Name.ToLower().Contains($" {term.ToLower()}"))
-                                    .Include(t => t.ImageTags)
-                                        .ThenInclude(i => i.Image)
-                                            .ThenInclude(i => i.Author)
-                                    .Select(t => t.ImageTags.Select(it => new SearchDTO { Name = it.Image.Name, Id = it.Image.Id }))
-                                    .ToListAsync();
+            var tags = await _tag
+                                .Item()
+                                .Where(i => i.Name.ToLower().StartsWith(term.ToLower())
+                                                || i.Name.ToLower().Contains($" {term.ToLower()}"))
+                                .Select(t => new SearchDTO { Name = t.Name, Id = t.Id })
+                                .ToListAsync();
 
-            var images = new List<SearchDTO>();
-            foreach (var result in results)
-            {
-                images.AddRange(result);
-            }
+            var images = await _repo
+                                .Item()
+                                .Where(i => i.Name.ToLower().StartsWith(term.ToLower())
+                                                || i.Name.ToLower().Contains($" {term.ToLower()}"))
+                                .Select(t => new SearchDTO { Name = t.Name, Id = t.Id })
+                                .ToListAsync();
+
+            images.AddRange(tags);
             return Ok(images);
         }
 
-        [Authorize(Roles = "Author,Both,Super" )]
+        [Authorize(Roles = "Author,Both,Super")]
         [HttpPost]
         public async ValueTask<IActionResult> Post([FromBody] ImageVM modelVm)
         {
@@ -148,10 +161,15 @@ namespace AfrroStock.Controllers
                         var checkTags = _tag.Item().Where(t => stags.Contains(t.Name.ToLower())).Select(i => i).ToList();
                         var noTags = modelVm.SuggestedTags.Where(st => !checkTags.Any(ct => ct.Name.ToLower() == st.ToLower()));
                         var newTags = noTags.Select(tag => new Tag { Name = tag });
-                        if(newTags.Count() > 0)
+                        if (newTags.Count() > 0)
                         {
-                            var (tagSucceeded, tags, tagError) = await _tag.Add(newTags);
-                            if (tagSucceeded) checkTags.AddRange(tags);
+                            var (tagSucceeded, _, tagError) = await _tag.Add(newTags);
+                            if (tagSucceeded)
+                            {
+                                var newTagNames = newTags.Select(n => n.Name.ToLower());
+                                var tags = await _tag.Item().Where(n => newTagNames.Contains(n.Name.ToLower())).ToListAsync();
+                                checkTags.AddRange(tags);
+                            }
                         }
                         var imageTags = checkTags.Select(ct => new ImageTag { ImageId = img.Id, TagId = ct.Id });
                         var _ = await _imgTag.Add(imageTags);
@@ -169,11 +187,36 @@ namespace AfrroStock.Controllers
         {
             if (ModelState.IsValid)
             {
-                (bool succeeded, Image img, string error) = await _repo.Update(_mapper.Map<ImageVM, Image>(model));
-                if (succeeded) return Ok(img);
-                return BadRequest(new { Message = error });
+                var image = await _repo.Item().FindAsync(model.Id);
+                if (image != null)
+                {
+                    var modelToUpdate = _mapper.Map(model, image);
+                    (bool succeeded, Image img, string error) = await _repo.Update(modelToUpdate);
+                    if (succeeded) return Ok(img);
+                    return BadRequest(new { Message = error });
+                }
+                return BadRequest(new { Message = "You sure you got this image???" });
             }
             return BadRequest(new { Errors = ModelState.Values.SelectMany(e => e.Errors).ToList() });
+        }
+
+
+        [HttpPatch("{id:int}")]
+        public async ValueTask<IActionResult> Put([FromBody]JsonPatchDocument<Image> patchDoc, int id)
+        {
+            var model = await _repo.Item().FindAsync(id);
+            if (model != null)
+            {
+                patchDoc.ApplyTo(model, ModelState);
+                if (ModelState.IsValid)
+                {
+                    (bool succeeded, Image img, string error) = await _repo.Update(model);
+                    if (succeeded) return Ok(img);
+                    return BadRequest(new { Message = error });
+                }
+                return BadRequest(new { Errors = ModelState.Values.SelectMany(e => e.Errors).ToList() });
+            }
+            return BadRequest(new { Message = "No such item" });
         }
 
         [HttpDelete("{id}")]

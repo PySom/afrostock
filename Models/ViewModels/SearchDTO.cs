@@ -1,4 +1,6 @@
-﻿namespace AfrroStock.Models.DTOs
+﻿using AfrroStock.Enums;
+
+namespace AfrroStock.Models.DTOs
 {
     public class SearchDTO
     {

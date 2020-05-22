@@ -13,6 +13,8 @@ namespace AfrroStock.Mappers
                 .ReverseMap();
             CreateMap<ApplicationUser, UserViewModel>()
                 .ReverseMap();
+            CreateMap<ApplicationUser, UserDTO>(MemberList.Source)
+                .ReverseMap();
             //CreateMap<Category, CategoryVM>()
             //    .ReverseMap();
             //CreateMap<Category, CategoryDTO>()
