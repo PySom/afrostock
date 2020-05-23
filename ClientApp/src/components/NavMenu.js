@@ -93,17 +93,19 @@ export class NavMenu extends Component {
   }
 
   render() {
-    //alert(this.props.loggedInStatus);
     const { searchVisibility } = this.props;
     console.log("nav visible", searchVisibility);
     return (
       <header
         className={`sticky-header ${searchVisibility ? "" : "head-w-search"} ${
+          this.props.loggedInStatus ? "d-none" : ""
+        } ${
+          history.location.pathname == "/" ||
           history.location.pathname == "/register" ||
           history.location.pathname == "/login"
-            ? "d-none"
-            : ""
-        } ${history.location.pathname == "/" ? "" : "color_nav"}`}
+            ? ""
+            : "color_nav"
+        }`}
       >
         <Navbar
           className="navbar-expand-sm navbar-toggleable-sm ng-white"

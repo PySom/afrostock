@@ -1,4 +1,4 @@
-﻿import React from "react";
+﻿import React, { useEffect } from "react";
 import auth from "../../sideEffects/apis/auth";
 import { useForm } from "../../customHooks/useForm";
 import { connect } from "react-redux";
@@ -18,6 +18,17 @@ function Register(props) {
   const { main: surName } = useForm("text", "");
   const { main: phone } = useForm("text", "");
   const { main: confirm } = useForm("password", "");
+
+  useEffect(() => {
+    props.setLoggedInStatus(true);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      props.setLoggedInStatus(false);
+    };
+  }, []);
+
   const submitForm = (e) => {
     e.preventDefault();
     const data = {
@@ -34,6 +45,7 @@ function Register(props) {
       .register(data)
       .then((res) => {
         history.push((url && "/" + url) || "/dashboard");
+        props.setLoggedInStatus(true);
         window.location.reload();
       })
       .catch((err) => {
@@ -43,6 +55,7 @@ function Register(props) {
 
   const goToHome = () => {
     history.push("/");
+    props.setLoggedInStatus(true);
   };
 
   return (
@@ -171,5 +184,11 @@ export const loggedInStatusReducer = (state = false, action) => {
   }
 };
 
+const matchStateToProps = ({ loggedInStatus }) => {
+  return {
+    loggedInStatus,
+  };
+};
+
 //get action from store in a connected form
-export default connect(null, { setLoggedInStatus })(Register);
+export default connect(matchStateToProps, { setLoggedInStatus })(Register);

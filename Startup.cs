@@ -89,20 +89,20 @@ namespace AfrroStock
             services.AddTransient<ImageManager>();
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IEmailSender, EmailSender>();
-            string ffmpegFilePath = null;
-            var osEnvironment = Environment.OSVersion;
-            if(osEnvironment.Platform == PlatformID.Win32NT)
-            {
-                ffmpegFilePath = Path.Combine(Environment.CurrentDirectory, "ffmpeg", "windows", "ffmpeg.exe");
-            }
-            else
-            {
-                ffmpegFilePath = Path.Combine(Environment.CurrentDirectory, "ffmpeg", "unix", "ffmpeg");
-            }
-            if (!string.IsNullOrEmpty(ffmpegFilePath))
-            {
-                services.AddMediaToolkit(ffmpegFilePath);
-            }
+            //string ffmpegFilePath = null;
+            //var osEnvironment = Environment.OSVersion;
+            //if(osEnvironment.Platform == PlatformID.Win32NT)
+            //{
+            //    ffmpegFilePath = Path.Combine(Environment.CurrentDirectory, "ffmpeg", "windows", "ffmpeg.exe");
+            //}
+            //else
+            //{
+            //    ffmpegFilePath = Path.Combine(Environment.CurrentDirectory, "ffmpeg", "unix", "ffmpeg");
+            //}
+            //if (!string.IsNullOrEmpty(ffmpegFilePath))
+            //{
+            //    services.AddMediaToolkit(ffmpegFilePath);
+            //}
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
