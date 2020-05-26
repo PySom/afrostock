@@ -1,0 +1,61 @@
+﻿button img {
+  transition: transform 0.25s;
+}
+
+button.btn-search:hover > img {
+  transform: scale(1.2);
+}
+
+button:focus {
+  outline: none;
+}
+
+.nav-search {
+  width: 100%;
+}
+
+.header-search {
+  width: 50%;
+}
+
+input {
+  font-family: "work sans light", sans-serif;
+}
+
+input::placeholder {
+  font-family: "works sans light", sans-serif;
+}
+
+input:focus {
+  outline: none;
+}
+
+.searchbox {
+  max-width: 100%;
+  background: white;
+  border-radius: 5px;
+  margin: 0 auto;
+  padding: 8px;
+  top: 50px;
+  display: flex;
+}
+
+.searchbox > .search {
+  border: none;
+  width: 100%;
+  padding: 0.3em;
+  font-family: "work sans light";
+  &::placeholder {
+    font-family: "work sans light";
+  }
+}
+
+.searchbox > .btn-search {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.mb-1h {
+  margin-bottom: 100px;
+}

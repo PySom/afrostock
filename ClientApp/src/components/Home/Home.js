@@ -7,12 +7,13 @@ import MainBody from "../MainBody/MainBody";
 
 export default function Home(props) {
   const [contents, setContents] = useState([]);
+  const [page, setPage] = useState(1);
   const [pageLoaded, setPageLoaded] = useState(true);
 
   useEffect(() => {
     if (pageLoaded) {
       api
-        .getAll("images", "images")
+        .getAll(`images?page=${1}`, "images")
         .then((response) => {
           setContents(response);
           setPageLoaded(false);
@@ -24,6 +25,20 @@ export default function Home(props) {
     }
   }, [pageLoaded]);
 
+  const fetchMoreData = () => {
+    api
+      .getAll(`images?page=${page}`, "images")
+      .then((response) => {
+        setContents(contents.concat(response));
+        setPageLoaded(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setPageLoaded(false);
+      });
+    setPage(page + 1);
+  };
+
   return (
     <>
       <div className="homeWrapper"></div>
@@ -33,11 +48,15 @@ export default function Home(props) {
         </div>
         <MainBody>
           <div className="container-fluid trend-pos mt-20">
-            <p className="app-font-mid">Free Stock Photos</p>
+            <h4 className="app-font-mid">Free Stock Photos</h4>
             <DropDown />
           </div>
           <div className="container-fluid mt-20">
-            <PhotoGrid contents={contents} />
+            <PhotoGrid
+              dataLength={contents.length}
+              fetch_={fetchMoreData}
+              contents={contents}
+            />
           </div>
         </MainBody>
       </div>

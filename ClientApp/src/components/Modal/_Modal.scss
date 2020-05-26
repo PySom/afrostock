@@ -1,0 +1,72 @@
+﻿.modal-title {
+  width: 100%;
+
+  button.close {
+    bottom: 40px;
+    left: 30px;
+    position: relative;
+    span {
+      font-size: 35px;
+    }
+  }
+}
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 80%;
+    margin: 1.75rem auto;
+  }
+}
+
+.app-flex {
+  img {
+    border-radius: 50%;
+    width: 100%;
+    max-width: 60px;
+  }
+  p {
+    padding-left: 1em;
+    padding-top: 1em;
+    font-family: "Helvetica Bold";
+  }
+  .mr-4 {
+    button {
+      outline: none;
+      border: none;
+      border-radius: 3px;
+      background-color: white;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      white-space: nowrap;
+      padding: 7px 24px;
+      box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  .download-button {
+    button {
+      outline: none;
+      border: none;
+      border-radius: 3px;
+      background-color: #05a081 !important;
+      font-family: "Helvetica Bold";
+      cursor: pointer;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      white-space: nowrap;
+      padding: 7px 24px;
+      box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.08);
+    }
+  }
+}

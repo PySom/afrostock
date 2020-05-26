@@ -1,4 +1,4 @@
-﻿import React from "react";
+﻿import React, { useEffect } from "react";
 import auth from "../../sideEffects/apis/auth";
 import { useForm } from "../../customHooks/useForm";
 import { connect } from "react-redux";
@@ -6,6 +6,16 @@ import { useLocation, useHistory, Link } from "react-router-dom";
 import { setLoggedInStatus } from "../Register/Register";
 
 function Login(props) {
+  useEffect(() => {
+    props.setLoggedInStatus(true);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      props.setLoggedInStatus(false);
+    };
+  }, []);
+
   const location = useLocation();
   console.log({ location }, props.route);
   const history = useHistory();
@@ -39,13 +49,16 @@ function Login(props) {
       });
   };
 
+  const goToHome = () => {
+    history.push("/");
+  };
   return (
     <div>
       <div className="auth-overlay">
         <div className="heading">
           <div className="row">
             <div className="logo-section">
-              <img src="images/logo.png" alt="logo" />
+              <img src="images/logo.png" alt="logo" onClick={goToHome} />
             </div>
             <div className="caption">
               <span>New to AfroStock?</span>
