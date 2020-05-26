@@ -2,7 +2,7 @@
 a.navbar-brand {
   white-space: normal;
   word-break: break-all;
-  max-width: 220px;
+  max-width: 150px;
 
   @media screen and (max-width: 600px) {
     max-width: 60px;
@@ -10,7 +10,7 @@ a.navbar-brand {
 }
 
 .navbar-brand img {
-  width: 60%;
+  width: 50%;
   @media screen and (max-width: 600px) {
     width: 100%;
   }
@@ -40,7 +40,7 @@ html {
     }
   }
   .register {
-    background-color: black;
+    background-color: #05a081;
     border-radius: 4px;
     padding: 2px 20px;
 
@@ -55,11 +55,11 @@ html {
   @media screen and (max-width: 768px) {
     padding: 1rem 1rem !important;
 
-    .container-fluid {
-      .collapse {
-        height: 100vh !important;
-      }
-    }
+    // .container-fluid {
+    //   .collapse {
+    //     height: 100vh !important;
+    //   }
+    // }
   }
   .collapsing {
     position: relative;
@@ -107,5 +107,18 @@ html {
       width: 40%;
       border-radius: 50%;
     }
+  }
+}
+
+.d__none {
+  display: none !important;
+  @media screen and (max-width: 768px) {
+    display: block !important;
+  }
+}
+.d__none {
+  display: none !important;
+  @media screen and (min-width: 768px) {
+    display: block !important;
   }
 }

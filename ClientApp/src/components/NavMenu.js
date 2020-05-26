@@ -93,17 +93,19 @@ export class NavMenu extends Component {
   }
 
   render() {
-    //alert(this.props.loggedInStatus);
     const { searchVisibility } = this.props;
     console.log("nav visible", searchVisibility);
     return (
       <header
         className={`sticky-header ${searchVisibility ? "" : "head-w-search"} ${
+          this.props.loggedInStatus ? "d-none" : ""
+        } ${
+          history.location.pathname == "/" ||
           history.location.pathname == "/register" ||
           history.location.pathname == "/login"
-            ? "d-none"
-            : ""
-        } ${history.location.pathname == "/" ? "" : "color_nav"}`}
+            ? ""
+            : "color_nav"
+        }`}
       >
         <Navbar
           className="navbar-expand-sm navbar-toggleable-sm ng-white"
@@ -111,7 +113,10 @@ export class NavMenu extends Component {
         >
           <Container fluid>
             <NavbarBrand href="/">
-              <img src="images/logo.png" alt="logo" />
+              <img
+                src={searchVisibility ? "images/logo.png" : "images/emblem.png"}
+                alt="logo"
+              />
             </NavbarBrand>
             <SearchArea
               searchClass=" header-width nav-search"
@@ -142,11 +147,16 @@ export class NavMenu extends Component {
 
                 {this.state.loggedIn ? (
                   <>
-                    <NavItem>
+                    <NavItem className="d__none">
                       <ProfileDropDown logout={logout} />
                     </NavItem>
-                    <NavItem className="register">
-                      <NavLink href="/dashboard" className="text-dark">
+                    <NavItem className="register d__none">
+                      <NavLink href="/upload" className="text-dark">
+                        Upload
+                      </NavLink>
+                    </NavItem>
+                    <NavItem className="d--one">
+                      <NavLink href="/upload" className="text-dark">
                         Upload
                       </NavLink>
                     </NavItem>
