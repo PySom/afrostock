@@ -36,7 +36,10 @@ namespace AfrroStock.Controllers
 
                         var (lowRes, lowerRes) = await _img.ManipulateContent(model.File);
                         (string _, string[] tags) = _ml.Pipeline();
-                        return Ok(new { Content = path, ContentLow = lowRes, ContentLower = lowerRes, ContentType = contentType, SuggestedTags = tags, Name = name });
+                        return Ok(
+                            new { Content = path, ContentLow = lowRes, ContentLower = lowerRes, 
+                            ContentType = contentType, SuggestedTags = tags, Name = name }
+                            );
                     }
                     return BadRequest(new { Message = "We could not add this resource. Please try again" });
                 }

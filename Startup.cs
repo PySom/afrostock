@@ -8,6 +8,7 @@ using MediaToolkit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -89,6 +90,7 @@ namespace AfrroStock
             services.AddTransient<ImageManager>();
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             string ffmpegFilePath = null;
             var osEnvironment = Environment.OSVersion;
             if(osEnvironment.Platform == PlatformID.Win32NT)
