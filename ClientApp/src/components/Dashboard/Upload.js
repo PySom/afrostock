@@ -15,7 +15,7 @@ export default function Upload(props) {
     let imageData = {
       name: fileResponse.name,
       description: "Test the image ",
-      contentType: 1,
+      contentType: 0,
       content: fileResponse.content,
       contentLow: fileResponse.contentLow,
       authorId: 1,

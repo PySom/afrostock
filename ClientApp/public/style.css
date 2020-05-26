@@ -62,11 +62,11 @@
 }
 
 .head-w-search {
-  background-color: #d2d2d2 !important;
+  background-color: #232a34 !important;
 }
 
 .color_nav {
-  background-color: #d2d2d2 !important;
+  background-color: #232a34 !important;
 }
 
 .head-w-search a {
@@ -90,8 +90,7 @@
   display: flex;
 }
 .app-font-mid {
-  font-size: 16px;
-  font-weight: bold;
+  font-family: "Helvetica Bold";
 }
 
 .mt-20 {
@@ -136,7 +135,13 @@
 }
 
 .variable-search-width {
-  width: 50%;
+  width: 40%;
+}
+
+.variable-search-width .header-widthv.w-100 {
+  padding: 20px 15px 10px 15px;
+  background-color: white;
+  box-shadow: 0px 0px 1px 1px #00000038;
 }
 
 .pull-right {
@@ -181,6 +186,6 @@
 @media only screen and (max-width: 578px) {
   /* For mobile phones: */
   .variable-search-width {
-    width: auto;
+    width: 55%;
   }
 }

@@ -71,19 +71,16 @@ function Dashboard(props) {
                     </div>
                   </div>
                   <div className="profile-extras">
-                    <div className="row">
-                      <div className="col-3">
-                        <img src="images/pin-8-xxl.png" alt="location pin" />
-                      </div>
-                      <div className="col-8">
-                        <span>Lagos, Nigeria</span>
-                      </div>
+                    <div className="col--3">
+                      <img src="images/pin-8-xxl.png" alt="location pin" />
+                      <span>Lagos, Nigeria</span>
                     </div>
-                    <div className="row">
-                      <div className="col-3"></div>
+
+                    <div className="col--3">
                       <img src="images/instagram-xxl.png" alt="location pin" />
                       <span>emekaachugo</span>
                     </div>
+
                     <div className="col--3">
                       <img src="images/twitter-xxl.png" alt="location pin" />
                       <span>_achugo</span>

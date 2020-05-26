@@ -113,7 +113,10 @@ export class NavMenu extends Component {
         >
           <Container fluid>
             <NavbarBrand href="/">
-              <img src="images/logo.png" alt="logo" />
+              <img
+                src={searchVisibility ? "images/logo.png" : "images/emblem.png"}
+                alt="logo"
+              />
             </NavbarBrand>
             <SearchArea
               searchClass=" header-width nav-search"
@@ -144,11 +147,16 @@ export class NavMenu extends Component {
 
                 {this.state.loggedIn ? (
                   <>
-                    <NavItem>
+                    <NavItem className="d__none">
                       <ProfileDropDown logout={logout} />
                     </NavItem>
-                    <NavItem className="register">
-                      <NavLink href="/dashboard" className="text-dark">
+                    <NavItem className="register d__none">
+                      <NavLink href="/upload" className="text-dark">
+                        Upload
+                      </NavLink>
+                    </NavItem>
+                    <NavItem className="d--one">
+                      <NavLink href="/upload" className="text-dark">
                         Upload
                       </NavLink>
                     </NavItem>

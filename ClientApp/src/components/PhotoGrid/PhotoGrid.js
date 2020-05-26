@@ -1,13 +1,14 @@
 ﻿import React, { useState } from "react";
-import "./PhotoGrid.css";
+import "./_PhotoGrid.scss";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import ModalCustomHeader from "../Modal/ModalCustomHeader";
 import ModalCustomBody from "../Modal/ModalCustomBody";
 import RavePay from "../RavePay/RavePay";
 import api from "../../sideEffects/apis/api";
 import Guard from "../../Guard";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-export default function PhotoGrid({ contents }) {
+export default function PhotoGrid({ contents, dataLength, fetch_ }) {
   const [show, setShow] = useState(false);
   const [showRaveButton, setShowRaveButton] = useState(false);
   const [image, setImage] = useState(null);
@@ -43,33 +44,45 @@ export default function PhotoGrid({ contents }) {
 
   return (
     <section id="photos">
-      {contents &&
-        contents.map((content, index) => (
-          <button
-            key={content.id}
-            onClick={(e) => handleShow(e, index, content)}
-            className="unstyled px-0 mb-2"
-          >
-            {content.contentType === 0 && (
-              <div className="r-p">
-                <img
-                  className="img-fluid"
-                  src={content.content}
-                  alt={content.name}
-                  title={content.description || content.name}
-                />
-                <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
-              </div>
-            )}
+      <InfiniteScroll
+        dataLength={dataLength}
+        next={fetch_}
+        hasMore={true}
+        loader={<h4>Loading...</h4>}
+      >
+        {/* {this.state.items.map((i, index) => (
+            <div style={style} key={index}>
+              div - #{index}
+            </div>
+          ))} */}
+        {contents &&
+          contents.map((content, index) => (
+            <button
+              key={content.id}
+              onClick={(e) => handleShow(e, index, content)}
+              className="unstyled px-0 mb-2"
+            >
+              {content.contentType === 0 && (
+                <div className="r-p">
+                  <img
+                    className="img-fluid"
+                    src={content.content}
+                    alt={content.name}
+                    title={content.description || content.name}
+                  />
+                  <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
+                </div>
+              )}
 
-            {content.contentType === 1 && (
-              <div className="r-p">
-                <video controls src={content.content}></video>
-                <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
-              </div>
-            )}
-          </button>
-        ))}
+              {content.contentType === 1 && (
+                <div className="r-p">
+                  <video controls src={content.content}></video>
+                  <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
+                </div>
+              )}
+            </button>
+          ))}
+      </InfiniteScroll>
 
       {image && (
         <Modal isOpen={show} toggle={handleClose} className="photo-grid-modal">
@@ -120,7 +133,11 @@ export default function PhotoGrid({ contents }) {
                 />
               </Guard>
             )}
-            <Button color="secondary" onClick={handleClose}>
+            <Button
+              className="cancel__pay"
+              color="secondary"
+              onClick={handleClose}
+            >
               Cancel
             </Button>
           </ModalFooter>
