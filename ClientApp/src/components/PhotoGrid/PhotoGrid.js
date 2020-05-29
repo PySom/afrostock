@@ -43,47 +43,48 @@ export default function PhotoGrid({ contents, dataLength, fetch_ }) {
   console.log({ showRaveButton });
 
   return (
-    <section id="photos">
+    <section id="photos_">
       <InfiniteScroll
         dataLength={dataLength}
         next={fetch_}
         hasMore={true}
         loader={<img className="loader__" src="images/loader.gif" />}
       >
-        {/* {this.state.items.map((i, index) => (
+        <section id="photos">
+          {/* {this.state.items.map((i, index) => (
             <div style={style} key={index}>
               div - #{index}
             </div>
           ))} */}
-        {contents &&
-          contents.map((content, index) => (
-            <button
-              key={content.id}
-              onClick={(e) => handleShow(e, index, content)}
-              className="unstyled px-0 mb-2"
-            >
-              {content.contentType === 0 && (
-                <div className="r-p">
-                  <img
-                    className="img-fluid"
-                    src={content.contentLower}
-                    alt={content.name}
-                    title={content.description || content.name}
-                  />
-                  <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
-                </div>
-              )}
+          {contents &&
+            contents.map((content, index) => (
+              <button
+                key={content.id}
+                onClick={(e) => handleShow(e, index, content)}
+                className="unstyled px-0 mb-2"
+              >
+                {content.contentType === 0 && (
+                  <div className="r-p">
+                    <img
+                      className="img-fluid"
+                      src={content.contentLow}
+                      alt={content.name}
+                      title={content.description || content.name}
+                    />
+                    <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
+                  </div>
+                )}
 
-              {content.contentType === 1 && (
-                <div className="r-p">
-                  <video controls src={content.content}></video>
-                  <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
-                </div>
-              )}
-            </button>
-          ))}
+                {content.contentType === 1 && (
+                  <div className="r-p">
+                    <video controls src={content.content}></video>
+                    <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
+                  </div>
+                )}
+              </button>
+            ))}
+        </section>
       </InfiniteScroll>
-
       {image && (
         <Modal isOpen={show} toggle={handleClose} className="photo-grid-modal">
           <ModalHeader toggle={handleClose}>
