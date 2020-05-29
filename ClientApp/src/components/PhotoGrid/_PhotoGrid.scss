@@ -32,7 +32,6 @@
 }
 
 #photos {
-  position: relative;
   /* Prevent vertical gaps */
   /* display: inline-flex; */
   /* flex-direction: column;
@@ -178,10 +177,12 @@
   box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.08);
 }
 
+#photos {
+  position: relative;
+}
 .loader__ {
   position: absolute;
   width: 100%;
-  bottom: -30px;
   left: 45%;
   width: 11% !important;
 }

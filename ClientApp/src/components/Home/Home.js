@@ -13,7 +13,7 @@ export default function Home(props) {
   useEffect(() => {
     if (pageLoaded) {
       api
-        .getAll(`images?page=${1}`, "images")
+        .getAll(`images?page=${page}`, "images")
         .then((response) => {
           setContents(response);
           setPageLoaded(false);
@@ -24,10 +24,12 @@ export default function Home(props) {
         });
     }
   }, [pageLoaded]);
+
   console.log(contents);
   const fetchMoreData = () => {
+    setPage(page + 1);
     api
-      .getAll(`images?page=${page}`, "images")
+      .getAll(`images?page=${2}`, "images")
       .then((response) => {
         setContents(contents.concat(response));
         setPageLoaded(false);
@@ -36,7 +38,6 @@ export default function Home(props) {
         console.log(err);
         setPageLoaded(false);
       });
-    setPage(page + 1);
   };
 
   return (
