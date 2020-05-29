@@ -30,6 +30,7 @@ export default function Dropzone(props) {
           <div className="col-md-6">
             {file.contentType == "image" ? (
               <img
+                style={{ maxHeight: "280" }}
                 className="img-fluid"
                 src={file.contentLower}
                 alt="uploaded image"
@@ -139,13 +140,11 @@ export default function Dropzone(props) {
     e.preventDefault();
     const resp_ = alluploadedFiles.forEach((element, index) => {
       let data = {
-        name: element.name,
+        ...element,
         description: textareaFields[index],
-        contentType: element.contentType == "image" ? 0 : 1,
-        content: element.content,
-        contentLow: element.contentLow,
-        authorId: 1,
         amount: Number(fields[index]),
+        contentType: element.contentType == "image" ? 0 : 1,
+        authorId: 1,
         suggestedTags: element.suggestedTags,
       };
       api.create("images", data, data.name).then((res) => console.log(res));
