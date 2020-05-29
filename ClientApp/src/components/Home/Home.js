@@ -24,7 +24,7 @@ export default function Home(props) {
         });
     }
   }, [pageLoaded]);
-
+  console.log(contents);
   const fetchMoreData = () => {
     api
       .getAll(`images?page=${page}`, "images")
