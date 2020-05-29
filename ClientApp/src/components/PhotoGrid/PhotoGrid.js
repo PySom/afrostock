@@ -66,7 +66,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_ }) {
                 <div className="r-p">
                   <img
                     className="img-fluid"
-                    src={content.contentLow}
+                    src={content.contentLower}
                     alt={content.name}
                     title={content.description || content.name}
                   />
@@ -101,7 +101,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_ }) {
               name={image.name}
               description={image.src.description}
               contentType={image.src.contentType}
-              src={image.src.content}
+              src={image.src.contentLow}
             />
           </ModalBody>
           <ModalFooter>

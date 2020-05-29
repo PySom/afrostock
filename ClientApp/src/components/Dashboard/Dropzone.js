@@ -23,6 +23,7 @@ export default function Dropzone(props) {
     records.splice(item, 1);
     setAllUploadedFiles(records);
   };
+
   const files = alluploadedFiles ? (
     alluploadedFiles.map((file, index) => (
       <React.Fragment key={file.name}>
