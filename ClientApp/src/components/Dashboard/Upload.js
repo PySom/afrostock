@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import file from "../../sideEffects/apis/file";
 import api from "../../sideEffects/apis/api";
 import { useLocation, useHistory, Link } from "react-router-dom";
+import Dropzone from "./Dropzone";
 import "./_Dashboard.scss";
 
 export default function Upload(props) {
@@ -42,7 +43,7 @@ export default function Upload(props) {
     <div className="container-fluid dashboard-wrapper">
       <div className="upload-section text-center">
         <form>
-          <input type="file" onChange={uploadImage} />
+          <Dropzone />
         </form>
       </div>
     </div>

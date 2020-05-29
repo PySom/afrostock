@@ -155,7 +155,7 @@ export class NavMenu extends Component {
                         Upload
                       </NavLink>
                     </NavItem>
-                    <NavItem className="d--one">
+                    <NavItem className="d--none">
                       <NavLink href="/upload" className="text-dark">
                         Upload
                       </NavLink>

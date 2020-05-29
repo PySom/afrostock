@@ -28,6 +28,12 @@
     border-radius: 50%;
     width: 100%;
     max-width: 60px;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      max-width: 60px;
+      max-height: 60px;
+    }
   }
   p {
     padding-left: 1em;

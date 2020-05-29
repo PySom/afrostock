@@ -48,7 +48,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_ }) {
         dataLength={dataLength}
         next={fetch_}
         hasMore={true}
-        loader={<h4>Loading...</h4>}
+        loader={<img className="loader__" src="images/loader.gif" />}
       >
         {/* {this.state.items.map((i, index) => (
             <div style={style} key={index}>
@@ -66,7 +66,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_ }) {
                 <div className="r-p">
                   <img
                     className="img-fluid"
-                    src={content.content}
+                    src={content.contentLow}
                     alt={content.name}
                     title={content.description || content.name}
                   />

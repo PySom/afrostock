@@ -21,7 +21,6 @@
         div {
           max-height: 600px;
           margin: 0 auto;
-          max-width: 600px;
 
           img {
             max-height: 600px;
@@ -33,6 +32,7 @@
 }
 
 #photos {
+  position: relative;
   /* Prevent vertical gaps */
   /* display: inline-flex; */
   /* flex-direction: column;
@@ -110,9 +110,12 @@
 
 .author-text {
   text-align: left;
+  color: white;
+  font-family: "helvetica bold";
   display: none;
   position: absolute;
   bottom: 0;
+  font-size: 16px;
   padding: 15px;
 }
 
@@ -173,4 +176,12 @@
   white-space: nowrap;
   padding: 7px 24px;
   box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.08);
+}
+
+.loader__ {
+  position: absolute;
+  width: 100%;
+  bottom: -30px;
+  left: 45%;
+  width: 11% !important;
 }
