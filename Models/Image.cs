@@ -52,6 +52,8 @@ namespace AfrroStock.Models
     namespace DTOs
     {
         public class ImageDTO : Image
-        {}
+        {
+            public int TotalImages { get; set; }
+        }
     }
 }

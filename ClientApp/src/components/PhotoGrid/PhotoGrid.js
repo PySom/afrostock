@@ -48,7 +48,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_ }) {
         dataLength={dataLength}
         next={fetch_}
         hasMore={true}
-        loader={<img className="loader__" src="images/loader.gif" />}
+        loader={<img className="loader__" src="images/loader.gif" alt="a loader" />}
       >
         {/* {this.state.items.map((i, index) => (
             <div style={style} key={index}>
@@ -76,7 +76,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_ }) {
 
               {content.contentType === 1 && (
                 <div className="r-p">
-                  <video controls src={content.content}></video>
+                  <video controls src={content.contentLower}></video>
                   <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
                 </div>
               )}

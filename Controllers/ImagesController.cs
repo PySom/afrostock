@@ -50,6 +50,13 @@ namespace AfrroStock.Controllers
             return Ok(_mapper.Map<ICollection<Image>, ICollection<ImageDTO>>(options));
 
         }
+        
+        [HttpGet("count")]
+        public IActionResult GetImagesCount()
+        {
+            return Ok(new { Total = _repo.Item().Count() });
+
+        }
 
         [HttpGet("{id:int}")]
         public async ValueTask<IActionResult> Get(int id)
