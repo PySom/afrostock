@@ -19,11 +19,11 @@ namespace AfrroStock.Services
     {
         private const string default_Path = "assets";
         private readonly IWebHostEnvironment _env;
-        //private readonly IMediaToolkitService _media;
-        public ImageService(IWebHostEnvironment env)
+        private readonly IMediaToolkitService _media;
+        public ImageService(IWebHostEnvironment env, IMediaToolkitService media)
         {
             _env = env;
-            //_media = media;
+            _media = media;
         }
         public bool Create(IFormFile file, out string path)
         {
@@ -123,7 +123,7 @@ namespace AfrroStock.Services
                 image.Write(absolutePath);
                 imageLower.Write(absolutePathLowerImg);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
@@ -156,7 +156,7 @@ namespace AfrroStock.Services
                                                     absolutePathNew,
                                                     TimeSpan.FromSeconds(10)
                                                     );
-                
+
                 var logoPath = Path.Combine(default_Path, "afro_logo.png");
                 var logoFullPath = Path.Combine(_env.WebRootPath, logoPath);
 
@@ -170,13 +170,13 @@ namespace AfrroStock.Services
                                                     absolutePathNewOverlay,
                                                     logoFullPath
                                                     );
-                //await _media.ExecuteAsync(getVideoPortionTask);
-                //await _media.ExecuteAsync(reduceQualityTask);
-                //await _media.ExecuteAsync(addWaterMarkTask);
+                await _media.ExecuteAsync(getVideoPortionTask);
+                await _media.ExecuteAsync(reduceQualityTask);
+                await _media.ExecuteAsync(addWaterMarkTask);
 
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
