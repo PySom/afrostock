@@ -67,7 +67,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_ }) {
                   <div className="r-p">
                     <img
                       className="img-fluid"
-                      src={content.contentLow}
+                      src={content.contentLower}
                       alt={content.name}
                       title={content.description || content.name}
                     />
@@ -77,7 +77,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_ }) {
 
                 {content.contentType === 1 && (
                   <div className="r-p">
-                    <video controls src={content.content}></video>
+                    <video controls src={content.contentLower}></video>
                     <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
                   </div>
                 )}
