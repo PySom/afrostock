@@ -23,9 +23,9 @@ namespace AfrroStock.Controllers
         private readonly IModelManager<ImageTag> _imgTag;
         private readonly IModelManager<UserImage> _userImg;
         private readonly IModelManager<Tag> _tag;
-        private readonly ImageManager _repo;
+        private readonly IModelManager<Image> _repo;
         private readonly IMapper _mapper;
-        public ImagesController(ImageManager repo,
+        public ImagesController(IModelManager<Image> repo,
             IModelManager<Tag> tag,
             IModelManager<UserImage> userImg,
             IModelManager<ImageTag> imgTag,

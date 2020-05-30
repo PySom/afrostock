@@ -9,6 +9,7 @@ using AfrroStock.Models.DTOs;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Immutable;
 
 namespace AfrroStock.Controllers
 {
@@ -23,17 +24,37 @@ namespace AfrroStock.Controllers
         {
             int itemsPerPage = 20;
             var model = await _repo.Item()
-                                        .Include(c => c.Collections)
-                                            .ThenInclude(co => co.Collectibles)
-                                                .ThenInclude(cl => cl.Image)
-                                        .Include(c => c.Collections)
-                                            .ThenInclude(co => co.Collectibles)
-                                                .ThenInclude(cl => cl.Collector)
-                                        .Skip(page * itemsPerPage - itemsPerPage)
-                                        .Take(itemsPerPage)
-                                         .ToListAsync();
+                .Include(c => c.Collections)
+                    .ThenInclude(co => co.Collectibles)
+                        .ThenInclude(cl => cl.Image)
+                .Include(c => c.Collections)
+                    .ThenInclude(co => co.Collectibles)
+                        .ThenInclude(cl => cl.Collector)
+                .Skip(page * itemsPerPage - itemsPerPage)
+                .Take(itemsPerPage)
+                .ToListAsync();
 
             return Ok(_mapper.Map<ICollection<CollectionType>, ICollection<CollectionTypeDTO>>(model));
+        }
+
+        [HttpGet("byname/{name}")]
+        public async ValueTask<IActionResult> GetName(string name)
+        {
+            var model = await _repo.Item()
+                .Where(c => c.Name.ToLower() == name.ToLower())
+                .Include(c => c.Collections)
+                .ThenInclude(co => co.Collectibles)
+                    .ThenInclude(cl => cl.Image)
+                .Include(c => c.Collections)
+                    .ThenInclude(co => co.Collectibles)
+                        .ThenInclude(cl => cl.Collector)
+                .FirstOrDefaultAsync();
+            
+            if (model != null)
+            {
+                return Ok(model);
+            }
+            return NotFound();
         }
 
         [HttpPost]

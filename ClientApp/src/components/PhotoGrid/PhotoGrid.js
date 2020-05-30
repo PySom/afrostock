@@ -48,7 +48,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_ }) {
         dataLength={dataLength}
         next={fetch_}
         hasMore={true}
-        loader={<img className="loader__" src="images/loader.gif" />}
+        loader={<img className="loader__" src="images/loader.gif" alt="" />}
       >
         <section id="photos">
           {/* {this.state.items.map((i, index) => (

@@ -4,12 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AfrroStock.Models
 {
-    public class Collection : IModel
+    public class Collection : IModel, IIncrease
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
+        public int Views { get; set; }
+        public bool IsFeatured { get; set; }
         public string Description { get; set; }
         [ForeignKey("CollectionTypeId")]
         public CollectionType CollectionType { get; set; }

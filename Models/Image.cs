@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AfrroStock.Models
 {
-    public class Image : IModel
+    public class Image : IModel, IIncrease
     {
         public Image()
         {
@@ -21,6 +21,7 @@ namespace AfrroStock.Models
         public string Content { get; set; }
         public string ContentLow { get; set; }
         public string ContentLower { get; set; }
+        public bool IsFeatured { get; set; }
 
         [ForeignKey("AuthorId")]
         public ApplicationUser Author { get; set; }
@@ -52,8 +53,6 @@ namespace AfrroStock.Models
     namespace DTOs
     {
         public class ImageDTO : Image
-        {
-            public int TotalImages { get; set; }
-        }
+        {}
     }
 }

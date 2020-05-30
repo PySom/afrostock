@@ -87,7 +87,6 @@ namespace AfrroStock
             services.AddTransient<IModelManager<UserSubscription>, ModelManager<UserSubscription>>();
             services.AddTransient<AuthRepository>();
             services.AddTransient<UserManager>();
-            services.AddTransient<ImageManager>();
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();

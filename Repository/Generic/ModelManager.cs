@@ -77,6 +77,21 @@ namespace AfrroStock.Repository.Generic
             return (false, null, errorMessage);
         }
 
+        public async ValueTask<bool> IncreaseView<TI>(TI model) where TI : TModel, IIncrease
+        {
+            try
+            {
+                model.Views += 1;
+                await Update(model);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                var _ = ex.Message;
+                return false;
+            }
+
+        }
         public async ValueTask<(bool, ICollection<TModel>, string)> Add(IEnumerable<TModel> models)
         {
             string errorMessage;

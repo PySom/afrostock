@@ -21,7 +21,7 @@ namespace AfrroStock.Repository.Generic
 
         ValueTask<TModel> FindOne(Expression<Func<TModel, bool>> query);
         ValueTask<ICollection<TModel>> FindMany(Expression<Func<TModel, bool>> query);
-
+        ValueTask<bool> IncreaseView<TI>(TI model) where TI : TModel, IIncrease;
         DbSet<TModel> Item();
     }
 }
