@@ -9,6 +9,7 @@ export default function Home(props) {
   const [contents, setContents] = useState([]);
   const [page, setPage] = useState(1);
   const [pageLoaded, setPageLoaded] = useState(true);
+  const [hasMoreImages, setHasMoreImages] = useState(true);
 
   useEffect(() => {
     if (pageLoaded) {
@@ -26,18 +27,29 @@ export default function Home(props) {
   }, [pageLoaded]);
 
   console.log(contents);
+
   const fetchMoreData = () => {
-    setPage(page + 1);
-    api
-      .getAll(`images?page=${2}`, "images")
-      .then((response) => {
-        setContents(contents.concat(response));
-        setPageLoaded(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setPageLoaded(false);
-      });
+    if (page) {
+      setPage(page + 1);
+      api
+        .getAll(`images?page=${page}`, "images")
+        .then((response) => {
+          if (response.length === 0) {
+            setPage(null);
+            setHasMoreImages(false);
+          }
+          setContents(contents.concat(response));
+          setPageLoaded(false);
+          // } else {
+          //   setPage(null);
+          //   setHasMoreImages(false);
+          // }
+        })
+        .catch((err) => {
+          console.log(err);
+          setPageLoaded(false);
+        });
+    }
   };
 
   return (
@@ -57,6 +69,7 @@ export default function Home(props) {
               dataLength={contents.length}
               fetch_={fetchMoreData}
               contents={contents}
+              hasmore_={hasMoreImages}
             />
           </div>
         </MainBody>

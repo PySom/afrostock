@@ -1,0 +1,17 @@
+.author__wrap {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  h2 {
+    font-family: "helvetica bold";
+  }
+  span.caption {
+    font-family: "work sans light";
+    display: inline-block;
+  }
+  span.author {
+    display: inline-block;
+    font-family: "work sans light";
+    padding-bottom: 1em;
+    padding-left: 1em;
+  }
+}
