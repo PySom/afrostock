@@ -101,7 +101,9 @@
     grid-row: span 2;
 } */
 
-#photos img,
+#photos img {
+  width: 100%;
+}
 #photos video {
   width: 420px;
 
