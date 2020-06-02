@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import "./_PhotoGrid.scss";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import ModalCustomHeader from "../Modal/ModalCustomHeader";
@@ -8,7 +8,12 @@ import api from "../../sideEffects/apis/api";
 import Guard from "../../Guard";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
+export default function CollectPhotoGrid({
+  contents,
+  dataLength,
+  fetch_,
+  hasmore_,
+}) {
   const [show, setShow] = useState(false);
   const [showRaveButton, setShowRaveButton] = useState(false);
   const [image, setImage] = useState(null);
@@ -59,7 +64,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
           {contents &&
             contents.map((content, index) => (
               <button
-                key={content.id}
+                key={content.name}
                 onClick={(e) => handleShow(e, index, content)}
                 className="unstyled px-0 mb-2"
               >
@@ -71,14 +76,14 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
                       alt={content.name}
                       title={content.description || content.name}
                     />
-                    <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
+                    {/* <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5> */}
                   </div>
                 )}
 
                 {content.contentType === 1 && (
-                  <div className="r-p mt-4">
-                    <video controls src={content.contentLower}></video>
-                    <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
+                  <div className="r-p">
+                    <video controls src={content.content}></video>
+                    {/* <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5> */}
                   </div>
                 )}
               </button>
@@ -102,7 +107,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
               name={image.name}
               description={image.src.description}
               contentType={image.src.contentType}
-              src={image.src.contentLower}
+              src={image.src.contentLow}
             />
           </ModalBody>
           <ModalFooter>

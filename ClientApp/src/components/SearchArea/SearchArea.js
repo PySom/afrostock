@@ -3,6 +3,7 @@ import SearchBar from "../SearchBar/SearchBar";
 import ResultArea from "../SearchBar/ResultArea/ResultArea";
 import VizSensor from "react-visibility-sensor";
 import { connect } from "react-redux";
+import { setVisibleState } from "../../creators/visbleSearchCreator";
 import api from "../../sideEffects/apis/api";
 import { useHistory } from "react-router-dom";
 
@@ -78,24 +79,6 @@ export function SearchArea({ className, setVisibleState, searchClass, type }) {
     </VizSensor>
   );
 }
-
-//Below defines actions and reducers
-const actionTypes = {
-  visible: "SEARCH_VISBLE",
-};
-
-//actions
-export const setVisibleState = (data) => ({ type: actionTypes.visible, data });
-
-//reducers
-export const visibleReducer = (state = true, action) => {
-  switch (action.type) {
-    case actionTypes.visible:
-      return action.data;
-    default:
-      return state;
-  }
-};
 
 //get action from store in a connected form
 export const ConnectedSearchArea = connect(null, { setVisibleState })(

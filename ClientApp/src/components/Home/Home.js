@@ -7,37 +7,57 @@ import MainBody from "../MainBody/MainBody";
 
 export default function Home(props) {
   const [contents, setContents] = useState([]);
+  const [imageCount, setImageCount] = useState(0);
   const [page, setPage] = useState(1);
   const [pageLoaded, setPageLoaded] = useState(true);
+  const [hasMoreImages, setHasMoreImages] = useState(true);
 
   useEffect(() => {
     if (pageLoaded) {
       api
         .getAll(`images?page=${page}`, "images")
         .then((response) => {
-          setContents(response);
+          let filterImages = response.filter((img) => img.contentType == 0);
+          setContents(filterImages);
+          setPage(page + 1);
           setPageLoaded(false);
         })
         .catch((err) => {
           console.log(err);
           setPageLoaded(false);
         });
+      api
+        .getAll(`images/count`, "imagescount")
+        .then((response) => {
+          setImageCount(response.total);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }, [pageLoaded]);
+  }, []);
 
-  console.log(contents);
+  console.log(contents.length, imageCount);
+
   const fetchMoreData = () => {
-    setPage(page + 1);
-    api
-      .getAll(`images?page=${2}`, "images")
-      .then((response) => {
-        setContents(contents.concat(response));
-        setPageLoaded(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setPageLoaded(false);
-      });
+    if (contents.length < imageCount) {
+      let difference = imageCount - contents.length;
+      setPage(page + 1);
+      api
+        .getAll(`images?page=${page}`, "images")
+        .then((response) => {
+          if (difference < 20) {
+            setHasMoreImages(false);
+          }
+          let filterImages = response.filter((img) => img.contentType == 0);
+          setContents(contents.concat(filterImages));
+          //setPageLoaded(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setPageLoaded(false);
+        });
+    }
   };
 
   return (
@@ -57,6 +77,7 @@ export default function Home(props) {
               dataLength={contents.length}
               fetch_={fetchMoreData}
               contents={contents}
+              hasmore_={hasMoreImages}
             />
           </div>
         </MainBody>
