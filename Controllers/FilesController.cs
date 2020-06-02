@@ -11,16 +11,12 @@ namespace AfrroStock.Controllers
     {
         private readonly IImageService _img;
 
-        private static readonly MachineLearning _ml;
         public FilesController(IImageService image)
         {
             _img = image;
         }
 
-        static FilesController()
-        {
-            _ml = new MachineLearning();
-        }
+
 
         [HttpPost("upload")]
         public async Task<IActionResult> Post([FromForm]FileViewModel model)
@@ -34,8 +30,7 @@ namespace AfrroStock.Controllers
                     {
                         var name = model.File.FileName.Split('.')[0];
 
-                        var (lowRes, lowerRes) = await _img.ManipulateContent(model.File);
-                        (string _, string[] tags) = _ml.Pipeline();
+                        var (lowRes, lowerRes, tags) = await _img.ManipulateContent(model.File);
                         return Ok(
                             new { Content = path, ContentLow = lowRes, ContentLower = lowerRes, 
                             ContentType = contentType, SuggestedTags = tags, Name = name }

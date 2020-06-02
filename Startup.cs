@@ -85,25 +85,26 @@ namespace AfrroStock
             services.AddTransient<IModelManager<Tag>, ModelManager<Tag>>();
             services.AddTransient<IModelManager<UserImage>, ModelManager<UserImage>>();
             services.AddTransient<IModelManager<UserSubscription>, ModelManager<UserSubscription>>();
+            services.AddTransient<MachineLearning>();
             services.AddTransient<AuthRepository>();
             services.AddTransient<UserManager>();
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-            //string ffmpegFilePath = null;
-            //var osEnvironment = Environment.OSVersion;
-            //if(osEnvironment.Platform == PlatformID.Win32NT)
-            //{
-            //    ffmpegFilePath = Path.Combine(Environment.CurrentDirectory, "ffmpeg", "windows", "ffmpeg.exe");
-            //}
-            //else
-            //{
-            //    ffmpegFilePath = Path.Combine(Environment.CurrentDirectory, "ffmpeg", "unix", "ffmpeg");
-            //}
-            //if (!string.IsNullOrEmpty(ffmpegFilePath))
-            //{
-            //    services.AddMediaToolkit(ffmpegFilePath);
-            //}
+            string ffmpegFilePath = null;
+            var osEnvironment = Environment.OSVersion;
+            if(osEnvironment.Platform == PlatformID.Win32NT)
+            {
+                ffmpegFilePath = Path.Combine(Environment.CurrentDirectory, "ffmpeg", "windows", "ffmpeg.exe");
+            }
+            else
+            {
+                ffmpegFilePath = Path.Combine(Environment.CurrentDirectory, "ffmpeg", "unix", "ffmpeg");
+            }
+            if (!string.IsNullOrEmpty(ffmpegFilePath))
+            {
+                services.AddMediaToolkit(ffmpegFilePath);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

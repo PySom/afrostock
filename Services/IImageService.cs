@@ -1,6 +1,8 @@
 
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using static AfrroStock.Services.MachineLearning;
 
 namespace AfrroStock.Services
 {
@@ -9,6 +11,6 @@ namespace AfrroStock.Services
         bool Create(IFormFile file, out string path);
         void Delete(string ImageUrl);
         bool Edit(IFormFile file, string imageUrl, out string path);
-        ValueTask<(string, string)> ManipulateContent(IFormFile file);
+        ValueTask<(string, string, List<List<Predict>>)> ManipulateContent(IFormFile file);
     }
 }
