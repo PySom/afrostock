@@ -33,7 +33,7 @@ namespace AfrroStock.Controllers
                         var (lowRes, lowerRes, tags) = await _img.ManipulateContent(model.File);
                         return Ok(
                             new { Content = path, ContentLow = lowRes, ContentLower = lowerRes, 
-                            ContentType = contentType, SuggestedTags = tags, Name = name }
+                            ContentType = contentType, SuggestedTags = tags[0], Name = name }
                             );
                     }
                     return BadRequest(new { Message = "We could not add this resource. Please try again" });
