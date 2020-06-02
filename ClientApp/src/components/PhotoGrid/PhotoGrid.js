@@ -102,7 +102,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
               name={image.name}
               description={image.src.description}
               contentType={image.src.contentType}
-              src={image.src.content}
+              src={image.src.contentLower}
             />
           </ModalBody>
           <ModalFooter>
