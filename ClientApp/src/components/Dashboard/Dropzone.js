@@ -123,6 +123,7 @@ export default function Dropzone(props) {
       let formData = new FormData();
       formData.append("file", element);
       file.addFile(formData).then((res) => {
+        console.log(res);
         arrayLen = arrayLen.concat(res);
         inputFields = inputFields.concat("");
         if (index == length_ - 1) {
