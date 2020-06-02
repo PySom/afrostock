@@ -5,12 +5,12 @@ a.navbar-brand {
   max-width: 150px;
 
   @media screen and (max-width: 600px) {
-    max-width: 60px;
+    max-width: 40px;
   }
 }
 
 .navbar-brand img {
-  width: 50%;
+  width: 80%;
   @media screen and (max-width: 600px) {
     width: 100%;
   }
@@ -40,7 +40,7 @@ html {
     }
   }
   .register {
-    background-color: #05a081;
+    background-color: #966b4f !important;
     border-radius: 4px;
     padding: 2px 20px;
 

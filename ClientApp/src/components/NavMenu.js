@@ -91,7 +91,15 @@ export class NavMenu extends Component {
       showSearch: !this.state.showSearch,
     });
   }
-
+  imgSource(searchVis) {
+    return searchVis && window.matchMedia("(min-width: 600px)").matches
+      ? "images/logo-colored.png"
+      : !searchVis && window.matchMedia("(max-width: 600px)").matches
+      ? "images/emblem-white.png"
+      : searchVis && !window.matchMedia("(min-width: 600px)").matches
+      ? "images/emblem-colored.png"
+      : "images/emblem.png";
+  }
   render() {
     const { searchVisibility } = this.props;
     console.log("nav visible", searchVisibility);
@@ -113,15 +121,14 @@ export class NavMenu extends Component {
         >
           <Container fluid>
             <NavbarBrand href="/">
-              <img
-                src={searchVisibility ? "images/logo.png" : "images/emblem.png"}
-                alt="logo"
-              />
+              <img src={this.imgSource(searchVisibility)} alt="logo" />
             </NavbarBrand>
             <SearchArea
               searchClass=" header-width nav-search"
               className={`variable-search-width ${
-                searchVisibility || (searchVisibility && !this.state.showSearch)
+                searchVisibility ||
+                (searchVisibility && !this.state.showSearch) ||
+                history.location.pathname !== "/"
                   ? "d-none"
                   : ""
               }`}
