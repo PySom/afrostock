@@ -29,6 +29,8 @@ namespace AfrroStock.Mappers
                 .ReverseMap();
             CreateMap<CollectionType, CollectionTypeVM>()
                 .ReverseMap();
+            CreateMap<CollectionType, CollectionTypeDTO>()
+              .ReverseMap();
             CreateMap<Image, ImageVM>()
                 .ReverseMap();
             CreateMap<Image, ImageDTO>()

@@ -114,14 +114,20 @@ export class NavMenu extends Component {
           <Container fluid>
             <NavbarBrand href="/">
               <img
-                src={searchVisibility ? "images/logo.png" : "images/emblem.png"}
+                src={
+                  searchVisibility
+                    ? "images/logo-colored.png"
+                    : "images/emblem.png"
+                }
                 alt="logo"
               />
             </NavbarBrand>
             <SearchArea
               searchClass=" header-width nav-search"
               className={`variable-search-width ${
-                searchVisibility || (searchVisibility && !this.state.showSearch)
+                searchVisibility ||
+                (searchVisibility && !this.state.showSearch) ||
+                history.location.pathname !== "/"
                   ? "d-none"
                   : ""
               }`}

@@ -1,0 +1,44 @@
+﻿.collection__wrapper {
+  margin-top: 4em;
+  margin-bottom: 4em;
+  h2.title {
+    font-family: "Helvetica Bold";
+  }
+
+  .collection__buttons {
+    div.mr-1 {
+      display: inline !important;
+      button {
+        margin-bottom: 0.5em;
+      }
+    }
+    div.mr-2 {
+      display: inline !important;
+    }
+  }
+}
+
+.discover-cat {
+  transition: 0.15s all ease;
+  display: inline-block;
+  padding: 0.6rem 1.05rem;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  margin-right: 0.25rem;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: 600;
+  list-style: none;
+  white-space: nowrap;
+  color: #9e9e9e;
+  background-color: white;
+  text-transform: capitalize;
+  font-family: "Helvetica Bold";
+}
+
+.discover-cat:hover {
+  background: #e8e8e8;
+}

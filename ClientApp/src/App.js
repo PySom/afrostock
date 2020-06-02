@@ -16,6 +16,7 @@ import Guard from "./Guard";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Upload from "./components/Dashboard/Upload";
 import EditProfile from "./components/Dashboard/EditProfile";
+import Collects from "./components/collects/Collects";
 
 export default function App(props) {
   return (
@@ -30,15 +31,14 @@ export default function App(props) {
           </MainBody>
         )}
       />
+      <Route exact path="/discover/:id" render={() => <Collects />} />
       <Route
         exact
         path="/videos"
         render={() => (
-          <Guard type="modal" route="videos">
-            <MainBody>
-              <VideoPage />
-            </MainBody>
-          </Guard>
+          <MainBody>
+            <VideoPage />
+          </MainBody>
         )}
       />
       <Route

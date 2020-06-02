@@ -14,7 +14,9 @@ export default function Header() {
       </div>
       <div className="m0-auto header-width header-search">
         <h1 className="hero__title text-white">
-          The best free stock photos shared by talented creators.
+          {
+            "Explore thousands of royalty free stock photos & media from around Africa"
+          }
         </h1>
       </div>
       <ConnectedSearchArea

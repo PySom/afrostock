@@ -23,7 +23,9 @@ export default function ModalCustomBody({
           </figure>
         )}
 
-        {contentType === 1 && <video controls src={src}></video>}
+        {contentType === 1 && (
+          <video oncontextmenu={`return ${false};`} controls src={src}></video>
+        )}
       </div>
     </div>
   );
