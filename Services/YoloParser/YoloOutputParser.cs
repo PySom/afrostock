@@ -25,11 +25,12 @@ namespace AfrroStock.Services.YoloParser
         };
 
         private string[] labels = new string[]
+
         {
             "aeroplane", "bicycle", "tricycle", "bird", "boat", "bottle",
             "bus", "car", "cat", "chair", "cow", "child", "coconut","girl","boy",
             "diningtable", "dog", "horse", "motorbike", "man","woman", "children","flower",
-            "soup", "bus", "river", "vegetation",
+            "soup", "bus", "river", "vegetation", "tomato",
             "pottedplant", "sheep", "sofa", "train", "tvmonitor"
         };
 

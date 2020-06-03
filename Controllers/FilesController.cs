@@ -1,6 +1,7 @@
 ﻿using AfrroStock.Models.ViewModels;
 using AfrroStock.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AfrroStock.Controllers
@@ -33,7 +34,7 @@ namespace AfrroStock.Controllers
                         var (lowRes, lowerRes, tags) = await _img.ManipulateContent(model.File);
                         return Ok(
                             new { Content = path, ContentLow = lowRes, ContentLower = lowerRes, 
-                            ContentType = contentType, SuggestedTags = tags[0], Name = name }
+                            ContentType = contentType, SuggestedTags = tags[0].Select(t => t.Label).Distinct(), Name = name }
                             );
                     }
                     return BadRequest(new { Message = "We could not add this resource. Please try again" });
