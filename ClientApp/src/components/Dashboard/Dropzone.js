@@ -163,7 +163,7 @@ export default function Dropzone(props) {
           <div {...getRootProps({ className: "dropzone" })}>
             <input {...getInputProps()} onChange={(event) => allFiles(event)} />
             <p>
-              <button>Browse</button>
+              <button type="button">Browse</button>
               <span>or Drag 'n' drop some files here</span>{" "}
             </p>
           </div>
