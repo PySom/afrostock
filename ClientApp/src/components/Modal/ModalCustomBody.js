@@ -1,5 +1,6 @@
 ﻿import React from "react";
 import "./_Modal.scss";
+import VideoCanvas from "../VideoCanvas/VideoCanvas";
 
 export default function ModalCustomBody({
   src,
@@ -24,7 +25,7 @@ export default function ModalCustomBody({
         )}
 
         {contentType === 1 && (
-          <video oncontextmenu={`return ${false};`} controls src={src}></video>
+          <VideoCanvas src={src} />
         )}
       </div>
     </div>

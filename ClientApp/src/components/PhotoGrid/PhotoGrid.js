@@ -7,6 +7,7 @@ import RavePay from "../RavePay/RavePay";
 import api from "../../sideEffects/apis/api";
 import Guard from "../../Guard";
 import InfiniteScroll from "react-infinite-scroll-component";
+import VideoCanvas from "../VideoCanvas/VideoCanvas";
 
 export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
   const [show, setShow] = useState(false);
@@ -76,8 +77,8 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
                 )}
 
                 {content.contentType === 1 && (
-                  <div className="r-p mt-4">
-                    <video controls src={content.contentLower}></video>
+                        <div className="r-p mt-4">
+                            <VideoCanvas src={content.contentLower} mute={true} autoPlay={true} loop={true} />
                     <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
                   </div>
                 )}
