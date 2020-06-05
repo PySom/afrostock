@@ -2,6 +2,7 @@
 import auth from "../../sideEffects/apis/auth";
 import { useForm } from "../../customHooks/useForm";
 import { connect } from "react-redux";
+import { setLoader } from "../../creators/loaderCreator";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import "./_Register.scss";
 
@@ -21,6 +22,7 @@ function Register(props) {
 
   useEffect(() => {
     props.setLoggedInStatus(true);
+    props.setLoader(false);
   }, []);
 
   useEffect(() => {
@@ -46,6 +48,7 @@ function Register(props) {
       .then((res) => {
         history.push((url && "/" + url) || "/dashboard");
         props.setLoggedInStatus(true);
+        JSON.stringify(localStorage.setItem("status_", true));
         window.location.reload();
       })
       .catch((err) => {
@@ -64,7 +67,11 @@ function Register(props) {
         <div className="heading">
           <div className="row">
             <div className="logo-section">
-              <img src="images/logo.png" alt="logo" onClick={goToHome} />
+              <img
+                src="images/logo-colored.png"
+                alt="logo"
+                onClick={goToHome}
+              />
             </div>
             <div className="caption">
               <span>Already a member?</span>
@@ -84,22 +91,22 @@ function Register(props) {
             </div>
             <form onSubmit={submitForm}>
               <div className="surname-reg">
-                <input {...surName} placeholder="Enter Last name" />
+                <input {...surName} placeholder="Enter Last name" required />
               </div>
               <div className="firstname-reg">
-                <input {...firstName} placeholder="Enter first name" />
+                <input {...firstName} placeholder="Enter first name" required />
               </div>
               <div className="full">
-                <input {...email} placeholder="email" />
+                <input {...email} placeholder="email" required />
               </div>
               <div className="full">
-                <input {...phone} placeholder="Phone Number" />
+                <input {...phone} placeholder="Phone Number" required />
               </div>
               <div className="full">
-                <input {...password} placeholder="password" />
+                <input {...password} placeholder="password" required />
               </div>
               <div className="full">
-                <input {...confirm} placeholder="confirm password" />
+                <input {...confirm} placeholder="confirm password" required />
               </div>
               <div className="submit_">
                 <button type="submit">SIGN UP</button>
@@ -175,7 +182,10 @@ export const setLoggedInStatus = (data) => ({
 });
 
 //reducers
-export const loggedInStatusReducer = (state = false, action) => {
+let currentStatus = localStorage.getItem("status_")
+  ? JSON.parse(localStorage.getItem("status_"))
+  : false;
+export const loggedInStatusReducer = (state = currentStatus, action) => {
   switch (action.type) {
     case actionTypes.loggedInStatus:
       return action.data;
@@ -184,11 +194,14 @@ export const loggedInStatusReducer = (state = false, action) => {
   }
 };
 
-const matchStateToProps = ({ loggedInStatus }) => {
+const matchStateToProps = ({ loggedInStatus, loadar }) => {
   return {
     loggedInStatus,
+    loadar,
   };
 };
 
 //get action from store in a connected form
-export default connect(matchStateToProps, { setLoggedInStatus })(Register);
+export default connect(matchStateToProps, { setLoggedInStatus, setLoader })(
+  Register
+);

@@ -3,11 +3,13 @@ import auth from "../../sideEffects/apis/auth";
 import { useForm } from "../../customHooks/useForm";
 import { connect } from "react-redux";
 import { useLocation, useHistory, Link } from "react-router-dom";
+import { setLoader } from "../../creators/loaderCreator";
 import { setLoggedInStatus } from "../Register/Register";
 
 function Login(props) {
   useEffect(() => {
     props.setLoggedInStatus(true);
+    props.setLoader(false);
   }, []);
 
   useEffect(() => {
@@ -58,7 +60,11 @@ function Login(props) {
         <div className="heading">
           <div className="row">
             <div className="logo-section">
-              <img src="images/logo.png" alt="logo" onClick={goToHome} />
+              <img
+                src="images/logo-colored.png"
+                alt="logo"
+                onClick={goToHome}
+              />
             </div>
             <div className="caption">
               <span>New to AfroStock?</span>
@@ -73,16 +79,16 @@ function Login(props) {
             </div>
             <form onSubmit={submitForm}>
               <div className="full">
-                <input {...email} placeholder="email" />
+                <input {...email} placeholder="email" required />
               </div>
               <div className="full">
-                <input {...password} placeholder="password" />
+                <input {...password} placeholder="password" required />
               </div>
               <div className="submit_">
                 <button type="submit">Login</button>
               </div>
             </form>
-            {props.type !== "modal" && (
+            {props.type == "modal" && (
               <Link to={`/register${url && "?returnurl=" + url}`}>
                 Register
               </Link>
@@ -143,4 +149,4 @@ function Login(props) {
   );
 }
 
-export default connect(null, { setLoggedInStatus })(Login);
+export default connect(null, { setLoggedInStatus, setLoader })(Login);

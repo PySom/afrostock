@@ -1,22 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import file from "../../sideEffects/apis/file";
 import api from "../../sideEffects/apis/api";
+import { setLoader } from "../../creators/loaderCreator";
+import { connect } from "react-redux";
 import "./_Dropzone.scss";
 
-export default function Dropzone(props) {
+function Dropzone(props) {
   //   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [fields, setFields] = useState([]);
   const [textareaFields, setTextAreaFields] = useState([]);
   const [alluploadedFiles, setAllUploadedFiles] = useState(null);
   const [responseSuccess, setResponseSuccess] = useState(false);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+  const [showPublishButton, setShowPublishButton] = useState(false);
 
   //   const files = acceptedFiles.map((file) => (
   //     <li key={file.path}>
   //       {file.path} - {file.size} bytes
   //     </li>
   //   ));
+  useEffect(() => {
+    props.setLoader(false);
+  }, []);
 
   const removeFromUpload = (item) => {
     const records = [...alluploadedFiles];
@@ -127,6 +133,7 @@ export default function Dropzone(props) {
         arrayLen = arrayLen.concat(res);
         inputFields = inputFields.concat("");
         if (index == length_ - 1) {
+          setShowPublishButton(true);
           setAllUploadedFiles(arrayLen);
           setFields(inputFields);
           setTextAreaFields(inputFields);
@@ -173,9 +180,16 @@ export default function Dropzone(props) {
       <div className="publish__upload">
         <form onSubmit={publishAllFiles}>
           <input type="hidden" />
-          <button type="submit">PUBLISH</button>
+          <button
+            className={showPublishButton ? "d-inline" : "d-none"}
+            type="submit"
+          >
+            PUBLISH
+          </button>
         </form>
       </div>
     </div>
   );
 }
+
+export default connect(null, { setLoader })(Dropzone);

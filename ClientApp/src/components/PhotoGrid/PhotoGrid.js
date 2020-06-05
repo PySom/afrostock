@@ -59,30 +59,41 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
           ))} */}
           {contents &&
             contents.map((content, index) => (
-              <button
+              <div
                 key={content.id}
                 onClick={(e) => handleShow(e, index, content)}
                 className="unstyled px-0 mb-2"
               >
                 {content.contentType === 0 && (
-                  <div className="r-p">
+                  <div
+                    className="r-p"
+                    style={{
+                      backgroundImage: `url(${content.contentLower})`,
+                      backgroundSize: "cover",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                    }}
+                    title={content.description || content.name}
+                  >
+                    <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
                     <img
+                      style={{ visibility: "hidden" }}
                       className="img-fluid"
                       src={content.contentLower}
                       alt={content.name}
                       title={content.description || content.name}
                     />
-                    <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
                   </div>
                 )}
 
                 {content.contentType === 1 && (
-                        <div className="r-p mt-4">
-                            <VideoCanvas src={content.contentLower} mute={true} autoPlay={true} loop={true} />
+                  <div className="r-p mt-4">
+                    {/* <video controls src={content.contentLower}></video> */}
+                    <VideoCanvas src={content.contentLower} />
                     <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
                   </div>
                 )}
-              </button>
+              </div>
             ))}
         </section>
       </InfiniteScroll>
@@ -135,13 +146,13 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
                 />
               </Guard>
             )}
-            <Button
+            {/* <Button
               className="cancel__pay"
               color="secondary"
               onClick={handleClose}
             >
               Cancel
-            </Button>
+            </Button> */}
           </ModalFooter>
         </Modal>
       )}

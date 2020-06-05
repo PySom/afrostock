@@ -16,7 +16,6 @@ import "./_Collection.scss";
 function Collection(props) {
   const [firstCollect, ...rest] = props.collectibles;
   const history = useHistory();
-
   const showCollects = (data, id) => {
     history.push(`/discover/${id}`);
     props.setCollectData(data);
@@ -26,21 +25,44 @@ function Collection(props) {
   return firstCollect ? (
     <div className="card__wrapper">
       <Card onClick={() => showCollects(props.collectibles, props.id)}>
-        <CardImg
-          top
-          width="250px"
-          src={firstCollect.image.content}
-          alt="main collection"
-        />
+        <div
+          style={{
+            maxWidth: "450px",
+            backgroundImage: `url(${firstCollect.image.contentLower})`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+          }}
+        >
+          <CardImg
+            top
+            src={firstCollect.image.contentLower}
+            alt="main collection"
+            style={{ visibility: "hidden" }}
+          />
+        </div>
         <CardBody className="ptb-1">
           <Row className="mx-0">
             {rest.map((collect, index) => {
               if (index < 4) {
                 return (
-                  <Col md={3} xs={3} lg={3} key={collect.id} className="pd-5">
+                  <Col
+                    md={3}
+                    xs={3}
+                    lg={3}
+                    key={collect.id}
+                    className="pd-5"
+                    style={{
+                      backgroundImage: `url(${collect.image.contentLower})`,
+                      backgroundSize: "cover",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                      maxHeight: "70px",
+                    }}
+                  >
                     <CardImg
-                      height="70px"
-                      src={collect.image.content}
+                      style={{ visibility: "hidden" }}
+                      src={collect.image.contentLower}
                       alt="other collection"
                     />
                   </Col>
