@@ -79,10 +79,10 @@ function Login(props) {
             </div>
             <form onSubmit={submitForm}>
               <div className="full">
-                <input {...email} placeholder="email" />
+                <input {...email} placeholder="email" required />
               </div>
               <div className="full">
-                <input {...password} placeholder="password" />
+                <input {...password} placeholder="password" required />
               </div>
               <div className="submit_">
                 <button type="submit">Login</button>
