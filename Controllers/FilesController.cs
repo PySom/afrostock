@@ -1,6 +1,8 @@
 ﻿using AfrroStock.Models.ViewModels;
 using AfrroStock.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AfrroStock.Controllers
@@ -31,11 +33,18 @@ namespace AfrroStock.Controllers
                         var name = model.File.FileName.Split('.')[0];
 
                         var (lowRes, lowerRes, tags) = await _img.ManipulateContent(model.File);
+
+                        var t = new List<string>();
+                        if(tags.Count > 0)
+                        {
+                            t = tags[0].Select(r => r.Label).ToList();
+                        }
                         return Ok(
                             new { Content = path, ContentLow = lowRes, ContentLower = lowerRes, 
-                            ContentType = contentType, SuggestedTags = tags[0], Name = name }
+                            ContentType = contentType, SuggestedTags = t, Name = name }
                             );
                     }
+
                     return BadRequest(new { Message = "We could not add this resource. Please try again" });
                 }
                 return BadRequest(new { Message = "File has to be an image or a video" });

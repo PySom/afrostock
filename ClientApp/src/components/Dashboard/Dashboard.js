@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import auth from "../../sideEffects/apis/auth";
 import { useForm } from "../../customHooks/useForm";
 import { connect } from "react-redux";
+import { setLoader } from "../../creators/loaderCreator";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import "./_Dashboard.scss";
 
@@ -14,6 +15,7 @@ function Dashboard(props) {
     setLoggedInUser(JSON.parse(localStorage.getItem("user")));
     setShowLoggedIn(true);
     hideLoggedInDisplay();
+    props.setLoader(false);
   }, []);
 
   const hideLoggedInDisplay = () => {
@@ -30,6 +32,7 @@ function Dashboard(props) {
   const goToEditProfile = () => {
     history.push("/editprofile");
   };
+
   return (
     <div className="dashboard-wrapper">
       <div
@@ -116,9 +119,9 @@ function Dashboard(props) {
   );
 }
 
-const matchStateToProps = ({ loggedInStatus }) => {
-  return { loggedInStatus };
+const matchStateToProps = ({ loggedInStatus, loadar }) => {
+  return { loggedInStatus, loadar };
 };
 
 //connect layout to get search visibility
-export default connect(matchStateToProps)(Dashboard);
+export default connect(matchStateToProps, { setLoader })(Dashboard);

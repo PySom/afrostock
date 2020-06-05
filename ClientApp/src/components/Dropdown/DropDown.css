@@ -2,12 +2,16 @@
   display: none;
   position: absolute;
   z-index: 2;
-  font-family: "Helvetica Regular";
+  background: rgb(233, 231, 231);
+
+  width: 150px;
+  right: 1px;
 }
 
 .trend-new span {
   padding-right: 10px;
   font-weight: bold;
+  font-family: "work sans medium";
 }
 
 .trend-new:hover .clickable-trend {
@@ -19,9 +23,13 @@ span {
 }
 
 .clickable-trend button:hover {
+  background: rgb(233, 231, 231);
   background: #ccc;
 }
 
 .clickable-trend button {
   width: 100%;
+  padding: 10px 5px;
+  text-align: left;
+  font-family: "work sans medium";
 }

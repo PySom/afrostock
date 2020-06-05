@@ -19,11 +19,11 @@ button:focus {
 }
 
 input {
-  font-family: "work sans light", sans-serif;
+  font-family: "work sans medium", sans-serif;
 }
 
 input::placeholder {
-  font-family: "works sans light", sans-serif;
+  font-family: "works sans medium", sans-serif;
 }
 
 input:focus {
@@ -44,9 +44,9 @@ input:focus {
   border: none;
   width: 100%;
   padding: 0.3em;
-  font-family: "work sans light";
+  font-family: "work sans medium";
   &::placeholder {
-    font-family: "work sans light";
+    font-family: "work sans medium";
   }
 }
 

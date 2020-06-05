@@ -1,6 +1,6 @@
 import React from "react";
 import { Route } from "react-router";
-import { Layout } from "./components/Layout";
+import Layout from "./components/Layout";
 import Home from "./components/Home/Home";
 import Discover from "./components/Discover/Discover";
 import Contact from "./components/Contact";
@@ -17,76 +17,87 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Upload from "./components/Dashboard/Upload";
 import EditProfile from "./components/Dashboard/EditProfile";
 import Collects from "./components/collects/Collects";
+import { connect } from "react-redux";
+import Loadar from "./components/Loader";
 
-export default function App(props) {
+function App(props) {
   return (
-    <Layout>
-      <Route exact path="/" component={Home} />
-      <Route
-        exact
-        path="/discover"
-        render={() => (
-          <MainBody>
-            <Discover />
-          </MainBody>
-        )}
-      />
-      <Route exact path="/discover/:id" render={() => <Collects />} />
-      <Route
-        exact
-        path="/videos"
-        render={() => (
-          <MainBody>
-            <VideoPage />
-          </MainBody>
-        )}
-      />
-      <Route
-        exact
-        path="/dashboard"
-        render={() => (
-          <Guard type="modal" route="dashboard">
-            <Dashboard />
-          </Guard>
-        )}
-      />
-
-      <Route
-        exact
-        path="/editprofile"
-        render={() => (
-          <Guard type="modal" route="editprofile">
-            <EditProfile />
-          </Guard>
-        )}
-      />
-
-      <Route
-        exact
-        path="/upload"
-        render={() => (
-          <Guard type="modal" route="upload">
-            <Upload />
-          </Guard>
-        )}
-      />
-      <Route
-        exact
-        path="/contents/:id"
-        render={({ match }) => (
-          <Guard type="modal" route={`/contents/${match.params.id}`}>
+    <>
+      {props.loadar && <Loadar />}
+      <Layout>
+        <Route exact path="/" component={Home} />
+        <Route
+          exact
+          path="/discover"
+          render={() => (
             <MainBody>
-              <VideoPage match={match} />
+              <Discover />
             </MainBody>
-          </Guard>
-        )}
-      />
-      <Route exact path="/aboutUs" component={AboutUs} />
-      <Route exact path="/contact" component={Contact} />
-      <Route exact path="/login" component={Login} />
-      <Route exact path="/register" component={Register} />
-    </Layout>
+          )}
+        />
+        <Route exact path="/discover/:id" render={() => <Collects />} />
+        <Route
+          exact
+          path="/videos"
+          render={() => (
+            <MainBody>
+              <VideoPage />
+            </MainBody>
+          )}
+        />
+        <Route
+          exact
+          path="/dashboard"
+          render={() => (
+            <Guard type="modal" route="dashboard">
+              <Dashboard />
+            </Guard>
+          )}
+        />
+
+        <Route
+          exact
+          path="/editprofile"
+          render={() => (
+            <Guard type="modal" route="editprofile">
+              <EditProfile />
+            </Guard>
+          )}
+        />
+
+        <Route
+          exact
+          path="/upload"
+          render={() => (
+            <Guard type="modal" route="upload">
+              <Upload />
+            </Guard>
+          )}
+        />
+        <Route
+          exact
+          path="/contents/:id"
+          render={({ match }) => (
+            <Guard type="modal" route={`/contents/${match.params.id}`}>
+              <MainBody>
+                <VideoPage match={match} />
+              </MainBody>
+            </Guard>
+          )}
+        />
+        <Route exact path="/aboutUs" component={AboutUs} />
+        <Route exact path="/contact" component={Contact} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
+      </Layout>
+    </>
   );
 }
+
+const mapStateToProps = ({ loadar }) => {
+  return { loadar };
+};
+
+export default connect(mapStateToProps, null)(App);
 
 App.displayName = App.name;

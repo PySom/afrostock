@@ -21,11 +21,11 @@ namespace AfrroStock.Services
     {
         private const string default_Path = "assets";
         private readonly IWebHostEnvironment _env;
-        private readonly IMediaToolkitService _media;
-        public ImageService(IWebHostEnvironment env, IMediaToolkitService media)
+        //private readonly IMediaToolkitService _media;
+        public ImageService(IWebHostEnvironment env)
         {
             _env = env;
-            _media = media;
+            //_media = media;
         }
         public bool Create(IFormFile file, out string path)
         {
@@ -167,7 +167,7 @@ namespace AfrroStock.Services
                                                     outputForThumbnail,
                                                     TimeSpan.FromSeconds(10)
                                                     );
-                await _media.ExecuteAsync(saveThumbnailTask);
+               // await _media.ExecuteAsync(saveThumbnailTask);
 
                 MachineLearning _ml = new MachineLearning();
                 predicted = _ml.Pipe(outputForThumbnail, _env);
@@ -192,9 +192,9 @@ namespace AfrroStock.Services
                                                     absolutePathNewOverlay,
                                                     logoFullPath
                                                     );
-                await _media.ExecuteAsync(getVideoPortionTask);
-                await _media.ExecuteAsync(reduceQualityTask);
-                await _media.ExecuteAsync(addWaterMarkTask);
+                //await _media.ExecuteAsync(getVideoPortionTask);
+                //await _media.ExecuteAsync(reduceQualityTask);
+                //await _media.ExecuteAsync(addWaterMarkTask);
 
 
             }
