@@ -91,22 +91,22 @@ function Register(props) {
             </div>
             <form onSubmit={submitForm}>
               <div className="surname-reg">
-                <input {...surName} placeholder="Enter Last name" />
+                <input {...surName} placeholder="Enter Last name" required />
               </div>
               <div className="firstname-reg">
-                <input {...firstName} placeholder="Enter first name" />
+                <input {...firstName} placeholder="Enter first name" required />
               </div>
               <div className="full">
-                <input {...email} placeholder="email" />
+                <input {...email} placeholder="email" required />
               </div>
               <div className="full">
-                <input {...phone} placeholder="Phone Number" />
+                <input {...phone} placeholder="Phone Number" required />
               </div>
               <div className="full">
-                <input {...password} placeholder="password" />
+                <input {...password} placeholder="password" required />
               </div>
               <div className="full">
-                <input {...confirm} placeholder="confirm password" />
+                <input {...confirm} placeholder="confirm password" required />
               </div>
               <div className="submit_">
                 <button type="submit">SIGN UP</button>
