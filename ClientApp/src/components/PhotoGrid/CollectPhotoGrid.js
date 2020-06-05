@@ -69,8 +69,19 @@ export default function CollectPhotoGrid({
                 className="unstyled px-0 mb-2"
               >
                 {content.contentType === 0 && (
-                  <div className="r-p">
+                  <div
+                    className="r-p"
+                    style={{
+                      backgroundImage: `url(${content.contentLower})`,
+                      backgroundSize: "cover",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                    }}
+                    title={content.description || content.name}
+                  >
+                    <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
                     <img
+                      style={{ visibility: "hidden" }}
                       className="img-fluid"
                       src={content.contentLower}
                       alt={content.name}
@@ -139,13 +150,13 @@ export default function CollectPhotoGrid({
                 />
               </Guard>
             )}
-            <Button
+            {/* <Button
               className="cancel__pay"
               color="secondary"
               onClick={handleClose}
             >
               Cancel
-            </Button>
+            </Button> */}
           </ModalFooter>
         </Modal>
       )}

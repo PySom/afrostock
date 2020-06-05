@@ -2,8 +2,11 @@
 import PhotoGrid from "../PhotoGrid/PhotoGrid";
 import api from "../../sideEffects/apis/api";
 import ls from "../../sideEffects/local/ourLocalStorage";
+import VideoCanvas from "../VideoCanvas/VideoCanvas";
+import { connect } from "react-redux";
+import { setLoader } from "../../creators/loaderCreator";
 
-export default function VideoPage({ match }) {
+function VideoPage({ match, setLoader }) {
   const [pageLoaded, setPageLoaded] = useState(true);
   const [contents, setContents] = useState([]);
   console.log({ contents }, "I came here again");
@@ -29,6 +32,7 @@ export default function VideoPage({ match }) {
         .then((response) => {
           setContents(response);
           setPageLoaded(false);
+          setLoader(false);
         })
         .catch((err) => {
           console.log(err);
@@ -49,3 +53,5 @@ export default function VideoPage({ match }) {
     </>
   );
 }
+
+export default connect(null, { setLoader })(VideoPage);

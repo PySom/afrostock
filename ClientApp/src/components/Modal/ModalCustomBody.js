@@ -13,8 +13,17 @@ export default function ModalCustomBody({
     <div className="container-fluid">
       <div className="text-center">
         {contentType === 0 && (
-          <figure className="r-p">
+          <figure
+            className="r-p"
+            style={{
+              backgroundImage: `url(${src})`,
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
             <img
+              style={{ visibility: "hidden" }}
               src={src}
               alt={name}
               title={description || name}

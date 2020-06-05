@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./_Contact.scss";
 import Footer from "./Footer";
+import { connect } from "react-redux";
+import { setLoader } from "../creators/loaderCreator";
 
-export default function Contact() {
+function Contact(props) {
+  useEffect(() => {
+    props.setLoader(false);
+  }, []);
   return (
     <div className="contact__wrapper">
       <div className="enforce-mp">
@@ -32,3 +37,5 @@ export default function Contact() {
     </div>
   );
 }
+
+export default connect(null, { setLoader })(Contact);

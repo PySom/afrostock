@@ -4,8 +4,10 @@ import DropDown from "../Dropdown/DropDown";
 import PhotoGrid from "../PhotoGrid/PhotoGrid";
 import api from "../../sideEffects/apis/api";
 import MainBody from "../MainBody/MainBody";
+import { connect } from "react-redux";
+import { setLoader } from "../../creators/loaderCreator";
 
-export default function Home(props) {
+function Home(props) {
   const [contents, setContents] = useState([]);
   const [imageCount, setImageCount] = useState(0);
   const [page, setPage] = useState(1);
@@ -14,37 +16,45 @@ export default function Home(props) {
 
   useEffect(() => {
     if (pageLoaded) {
-      api
-        .getAll(`images?page=${page}`, "images")
-        .then((response) => {
-          let filterImages = response.filter((img) => img.contentType == 0);
-          setContents(filterImages);
-          setPage(page + 1);
-          setPageLoaded(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setPageLoaded(false);
-        });
-      api
-        .getAll(`images/count`, "imagescount")
-        .then((response) => {
-          setImageCount(response.total);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      fetchInitialData();
     }
   }, []);
 
+  const fetchInitialData = () => {
+    api
+      .getAll(`images?page=${page}`, "images")
+      .then((response) => {
+        let filterImages = response.filter((img) => img.contentType == 0);
+        setContents(filterImages);
+        setPage(page + 1);
+        setPageLoaded(false);
+
+        props.setLoader(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setPageLoaded(false);
+      });
+    api
+      .getAll(`images/count`, "imagescount")
+      .then((response) => {
+        setImageCount(response.total);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  console.log("content are", contents);
   console.log(contents.length, imageCount);
 
   const fetchMoreData = () => {
     if (contents.length < imageCount) {
       let difference = imageCount - contents.length;
+
       setPage(page + 1);
       api
-        .getAll(`images?page=${page}`, "images")
+        .getAll(`images?page=${page}`)
         .then((response) => {
           if (difference < 20) {
             setHasMoreImages(false);
@@ -60,6 +70,20 @@ export default function Home(props) {
     }
   };
 
+  const sortByViews = () => {
+    let viewSorted = contents.sort((a, b) => (b.views > a.views ? 1 : -1));
+    console.log(viewSorted);
+    setContents(viewSorted);
+  };
+
+  const sortByDate = () => {
+    let dateSorted = contents.sort((a, b) =>
+      b.dateAdded > a.dateAdded ? 1 : -1
+    );
+    console.log(dateSorted);
+    setContents(dateSorted);
+  };
+
   return (
     <>
       <div className="homeWrapper"></div>
@@ -70,7 +94,7 @@ export default function Home(props) {
         <MainBody>
           <div className="container-fluid trend-pos mt-20">
             <h4 className="app-font-mid">Free Stock Photos</h4>
-            <DropDown />
+            <DropDown viewSort={sortByViews} dateSort={sortByDate} />
           </div>
           <div className="container-fluid mt-20">
             <PhotoGrid
@@ -85,3 +109,9 @@ export default function Home(props) {
     </>
   );
 }
+
+const mapStateToProps = ({ loadar }) => {
+  return { loadar };
+};
+
+export default connect(mapStateToProps, { setLoader })(Home);

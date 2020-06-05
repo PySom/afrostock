@@ -8,7 +8,7 @@ export default function Header() {
       <div className="hero">
         <img
           className="img-fluid"
-          src="https://images.pexels.com/photos/981286/pexels-photo-981286.jpeg"
+          src="images/hero.jpg"
           alt="beautiful leaves as header background"
         />
       </div>

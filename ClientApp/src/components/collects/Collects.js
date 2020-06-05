@@ -3,6 +3,7 @@ import CollectPhotoGrid from "../PhotoGrid/CollectPhotoGrid";
 import api from "../../sideEffects/apis/api";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { setLoader } from "../../creators/loaderCreator";
 import "./_Collects.scss";
 import history from "../history";
 import Footer from "../Footer";
@@ -43,6 +44,7 @@ function Collect(props) {
         setCollectImages(extractImages);
         const singleBatch_ = extractImages.splice(batch_, 20);
         setSingleBatch(singleBatch_);
+        props.setLoader(false);
       })
       .catch((err) => console.log(err));
 
@@ -99,4 +101,4 @@ const mapStateToProps = ({ collects }) => {
     collects,
   };
 };
-export default connect(mapStateToProps, null)(Collect);
+export default connect(mapStateToProps, { setLoader })(Collect);

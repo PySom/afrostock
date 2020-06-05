@@ -28,7 +28,7 @@ const ProfileDropDown = (props) => {
   const toggle = () => setOpen(!dropdownOpen);
   const triggerLogout = () => {
     props.logout(false);
-    setLoggedInStatus(false);
+    localStorage.removeItem("status_");
     history.push("/");
     window.location.reload();
   };
@@ -52,7 +52,7 @@ const ProfileDropDown = (props) => {
         </NavLink>
 
         <DropdownItem>Your Collection</DropdownItem>
-        <DropdownItem onClick={triggerLogout}>Logout</DropdownItem>
+        <DropdownItem onClick={() => triggerLogout()}>Logout</DropdownItem>
         <DropdownItem divider />
         <DropdownItem>FAQ</DropdownItem>
       </DropdownMenu>
@@ -75,13 +75,14 @@ export class NavMenu extends Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem("user")) {
+    if (localStorage.getItem("user_")) {
       this.setState({ loggedIn: true });
     }
   }
 
   logout(value) {
     localStorage.removeItem("user");
+    this.props.setLoggedInStatus(value);
     this.setState({ loggedIn: value });
   }
 
@@ -101,13 +102,18 @@ export class NavMenu extends Component {
       : "images/emblem.png";
   }
   render() {
+    console.log("logged in status", this.props.loggedInStatus);
     const { searchVisibility } = this.props;
     console.log("nav visible", searchVisibility);
     return (
       <header
         className={`sticky-header ${searchVisibility ? "" : "head-w-search"} ${
-          this.props.loggedInStatus ? "d-none" : ""
-        } ${
+          this.props.loggedInStatus &&
+          (history.location.pathname == "/register" ||
+            history.location.pathname == "/login")
+            ? "d-none"
+            : "d-block"
+        }  ${
           history.location.pathname == "/" ||
           history.location.pathname == "/register" ||
           history.location.pathname == "/login"
@@ -152,7 +158,7 @@ export class NavMenu extends Component {
                   </NavLink>
                 </NavItem>
 
-                {this.state.loggedIn ? (
+                {this.props.loggedInStatus ? (
                   <>
                     <NavItem className="d__none">
                       <ProfileDropDown logout={logout} />

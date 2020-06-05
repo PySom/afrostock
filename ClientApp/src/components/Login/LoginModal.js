@@ -54,7 +54,7 @@ export default function Modal(props) {
               <button type="submit">Login</button>
             </div>
           </form>
-          {props.type !== "modal" && (
+          {props.type == "modal" && (
             <Link to={`/register${url && "?returnurl=" + url}`}>Register</Link>
           )}
         </div>

@@ -5,6 +5,7 @@ import { Row, Col } from "reactstrap";
 import "./_Discover.scss";
 import api from "../../sideEffects/apis/api";
 import { setCollectData } from "../../creators/collectsCreator";
+import { setLoader } from "../../creators/loaderCreator";
 import { connect } from "react-redux";
 
 function Discover(props) {
@@ -18,6 +19,7 @@ function Discover(props) {
         .then((response) => {
           console.log(response);
           setContents(response);
+          props.setLoader(false);
           setPageLoaded(false);
         })
         .catch((err) => {
@@ -89,4 +91,4 @@ function Discover(props) {
   );
 }
 
-export default connect(null, { setCollectData })(Discover);
+export default connect(null, { setCollectData, setLoader })(Discover);
