@@ -21,19 +21,19 @@ namespace AfrroStock.Services
     {
         private const string default_Path = "assets";
         private readonly IWebHostEnvironment _env;
-        //private readonly IMediaToolkitService _media;
-        public ImageService(IWebHostEnvironment env)
+        private readonly IMediaToolkitService _media;
+        public ImageService(IWebHostEnvironment env, IMediaToolkitService media)
         {
             _env = env;
-            //_media = media;
+            _media = media;
         }
         public bool Create(IFormFile file, out string path)
         {
             path = "";
             if (file != null)
             {
-                var fileName = Path.GetFileName(file.FileName);
-                path = Path.Combine(default_Path, fileName);
+                var ext = Path.GetExtension(file.FileName);
+                path = Path.Combine(default_Path, $"{Rename()}.{ext}");
                 var absolutePath = Path.Combine(_env.WebRootPath, path);
                 using FileStream stream = new FileStream(absolutePath, FileMode.Create);
                 file.CopyTo(stream);
@@ -55,8 +55,8 @@ namespace AfrroStock.Services
                         System.IO.File.Delete(oldPath);
                     }
                 }
-                var fileName = Path.GetFileName(file.FileName);
-                path = Path.Combine(default_Path, fileName);
+                var ext = Path.GetExtension(file.FileName);
+                path = Path.Combine(default_Path, $"{Rename()}.{ext}");
                 var absolutePath = Path.Combine(_env.WebRootPath, path);
 
                 using FileStream stream = new FileStream(absolutePath, FileMode.Create);
@@ -80,24 +80,22 @@ namespace AfrroStock.Services
             }
         }
 
-        public async ValueTask<(string, string, List<List<Predict>>)> ManipulateContent(IFormFile file)
+        public async ValueTask<(string, string, List<List<Predict>>)> ManipulateContent(IFormFile file, string vid = null)
         {
             string fileType = file.ContentType.Split('/')[0];
             if (fileType == "image")
             {
-                return ManipulateImage(file);
+                return ManipulateImage(file, vid);
             }
 
             else if (fileType == "video")
             {
-                var fileName = Path.GetFileName(file.FileName);
-                var path = Path.Combine(default_Path, fileName);
-                return await ManipulateVideo(path);
+                return await ManipulateVideo(vid);
             }
             return (null, null, null);
         }
 
-        private (string, string, List<List<Predict>>) ManipulateImage(IFormFile file)
+        private (string, string, List<List<Predict>>) ManipulateImage(IFormFile file, string img)
         {
             string path = null;
             string pathImgLower = null;
@@ -118,17 +116,16 @@ namespace AfrroStock.Services
                 //watermark.Evaluate(Channels.Alpha, EvaluateOperator.Divide, 2);
                 // Draw the watermark at the center
                 image.Composite(watermark, Gravity.Center, CompositeOperator.Over);
-                var fileName = Path.GetFileName(file.FileName);
-                path = Path.Combine(default_Path, $"low_{fileName}");
-                pathImgLower = Path.Combine(default_Path, $"lower_{fileName}");
+                var ext = Path.GetExtension(file.FileName);
+                path = Path.Combine(default_Path, $"{Rename()}.{ext}");
+                pathImgLower = Path.Combine(default_Path, $"{Rename()}.{ext}");
                 var absolutePath = Path.Combine(_env.WebRootPath, path);
                 var absolutePathLowerImg = Path.Combine(_env.WebRootPath, pathImgLower);
                 image.Write(absolutePath);
                 imageLower.Write(absolutePathLowerImg);
 
                 MachineLearning _ml = new MachineLearning();
-
-                predicted = _ml.Pipe(fileName, _env);
+                predicted = _ml.Pipe(img.Split('\\')[1], _env);
             }
             catch (Exception ex)
             {
@@ -153,13 +150,13 @@ namespace AfrroStock.Services
                 pathLow = Path.Combine(default_Path, $"low_{fileExt[0]}.{fileExt[1]}");
                 var absolutePathNew = Path.Combine(_env.WebRootPath, pathLow);
 
-                pathOverlayTemp = Path.Combine(default_Path, $"low_overlay_{fileExt[0]}.{fileExt[1]}");
+                pathOverlayTemp = Path.Combine(default_Path, $"{Rename()}.{fileExt[1]}");
                 var absolutePathNewOverlayTemp = Path.Combine(_env.WebRootPath, pathOverlayTemp);
 
-                pathOverlay = Path.Combine(default_Path, $"lower_overlay_{fileExt[0]}.{fileExt[1]}");
+                pathOverlay = Path.Combine(default_Path, $"{Rename()}.{fileExt[1]}");
                 var absolutePathNewOverlay = Path.Combine(_env.WebRootPath, pathOverlay);
 
-                var pathToThumbnail = $"{Guid.NewGuid()}.jpg";
+                var pathToThumbnail = $"{Rename()}.jpg";
                 var outputForThumbnail = Path.Combine(_env.WebRootPath, default_Path, pathToThumbnail);
 
                 var saveThumbnailTask = new FfTaskSaveThumbnail(
@@ -167,7 +164,7 @@ namespace AfrroStock.Services
                                                     outputForThumbnail,
                                                     TimeSpan.FromSeconds(10)
                                                     );
-               // await _media.ExecuteAsync(saveThumbnailTask);
+                await _media.ExecuteAsync(saveThumbnailTask);
 
                 MachineLearning _ml = new MachineLearning();
                 predicted = _ml.Pipe(outputForThumbnail, _env);
@@ -192,9 +189,9 @@ namespace AfrroStock.Services
                                                     absolutePathNewOverlay,
                                                     logoFullPath
                                                     );
-                //await _media.ExecuteAsync(getVideoPortionTask);
-                //await _media.ExecuteAsync(reduceQualityTask);
-                //await _media.ExecuteAsync(addWaterMarkTask);
+                await _media.ExecuteAsync(getVideoPortionTask);
+                await _media.ExecuteAsync(reduceQualityTask);
+                await _media.ExecuteAsync(addWaterMarkTask);
 
 
             }
@@ -210,5 +207,7 @@ namespace AfrroStock.Services
 
             return (pathOverlay, pathLow, predicted);
         }
+
+        public string Rename() => Guid.NewGuid().ToString().Remove('-');
     }
 }

@@ -3,11 +3,11 @@
 export default function VideoCanvas({ src }) {
   const [showCanvas, setShowCanvas] = useState(true);
   const canvasRef = createRef();
-  const [pageLoaded, setPageLoaded] = useState(true);
+  const [pageLoaded, setPageLoaded] = useState(false);
 
   useEffect(() => {
-    console.log("the true ref is", canvasRef);
-  }, []);
+      setPageLoaded(true);
+  }, [pageLoaded]);
 
   return <>{pageLoaded && <canvas ref={canvasRef}></canvas>}</>;
 }

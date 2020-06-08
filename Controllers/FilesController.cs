@@ -32,7 +32,7 @@ namespace AfrroStock.Controllers
                     {
                         var name = model.File.FileName.Split('.')[0];
 
-                        var (lowRes, lowerRes, tags) = await _img.ManipulateContent(model.File);
+                        var (lowRes, lowerRes, tags) = await _img.ManipulateContent(model.File, path);
 
                         var t = new List<string>();
                         if(tags.Count > 0)
