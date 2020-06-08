@@ -17,10 +17,10 @@ function Collection(props) {
   const [firstCollect, ...rest] = props.collectibles;
   const history = useHistory();
   const showCollects = (data, id) => {
-    history.push(`/discover/${id}`);
     props.setCollectData(data);
     localStorage.setItem(`collect/${id}`, JSON.stringify(data));
     localStorage.setItem("collectionName", props.name);
+    history.push(`/discover/${id}`);
   };
   return firstCollect ? (
     <div className="card__wrapper">
@@ -28,10 +28,12 @@ function Collection(props) {
         <div
           style={{
             maxWidth: "450px",
-            backgroundImage: `url(${firstCollect.image.contentLower})`,
+            backgroundImage: `url(${firstCollect.image.contentLower.afro()})`,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
+            borderTopLeftRadius: "10px",
+            borderTopRightRadius: "10px",
           }}
         >
           <CardImg
@@ -53,7 +55,7 @@ function Collection(props) {
                     key={collect.id}
                     className="pd-5"
                     style={{
-                      backgroundImage: `url(${collect.image.contentLower})`,
+                      backgroundImage: `url(${collect.image.contentLower.afro()})`,
                       backgroundSize: "cover",
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center",

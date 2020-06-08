@@ -114,9 +114,9 @@ export class NavMenu extends Component {
             ? "d-none"
             : "d-block"
         }  ${
-          history.location.pathname == "/" ||
-          history.location.pathname == "/register" ||
-          history.location.pathname == "/login"
+          this.props.navurl == "/" ||
+          this.props.navurl == "/register" ||
+          this.props.navurl == "/login"
             ? ""
             : "color_nav"
         }`}
@@ -134,7 +134,7 @@ export class NavMenu extends Component {
               className={`variable-search-width ${
                 searchVisibility ||
                 (searchVisibility && !this.state.showSearch) ||
-                history.location.pathname !== "/"
+                (searchVisibility && this.props.navurl !== "/")
                   ? "d-none"
                   : ""
               }`}
@@ -196,8 +196,8 @@ export class NavMenu extends Component {
 }
 
 //get props value
-const matchStateToProps = ({ searchVisibility, loggedInStatus }) => {
-  return { searchVisibility, loggedInStatus };
+const matchStateToProps = ({ searchVisibility, loggedInStatus, navurl }) => {
+  return { searchVisibility, loggedInStatus, navurl };
 };
 
 //connect layout to get search visibility

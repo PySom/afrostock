@@ -59,16 +59,16 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
           ))} */}
           {contents &&
             contents.map((content, index) => (
-              <div
+              <button
                 key={content.id}
                 onClick={(e) => handleShow(e, index, content)}
-                className="unstyled px-0 mb-2"
+                className="unstyled px-0 mb-3"
               >
                 {content.contentType === 0 && (
                   <div
                     className="r-p"
                     style={{
-                      backgroundImage: `url(${content.contentLower})`,
+                      backgroundImage: `url(${content.contentLower.afro()})`,
                       backgroundSize: "cover",
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center",
@@ -93,7 +93,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
                     <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
                   </div>
                 )}
-              </div>
+              </button>
             ))}
         </section>
       </InfiniteScroll>
