@@ -33,7 +33,7 @@ namespace AfrroStock.Services
             if (file != null)
             {
                 var ext = Path.GetExtension(file.FileName);
-                path = Path.Combine(default_Path, $"{Rename()}.{ext}");
+                path = Path.Combine(default_Path, $"{Rename()}{ext}");
                 var absolutePath = Path.Combine(_env.WebRootPath, path);
                 using FileStream stream = new FileStream(absolutePath, FileMode.Create);
                 file.CopyTo(stream);
@@ -56,7 +56,7 @@ namespace AfrroStock.Services
                     }
                 }
                 var ext = Path.GetExtension(file.FileName);
-                path = Path.Combine(default_Path, $"{Rename()}.{ext}");
+                path = Path.Combine(default_Path, $"{Rename()}{ext}");
                 var absolutePath = Path.Combine(_env.WebRootPath, path);
 
                 using FileStream stream = new FileStream(absolutePath, FileMode.Create);
@@ -117,8 +117,8 @@ namespace AfrroStock.Services
                 // Draw the watermark at the center
                 image.Composite(watermark, Gravity.Center, CompositeOperator.Over);
                 var ext = Path.GetExtension(file.FileName);
-                path = Path.Combine(default_Path, $"{Rename()}.{ext}");
-                pathImgLower = Path.Combine(default_Path, $"{Rename()}.{ext}");
+                path = Path.Combine(default_Path, $"{Rename()}{ext}");
+                pathImgLower = Path.Combine(default_Path, $"{Rename()}{ext}");
                 var absolutePath = Path.Combine(_env.WebRootPath, path);
                 var absolutePathLowerImg = Path.Combine(_env.WebRootPath, pathImgLower);
                 image.Write(absolutePath);
@@ -147,7 +147,7 @@ namespace AfrroStock.Services
                 var fileName = file.Split('\\')[1];
                 var fileExt = fileName.Split('.');
 
-                pathLow = Path.Combine(default_Path, $"low_{fileExt[0]}.{fileExt[1]}");
+                pathLow = Path.Combine(default_Path, $"{Rename()}.{fileExt[1]}");
                 var absolutePathNew = Path.Combine(_env.WebRootPath, pathLow);
 
                 pathOverlayTemp = Path.Combine(default_Path, $"{Rename()}.{fileExt[1]}");
@@ -208,6 +208,6 @@ namespace AfrroStock.Services
             return (pathOverlay, pathLow, predicted);
         }
 
-        public string Rename() => Guid.NewGuid().ToString().Remove('-');
+        public string Rename() => Guid.NewGuid().ToString().Replace('-', '_');
     }
 }
