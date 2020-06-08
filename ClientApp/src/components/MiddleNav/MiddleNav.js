@@ -1,12 +1,12 @@
 ﻿import React from "react";
 import "./_MiddleNav.scss";
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
+import { getNavUrl } from "../../creators/trackNavCreator";
 
-export default function MiddleNav(props) {
+function MiddleNav(props) {
   const reloadTemp = (data) => {
-    setTimeout(() => {
-      window.location.reload();
-    }, 10);
+    props.getNavUrl(data);
   };
   return (
     <div className="border-b">
@@ -14,8 +14,8 @@ export default function MiddleNav(props) {
         <ul className="p-0">
           <li>
             <NavLink
+              onClick={() => reloadTemp("/")}
               to="/"
-              onClick={reloadTemp}
               exact
               activeClassName="active-mid-nav"
             >
@@ -24,8 +24,8 @@ export default function MiddleNav(props) {
           </li>
           <li>
             <NavLink
+              onClick={() => reloadTemp("/discover")}
               to="/discover"
-              onClick={reloadTemp}
               exact
               activeClassName="active-mid-nav"
             >
@@ -34,8 +34,8 @@ export default function MiddleNav(props) {
           </li>
           <li>
             <NavLink
+              onClick={() => reloadTemp("/videos")}
               to="/videos"
-              onClick={reloadTemp}
               exact
               activeClassName="active-mid-nav"
             >
@@ -47,3 +47,10 @@ export default function MiddleNav(props) {
     </div>
   );
 }
+
+//get props value
+const matchStateToProps = ({ navurl }) => {
+  return { navurl };
+};
+
+export default connect(matchStateToProps, { getNavUrl })(MiddleNav);

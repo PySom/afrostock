@@ -7,14 +7,6 @@ class Loadar extends React.Component {
     super(props);
   }
 
-  timer() {
-    if (this.props.loadar) {
-      return 2000;
-    } else {
-      return 2000;
-    }
-  }
-
   //other logic
   render() {
     return (
@@ -31,7 +23,7 @@ class Loadar extends React.Component {
           color="#966b4f"
           height={200}
           width={200}
-          timeout={10000} //3 secs
+          timeout={10000000} //3 secs
         />
       </div>
     );

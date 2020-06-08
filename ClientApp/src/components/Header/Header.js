@@ -15,7 +15,7 @@ export default function Header() {
       <div className="m0-auto header-width header-search">
         <h1 className="hero__title text-white">
           {
-            "Explore thousands of royalty free stock photos & media from around Africa"
+            "Explore thousands of royalty stock photos & media from around Africa"
           }
         </h1>
       </div>

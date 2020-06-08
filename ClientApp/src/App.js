@@ -20,6 +20,13 @@ import Collects from "./components/collects/Collects";
 import { connect } from "react-redux";
 import Loadar from "./components/Loader";
 
+String.prototype.afro = function () {
+  if (this) {
+    this.replace("\\", "/");
+  }
+  return this;
+};
+
 function App(props) {
   return (
     <>
@@ -74,7 +81,7 @@ function App(props) {
             </Guard>
           )}
         />
-        <Route
+        {/* <Route
           exact
           path="/contents/:id"
           render={({ match }) => (
@@ -83,6 +90,15 @@ function App(props) {
                 <VideoPage match={match} />
               </MainBody>
             </Guard>
+          )}
+        /> */}
+        <Route
+          exact
+          path="/contents/:id"
+          render={({ match }) => (
+            <MainBody>
+              <VideoPage match={match} />
+            </MainBody>
           )}
         />
         <Route exact path="/aboutUs" component={AboutUs} />
