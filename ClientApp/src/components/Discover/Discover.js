@@ -7,11 +7,18 @@ import api from "../../sideEffects/apis/api";
 import { setCollectData } from "../../creators/collectsCreator";
 import { setLoader } from "../../creators/loaderCreator";
 import { connect } from "react-redux";
+import { ConnectedSearchArea } from "../SearchArea/SearchArea";
+import { setVisibleState } from "../../creators/visbleSearchCreator";
+import Header from "../Header/Header";
 
 function Discover(props) {
   const [pageLoaded, setPageLoaded] = useState(true);
   const [contents, setContents] = useState([]);
   const history = useHistory();
+
+  // useEffect(() => {
+  //   props.setVisibleState(true);
+  // }, []);
   useEffect(() => {
     if (pageLoaded) {
       api
@@ -20,6 +27,7 @@ function Discover(props) {
           console.log(response);
           setContents(response);
           props.setLoader(false);
+          props.setVisibleState(false);
           setPageLoaded(false);
         })
         .catch((err) => {
@@ -91,4 +99,13 @@ function Discover(props) {
   );
 }
 
-export default connect(null, { setCollectData, setLoader })(Discover);
+//get props value
+const matchStateToProps = ({ searchVisibility }) => {
+  return { searchVisibility };
+};
+
+export default connect(matchStateToProps, {
+  setVisibleState,
+  setCollectData,
+  setLoader,
+})(Discover);

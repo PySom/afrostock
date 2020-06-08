@@ -71,18 +71,20 @@ function Home(props) {
   };
 
   const sortByViews = () => {
-    let viewSorted = contents.sort((a, b) => (b.views > a.views ? 1 : -1));
+    let viewSorted = [...contents].sort((a, b) => (b.views > a.views ? 1 : -1));
     console.log(viewSorted);
     setContents(viewSorted);
   };
 
   const sortByDate = () => {
-    let dateSorted = contents.sort((a, b) =>
+    let dateSorted = [...contents].sort((a, b) =>
       b.dateAdded > a.dateAdded ? 1 : -1
     );
     console.log(dateSorted);
     setContents(dateSorted);
   };
+
+  console.log(contents);
 
   return (
     <>
@@ -93,7 +95,7 @@ function Home(props) {
         </div>
         <MainBody>
           <div className="container-fluid trend-pos mt-20">
-            <h4 className="app-font-mid">Free Stock Photos</h4>
+            <h4 className="app-font-mid">Stock Photos</h4>
             <DropDown viewSort={sortByViews} dateSort={sortByDate} />
           </div>
           <div className="container-fluid mt-20">

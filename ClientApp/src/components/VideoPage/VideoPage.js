@@ -5,11 +5,16 @@ import ls from "../../sideEffects/local/ourLocalStorage";
 import VideoCanvas from "../VideoCanvas/VideoCanvas";
 import { connect } from "react-redux";
 import { setLoader } from "../../creators/loaderCreator";
+import { setVisibleState } from "../../creators/visbleSearchCreator";
 
-function VideoPage({ match, setLoader }) {
+function VideoPage({ match, setLoader, setVisibleState }) {
   const [pageLoaded, setPageLoaded] = useState(true);
   const [contents, setContents] = useState([]);
   console.log({ contents }, "I came here again");
+
+  useEffect(() => {
+    setVisibleState(false);
+  }, []);
   useEffect(() => {
     if (pageLoaded) {
       console.log({ match });
@@ -54,4 +59,9 @@ function VideoPage({ match, setLoader }) {
   );
 }
 
-export default connect(null, { setLoader })(VideoPage);
+//get props value
+const matchStateToProps = ({ searchVisibility }) => {
+  return { searchVisibility };
+};
+
+export default connect(null, { setVisibleState, setLoader })(VideoPage);
