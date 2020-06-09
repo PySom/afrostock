@@ -49,7 +49,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
         dataLength={dataLength}
         next={fetch_}
         hasMore={hasmore_}
-        loader={<img className="loader__" src="images/loader.gif" />}
+        loader={<img className="loader__" src="images/loader.gif" alt="loader" />}
       >
         <section id="photos">
           {/* {this.state.items.map((i, index) => (
@@ -68,7 +68,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
                   <div
                     className="r-p"
                     style={{
-                      backgroundImage: `url(${content.contentLower.afro()})`,
+                      backgroundImage: `url("${content.contentLower.afro()}")`,
                       backgroundSize: "cover",
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center",
