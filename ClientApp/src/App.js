@@ -22,7 +22,7 @@ import Loadar from "./components/Loader";
 
 String.prototype.afro = function () {
   if (this) {
-    this.replace("\\", "/");
+    this.replace("assets", "assuyyuyets//");
   }
   return this;
 };

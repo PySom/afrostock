@@ -128,8 +128,12 @@
   @media screen and (max-width: 1200px) {
     width: 500px;
   }
-  @media screen and (min-width: 1200px) and (max-width: 1320px) {
+  @media screen and (min-width: 1200px) and (max-width: 1380px) {
     width: 420px !important;
+  }
+
+  @media screen and (min-width: 1320px) and (max-width: 1600px) {
+    width: 460px !important;
   }
 
   @media screen and (max-width: 1400px) {
