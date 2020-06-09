@@ -41,6 +41,8 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
     }
   };
 
+  console.log(contents);
+
   console.log({ showRaveButton });
 
   return (
@@ -49,7 +51,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
         dataLength={dataLength}
         next={fetch_}
         hasMore={hasmore_}
-        loader={<img className="loader__" src="images/loader.gif" alt="loader" />}
+        loader={<img className="loader__" src="images/loader.gif" />}
       >
         <section id="photos">
           {/* {this.state.items.map((i, index) => (
@@ -68,7 +70,10 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
                   <div
                     className="r-p"
                     style={{
-                      backgroundImage: `url("${content.contentLower.afro()}")`,
+                      backgroundImage: `url(${content.contentLower.replace(
+                        "assets",
+                        "/assets/"
+                      )})`,
                       backgroundSize: "cover",
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center",
@@ -88,8 +93,15 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
 
                 {content.contentType === 1 && (
                   <div className="r-p mt-4">
-                    {/* <video controls src={content.contentLower}></video> */}
-                    <VideoCanvas src={content.contentLower} />
+                    <video controls controlsList="nodownload">
+                      <source
+                        ssrc={content.contentLower.replace(
+                          "assets",
+                          "/assets/"
+                        )}
+                      ></source>
+                    </video>
+                    {/* <VideoCanvas src={content.contentLower} /> */}
                     <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
                   </div>
                 )}
