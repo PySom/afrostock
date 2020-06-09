@@ -94,7 +94,12 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
                 {content.contentType === 1 && (
                   <div className="r-p mt-4">
                     <video controls controlsList="nodownload">
-                      <source src="https://media.w3.org/2010/05/sintel/trailer.mp4"></source>
+                      <source
+                        ssrc={content.contentLower.replace(
+                          "assets",
+                          "/assets/"
+                        )}
+                      ></source>
                     </video>
                     {/* <VideoCanvas src={content.contentLower} /> */}
                     <h5 className="author-text text-title f-12">{`${content.author.firstName} ${content.author.surName}`}</h5>
