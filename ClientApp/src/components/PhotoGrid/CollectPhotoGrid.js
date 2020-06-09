@@ -72,7 +72,10 @@ export default function CollectPhotoGrid({
                   <div
                     className="r-p"
                     style={{
-                      backgroundImage: `url(${content.contentLower.afro()})`,
+                      backgroundImage: `(${content.contentLower.replace(
+                        "assets",
+                        "/assets/"
+                      )})`,
                       backgroundSize: "cover",
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center",
