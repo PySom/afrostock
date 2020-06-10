@@ -72,7 +72,7 @@ export default function CollectPhotoGrid({
                   <div
                     className="r-p"
                     style={{
-                      backgroundImage: `(${content.contentLower.replace(
+                      backgroundImage: `url(${content.contentLower.replace(
                         "assets",
                         "/assets/"
                       )})`,
