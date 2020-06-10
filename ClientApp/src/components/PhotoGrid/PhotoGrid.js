@@ -95,10 +95,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
                   <div className="r-p mt-4">
                     <video controls controlsList="nodownload">
                       <source
-                        ssrc={content.contentLower.replace(
-                          "assets",
-                          "/assets/"
-                        )}
+                        src={content.contentLower.replace("assets", "/assets/")}
                       ></source>
                     </video>
                     {/* <VideoCanvas src={content.contentLower} /> */}

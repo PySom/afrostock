@@ -28,10 +28,11 @@ function Collection(props) {
         <div
           style={{
             maxWidth: "450px",
-            backgroundImage: firstCollect.image.contentLower.replace(
+
+            backgroundImage: `url(${firstCollect.image.contentLower.replace(
               "assets",
               "/assets/"
-            ),
+            )})`,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
@@ -58,7 +59,7 @@ function Collection(props) {
                     key={collect.id}
                     className="pd-5"
                     style={{
-                      backgroundImage: `(${collect.image.contentLower.replace(
+                      backgroundImage: `url (${collect.image.contentLower.replace(
                         "assets",
                         "/assets/"
                       )})`,
