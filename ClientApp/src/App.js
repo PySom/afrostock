@@ -42,7 +42,7 @@ function App(props) {
             </MainBody>
           )}
         />
-        <Route exact path="/discover/:id" render={() => <Collects />} />
+        <Route exact path="/discover/:id" component={() => <Collects />} />
         <Route
           exact
           path="/videos"

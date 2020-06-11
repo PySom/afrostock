@@ -35,6 +35,9 @@ function Login(props) {
     auth
       .login(data)
       .then((res) => {
+        props.setLoggedInStatus(true);
+        JSON.stringify(localStorage.setItem("status_", true));
+
         if (typeof props.callback === "function") props.callback();
 
         if (props.route) {

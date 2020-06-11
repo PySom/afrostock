@@ -20,7 +20,9 @@ function Collection(props) {
     props.setCollectData(data);
     localStorage.setItem(`collect/${id}`, JSON.stringify(data));
     localStorage.setItem("collectionName", props.name);
+
     history.push(`/discover/${id}`);
+    window.location.reload();
   };
   return firstCollect ? (
     <div className="card__wrapper">
@@ -59,7 +61,7 @@ function Collection(props) {
                     key={collect.id}
                     className="pd-5"
                     style={{
-                      backgroundImage: `url (${collect.image.contentLower.replace(
+                      backgroundImage: `url(${collect.image.contentLower.replace(
                         "assets",
                         "/assets/"
                       )})`,

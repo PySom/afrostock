@@ -15,6 +15,7 @@ function Collect(props) {
   const [batch_, setBatch] = useState(0);
   const [hasmore, sethasmore] = useState(false);
   const [collectionName, setCollectionName] = useState("");
+  const [showFooter, setShowFooter] = useState(false);
   // const [collectorName, setCollectorName] = useState("");
   const [allCollects, setAllCollects] = useState();
   console.log(collectImages);
@@ -34,19 +35,23 @@ function Collect(props) {
     // setCollectorName(name);
     let data = history.location.pathname.substring(10);
     const route = document.documentURI.substring(document.baseURI.length + 9);
-    api
-      .getAll(`collections/${Number(data)}`, `collections/${data}`)
-      .then((response) => {
-        setCollectionData(response);
-        setCollectionName(response.name);
-        const extractImages = response.collectibles.map((item) => item.image);
-        setAllCollects(extractImages.length);
-        setCollectImages(extractImages);
-        const singleBatch_ = extractImages.splice(batch_, 20);
-        setSingleBatch(singleBatch_);
-        props.setLoader(false);
-      })
-      .catch((err) => console.log(err));
+    if (!localStorage.getItem(`collect/${Number(route)}`)) {
+      api
+        .getAll(`collections/${Number(data)}`, `collections/${data}`)
+        .then((response) => {
+          setCollectionData(response);
+          console.log(response);
+          setShowFooter(true);
+          setCollectionName(response.name);
+          const extractImages = response.collectibles.map((item) => item.image);
+          setAllCollects(extractImages.length);
+          setCollectImages(extractImages);
+          const singleBatch_ = extractImages.splice(batch_, 20);
+          setSingleBatch(singleBatch_);
+          props.setLoader(false);
+        })
+        .catch((err) => console.log(err));
+    }
 
     if (localStorage.getItem(`collect/${Number(route)}`)) {
       const storedData = JSON.parse(
@@ -59,6 +64,8 @@ function Collect(props) {
       setCollectImages(extractImages);
       const singleBatch_ = extractImages.splice(batch_, 20);
       setSingleBatch(singleBatch_);
+      props.setLoader(false);
+      setShowFooter(true);
     }
   }, []);
 
@@ -90,7 +97,7 @@ function Collect(props) {
             />
           )}
         </div>
-        <Footer />
+        {showFooter && <Footer />}
       </div>
     </>
   );

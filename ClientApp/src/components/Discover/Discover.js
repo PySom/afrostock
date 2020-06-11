@@ -39,9 +39,11 @@ function Discover(props) {
   console.log(contents);
 
   const showCollects = (data, id) => {
+    window.location.reload();
     history.push(`/discover/${id}`);
     props.setCollectData(data);
     localStorage.setItem("collect", JSON.stringify(data));
+    window.location.reload();
   };
 
   return (
@@ -67,12 +69,7 @@ function Discover(props) {
                         key={collection.name + collection.id}
                         className={index === 0 ? "mr-1" : "mr-2"}
                       >
-                        <button
-                          className="discover-cat"
-                          onClick={() =>
-                            showCollects(collection.collectibles, collection.id)
-                          }
-                        >
+                        <button className="discover-cat">
                           {collection.name}
                         </button>
                       </div>
