@@ -158,7 +158,7 @@ export class NavMenu extends Component {
                   </NavLink>
                 </NavItem>
 
-                {!this.props.loggedInStatus ? (
+                {this.props.loggedInStatus ? (
                   <>
                     <NavItem className="d__none">
                       <ProfileDropDown logout={logout} />

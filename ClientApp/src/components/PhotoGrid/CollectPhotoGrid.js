@@ -66,7 +66,7 @@ export default function CollectPhotoGrid({
               <button
                 key={content.name}
                 onClick={(e) => handleShow(e, index, content)}
-                className="unstyled px-0 mb-2"
+                className="unstyled px-0 mb-4"
               >
                 {content.contentType === 0 && (
                   <div

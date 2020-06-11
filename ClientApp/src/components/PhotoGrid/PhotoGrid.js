@@ -64,7 +64,7 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
               <button
                 key={content.id}
                 onClick={(e) => handleShow(e, index, content)}
-                className="unstyled px-0 mb-3"
+                className="unstyled px-0 mb-4"
               >
                 {content.contentType === 0 && (
                   <div
@@ -95,7 +95,8 @@ export default function PhotoGrid({ contents, dataLength, fetch_, hasmore_ }) {
                   <div className="r-p mt-4">
                     <video controls controlsList="nodownload">
                       <source
-                        src={content.contentLower.replace("assets", "/assets/")}
+                        src="https://media.w3.org/2010/05/sintel/trailer.mp4"
+                        // src={content.contentLower.replace("assets", "/assets/")}
                       ></source>
                     </video>
                     {/* <VideoCanvas src={content.contentLower} /> */}
