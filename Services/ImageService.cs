@@ -112,8 +112,6 @@ namespace AfrroStock.Services
                 var logoPath = Path.Combine(default_Path, "afro_logo.png");
                 var logoFullPath = Path.Combine(_env.WebRootPath, logoPath);
                 using var watermark = new MagickImage(logoFullPath);
-                // Optionally make the watermark more transparent
-                //watermark.Evaluate(Channels.Alpha, EvaluateOperator.Divide, 2);
                 // Draw the watermark at the center
                 image.Composite(watermark, Gravity.Center, CompositeOperator.Over);
                 var ext = Path.GetExtension(file.FileName);
@@ -124,8 +122,8 @@ namespace AfrroStock.Services
                 image.Write(absolutePath);
                 imageLower.Write(absolutePathLowerImg);
 
-                MachineLearning _ml = new MachineLearning();
-                predicted = _ml.Pipe(img.Split('\\')[1], _env);
+                //MachineLearning _ml = new MachineLearning();
+                //predicted = _ml.Pipe(img.Split('\\')[1], _env);
             }
             catch (Exception ex)
             {
@@ -166,8 +164,8 @@ namespace AfrroStock.Services
                                                     );
                 await _media.ExecuteAsync(saveThumbnailTask);
 
-                MachineLearning _ml = new MachineLearning();
-                predicted = _ml.Pipe(outputForThumbnail, _env);
+                //MachineLearning _ml = new MachineLearning();
+                //predicted = _ml.Pipe(outputForThumbnail, _env);
 
 
                 var getVideoPortionTask = new FfTaskGetVideoPortion(
